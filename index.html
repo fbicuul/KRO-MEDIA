@@ -13,260 +13,474 @@
         }
         
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            transition: all 0.3s ease;
+            background: #0f0f0f;
+            color: #ffffff;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
             transition: filter 0.5s ease;
         }
         
-        /* Blur effect when popup is active */
         .container.blur {
             filter: blur(8px);
             pointer-events: none;
-            user-select: none;
         }
         
-        /* Header Section */
-        .header {
-            margin-bottom: 30px;
-        }
-        
-        .artist-section {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            color: white;
-            margin-bottom: 30px;
-            animation: fadeIn 1s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .artist-name {
-            font-size: 3.5em;
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-        
-        .artist-genre {
-            font-size: 1.2em;
-            color: rgba(255,255,255,0.8);
-            margin-top: 5px;
-            letter-spacing: 1px;
-        }
-        
-        /* Popular Section */
-        .section-title {
-            color: white;
-            font-size: 1.8em;
-            font-weight: 600;
-            margin-bottom: 20px;
-            padding-left: 10px;
-        }
-        
-        .popular-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+        /* Header with Gradient */
+        .hero-section {
+            background: linear-gradient(145deg, #1a1a1a 0%, #000000 100%);
+            border-radius: 30px;
+            padding: 50px;
             margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
         }
         
-        .member-card {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            animation: slideUp 0.5s ease;
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            pointer-events: none;
         }
         
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .member-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-        }
-        
-        .member-info {
-            display: flex;
-            align-items: center;
+        .hero-title {
+            font-size: 4em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 15px;
         }
         
-        .member-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
+        .hero-subtitle {
             font-size: 1.5em;
-            margin-right: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: #b0b0b0;
+            margin-bottom: 20px;
+            max-width: 600px;
+            line-height: 1.4;
         }
         
-        .member-details h3 {
-            font-size: 1.2em;
-            margin-bottom: 5px;
-            color: #333;
+        .hero-description {
+            color: #808080;
+            max-width: 600px;
+            margin-bottom: 30px;
+            line-height: 1.6;
         }
         
-        .member-details p {
-            color: #666;
-            font-size: 0.9em;
+        .show-package {
+            display: inline-block;
+            color: #ff0000;
+            font-weight: 600;
+            margin-right: 20px;
+            cursor: pointer;
         }
         
-        .member-stats {
-            display: flex;
-            gap: 15px;
-            margin: 10px 0;
-            font-size: 0.9em;
-            color: #555;
-        }
-        
-        .channel-link {
+        .get-started {
             display: inline-block;
             background: #ff0000;
             color: white;
-            text-decoration: none;
-            padding: 10px 20px;
+            padding: 12px 30px;
             border-radius: 25px;
-            font-size: 0.9em;
-            margin-top: 10px;
-            transition: background 0.3s;
-            width: 100%;
-            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s;
         }
         
-        .channel-link:hover {
+        .get-started:hover {
+            transform: scale(1.05);
             background: #cc0000;
         }
         
-        /* Two Column Layout */
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+        /* Search Section */
+        .search-section {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 30px;
             margin-bottom: 40px;
         }
         
-        .playlist-section {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+        .welcome-text {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .search-input {
+            flex: 1;
+            background: #2a2a2a;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 30px;
+            color: white;
+            font-size: 1em;
+            border: 1px solid #333;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #ff0000;
+        }
+        
+        .search-button {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .search-button:hover {
+            background: #cc0000;
+        }
+        
+        /* Featured Movie */
+        .featured-movie {
+            background: linear-gradient(145deg, #1a1a1a 0%, #000000 100%);
             border-radius: 20px;
-            padding: 25px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid #333;
+        }
+        
+        .featured-title {
+            font-size: 2em;
+            color: #ff0000;
+            margin-bottom: 10px;
+        }
+        
+        /* Section Headers */
+        .section-header {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 30px;
             color: white;
         }
         
-        .playlist-title {
-            font-size: 1.5em;
-            margin-bottom: 20px;
+        /* Movie Cards Grid */
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .movie-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s;
+            border: 1px solid #333;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .movie-card:hover {
+            transform: translateY(-10px);
+            border-color: #ff0000;
+            box-shadow: 0 10px 30px rgba(255,0,0,0.2);
+        }
+        
+        .movie-card::before {
+            content: 'UHD+';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff0000;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
             font-weight: 600;
         }
         
-        .track-list {
-            list-style: none;
-        }
-        
-        .track-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            transition: background 0.2s;
-            cursor: pointer;
-        }
-        
-        .track-item:hover {
-            background: rgba(255,255,255,0.05);
-            padding-left: 10px;
-        }
-        
-        .track-item:last-child {
-            border-bottom: none;
-        }
-        
-        .track-name {
+        .movie-thumbnail {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border-radius: 10px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            color: #ff0000;
+            font-size: 3em;
         }
         
-        .track-name span {
-            margin-left: 10px;
+        .movie-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #ffd700;
         }
         
-        .track-duration {
-            color: rgba(255,255,255,0.6);
+        .movie-rating span {
+            color: #808080;
+            font-size: 0.9em;
         }
         
-        /* New Playlists Section */
-        .new-playlists {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
+        .movie-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .movie-channel {
+            color: #808080;
+            font-size: 0.9em;
+        }
+        
+        /* Subscription Section */
+        .subscription-section {
+            margin: 60px 0;
+        }
+        
+        .subscription-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        
+        .subscription-header h2 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        
+        .subscription-header p {
+            color: #808080;
+        }
+        
+        .subscription-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .subscription-card {
+            background: linear-gradient(145deg, #1a1a1a, #000000);
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid #333;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .subscription-card:hover {
+            transform: scale(1.02);
+            border-color: #ff0000;
+        }
+        
+        .subscription-card.free::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+        
+        .subscription-card.premium {
+            background: linear-gradient(145deg, #2a1a1a, #1a0000);
+            border-color: #ff0000;
+        }
+        
+        .subscription-card.premium::before {
+            content: 'BEST VALUE';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: #ff0000;
             color: white;
+            padding: 5px 30px;
+            transform: rotate(45deg);
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        
+        .plan-name {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .plan-description {
+            color: #808080;
+            margin-bottom: 20px;
+        }
+        
+        .plan-price {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+        
+        .plan-price span {
+            font-size: 0.4em;
+            color: #808080;
+            font-weight: normal;
+        }
+        
+        .plan-features {
+            list-style: none;
             margin-bottom: 30px;
         }
         
-        .playlist-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+        .plan-features li {
+            margin: 15px 0;
+            color: #b0b0b0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .playlist-chip {
-            background: rgba(255,255,255,0.2);
+        .plan-features li::before {
+            content: '✓';
+            color: #ff0000;
+            font-weight: bold;
+        }
+        
+        .plan-button {
+            width: 100%;
             padding: 15px;
+            border: none;
             border-radius: 30px;
-            text-align: center;
+            font-weight: 600;
+            font-size: 1.1em;
             cursor: pointer;
             transition: all 0.3s;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-        
-        .playlist-chip:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
-        
-        /* Device Info */
-        .device-info {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
+            background: #2a2a2a;
             color: white;
-            text-align: center;
-            font-size: 1.2em;
-            animation: slideUp 1s;
         }
         
-        /* Modal Styles */
+        .premium .plan-button {
+            background: #ff0000;
+            color: white;
+        }
+        
+        .premium .plan-button:hover {
+            background: #cc0000;
+        }
+        
+        /* Newsletter Section */
+        .newsletter {
+            background: linear-gradient(145deg, #1a1a1a, #000000);
+            border-radius: 30px;
+            padding: 60px;
+            text-align: center;
+            margin: 60px 0;
+            border: 1px solid #333;
+        }
+        
+        .newsletter h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        .newsletter p {
+            color: #808080;
+            margin-bottom: 30px;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            gap: 10px;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            background: #2a2a2a;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 30px;
+            color: white;
+            border: 1px solid #333;
+        }
+        
+        .newsletter-input:focus {
+            outline: none;
+            border-color: #ff0000;
+        }
+        
+        .newsletter-button {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Footer */
+        .footer {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            padding: 60px 0;
+            border-top: 1px solid #333;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-section p {
+            color: #808080;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin: 10px 0;
+        }
+        
+        .footer-section ul li a {
+            color: #808080;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #ff0000;
+        }
+        
+        .contact-info {
+            color: #808080;
+            line-height: 2;
+        }
+        
+        .contact-info i {
+            color: #ff0000;
+            margin-right: 10px;
+        }
+        
+        /* Modal Styles - Keep existing modal styles from previous version */
         .modal {
             display: none;
             position: fixed;
@@ -274,37 +488,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.9);
             z-index: 1000;
-            backdrop-filter: blur(5px);
-            animation: fadeInModal 0.5s;
-        }
-        
-        @keyframes fadeInModal {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            backdrop-filter: blur(10px);
         }
         
         .modal-content {
-            background: white;
+            background: linear-gradient(145deg, #1a1a1a, #000000);
             border-radius: 30px;
             max-width: 500px;
             margin: 50px auto;
-            padding: 30px;
+            padding: 40px;
             position: relative;
-            animation: slideDown 0.5s;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            border: 1px solid #333;
         }
         
         .modal-header {
@@ -313,48 +509,39 @@
         }
         
         .modal-header h2 {
-            color: #333;
             font-size: 2em;
+            color: white;
             margin-bottom: 10px;
         }
         
         .modal-header p {
-            color: #666;
+            color: #808080;
         }
         
         .task-item {
-            background: #f5f5f5;
+            background: #2a2a2a;
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
-            transition: all 0.3s;
-            border: 2px solid transparent;
+            border: 1px solid #333;
         }
         
         .task-item.completed {
-            background: #f0fff4;
-            border-color: #48bb78;
+            border-color: #ff0000;
+            background: linear-gradient(145deg, #2a1a1a, #1a1a1a);
         }
         
         .task-title {
             font-size: 1.2em;
             font-weight: 600;
             margin-bottom: 15px;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .task-icon {
-            font-size: 1.5em;
+            color: white;
         }
         
         .task-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-top: 15px;
         }
         
         .btn-primary {
@@ -362,58 +549,39 @@
             color: white;
             border: none;
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 25px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
             text-decoration: none;
-            display: inline-block;
             text-align: center;
-        }
-        
-        .btn-primary:hover {
-            background: #cc0000;
-            transform: scale(1.05);
         }
         
         .btn-secondary {
-            background: #667eea;
+            background: #2a2a2a;
             color: white;
-            border: none;
+            border: 1px solid #333;
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 25px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
             text-align: center;
         }
         
-        .btn-secondary:hover {
-            background: #5a67d8;
-            transform: scale(1.05);
-        }
-        
         .btn-success {
-            background: #48bb78;
+            background: #ff0000;
             color: white;
             border: none;
             padding: 15px;
-            border-radius: 10px;
-            cursor: pointer;
+            border-radius: 30px;
             font-weight: 600;
             font-size: 1.1em;
             width: 100%;
             margin-top: 20px;
-            transition: all 0.3s;
-        }
-        
-        .btn-success:hover:not(:disabled) {
-            background: #38a169;
-            transform: scale(1.02);
+            cursor: pointer;
         }
         
         .btn-success:disabled {
-            background: #cbd5e0;
+            background: #333;
             cursor: not-allowed;
         }
         
@@ -421,151 +589,169 @@
             display: flex;
             align-items: center;
             margin-top: 10px;
-            color: #48bb78;
-            font-size: 0.9em;
-            animation: fadeIn 0.5s;
+            color: #ff0000;
         }
         
         .status-dot {
             width: 8px;
             height: 8px;
-            background: #48bb78;
+            background: #ff0000;
             border-radius: 50%;
             margin-right: 5px;
-            animation: pulse 2s infinite;
-        }
-        
-        /* File input styling */
-        input[type="file"] {
-            display: none;
-        }
-        
-        .file-label {
-            background: #48bb78;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            display: inline-block;
-            transition: all 0.3s;
-        }
-        
-        .file-label:hover {
-            background: #38a169;
         }
         
         .hidden {
             display: none;
         }
         
-        .completed-tasks {
-            text-align: center;
-            color: #48bb78;
-            margin: 20px 0;
-            font-weight: 600;
-            animation: bounce 1s;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-        
-        /* Progress bar */
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e0e0e0;
-            border-radius: 4px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            transition: width 0.5s;
-        }
-        
-        /* Close button */
         .close-btn {
             position: absolute;
             top: 20px;
             right: 25px;
+            color: #666;
             font-size: 1.5em;
             cursor: pointer;
-            color: #999;
-            transition: color 0.3s;
         }
         
-        .close-btn:hover {
-            color: #333;
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
         
-        /* Counter */
-        .task-counter {
-            text-align: center;
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 10px;
-        }
-        
-        /* Confetti effect */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: #ff0000;
-            position: absolute;
-            animation: confetti 5s ease-in-out infinite;
-        }
-        
-        @keyframes confetti {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(720deg); }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5em; }
+            .hero-section { padding: 30px; }
+            .subscription-grid { grid-template-columns: 1fr; }
+            .footer { grid-template-columns: 1fr; }
+            .newsletter-form { flex-direction: column; }
         }
     </style>
 </head>
 <body>
     <!-- Main Content -->
     <div class="container" id="mainContent">
-        <!-- Artist Header -->
-        <div class="artist-section">
-            <h1 class="artist-name">José Carreras</h1>
-            <div class="artist-genre">bel canto</div>
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Lost.fm</h1>
+            <h2 class="hero-subtitle">Come Watch Various Streaming & Thriller Movies and Many others</h2>
+            <p class="hero-description">Enjoy the various services we provide for streaming movies & watching thrillers and you can also get other access at a very cheap price.</p>
+            <div>
+                <span class="show-package">Show Package</span>
+                <a href="#" class="get-started" onclick="openModal()">GET STARTED</a>
+            </div>
         </div>
 
-        <!-- Popular Members Section -->
-        <h2 class="section-title">Popular</h2>
-        <div class="popular-grid" id="membersGrid">
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="welcome-text">Hi Welcome, Search your favorite creators in here</div>
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Batman v Superman: Dawn of Justice" id="searchInput">
+                <button class="search-button" onclick="searchCreator()">Enter</button>
+            </div>
+        </div>
+
+        <!-- Featured Section -->
+        <div class="featured-movie">
+            <h2 class="featured-title">The Best Creator Recommendations & the Latest from our Community</h2>
+        </div>
+
+        <!-- Creator Cards (formerly Movie Recommended) -->
+        <h2 class="section-header">Creators Recommended</h2>
+        <div class="movie-grid" id="membersGrid">
             <!-- Members will be loaded here -->
         </div>
 
-        <!-- Two Column Layout -->
-        <div class="two-column">
-            <!-- Best Day Section -->
-            <div class="playlist-section">
-                <h3 class="playlist-title">Best Day</h3>
-                <ul class="track-list" id="bestDayList"></ul>
+        <!-- Subscription Section -->
+        <div class="subscription-section">
+            <div class="subscription-header">
+                <h2>Choose the Subscription package that you Like & get other Benefits</h2>
+                <p>Enjoy various creators that we have recommended for you and your community</p>
             </div>
 
-            <!-- Beautiful Section -->
-            <div class="playlist-section">
-                <h3 class="playlist-title">Beautiful</h3>
-                <ul class="track-list" id="beautifulList"></ul>
+            <div class="subscription-grid">
+                <!-- Free Plan -->
+                <div class="subscription-card free">
+                    <h3 class="plan-name">Free Plan</h3>
+                    <p class="plan-description">For those of you who like to support creators for free</p>
+                    <div class="plan-price">$0 <span>/ New Account</span></div>
+                    <ul class="plan-features">
+                        <li>You get free access to support creators</li>
+                        <li>Get +10 access to subscribe</li>
+                        <li>Ad-free browsing</li>
+                    </ul>
+                    <button class="plan-button">Get Started</button>
+                </div>
+
+                <!-- Premium Plan -->
+                <div class="subscription-card premium">
+                    <h3 class="plan-name">Premium Plan</h3>
+                    <p class="plan-description">For those who want to maximize their community growth</p>
+                    <div class="plan-price">$29.99 <span>/ Years</span></div>
+                    <ul class="plan-features">
+                        <li>You get unlimited access to all creators</li>
+                        <li>Get +50 access to subscribe</li>
+                        <li>Ad-free experience</li>
+                        <li>Access to latest creator content</li>
+                        <li>Unlimited community support</li>
+                    </ul>
+                    <button class="plan-button">Buy Packt Now</button>
+                </div>
             </div>
         </div>
 
-        <!-- New Playlists -->
-        <div class="new-playlists">
-            <h3 class="playlist-title">NEW PLAYLIST</h3>
-            <div class="playlist-grid" id="playlistsGrid"></div>
+        <!-- Newsletter Section -->
+        <div class="newsletter">
+            <h2>Are you ready to join?</h2>
+            <p>Enter your Email to sign up and subscribe with us for free, Let's Register now</p>
+            <div class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Enter your email address">
+                <button class="newsletter-button">Subscribe</button>
+            </div>
         </div>
 
-        <!-- Device Info -->
-        <div class="device-info">
-            Phone XS 64 GB
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-section">
+                <h3>Lost.fm</h3>
+                <p>We provide various services to help you discover new creators and grow your community for free.</p>
+                <div class="contact-info">
+                    <div>📞 +82 990 1234 4567</div>
+                    <div>📞 +82 990 1234 5678</div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Unlimited Streaming</a></li>
+                    <li><a href="#">24 Hours Service</a></li>
+                    <li><a href="#">Free Access Download</a></li>
+                    <li><a href="#">Access TV - Show</a></li>
+                    <li><a href="#">Conditions of Use</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Support for you</h3>
+                <ul>
+                    <li><a href="#">Horror</a></li>
+                    <li><a href="#">Family</a></li>
+                    <li><a href="#">Service Status</a></li>
+                    <li><a href="#">Crime</a></li>
+                    <li><a href="#">Advantage</a></li>
+                    <li><a href="#">Thriller</a></li>
+                    <li><a href="#">Advertising</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <div class="contact-info">
+                    22006 Uton Panyang 04/03
+                </div>
+            </div>
         </div>
     </div>
 
@@ -575,68 +761,45 @@
             <span class="close-btn" onclick="closeModal()">&times;</span>
             
             <div class="modal-header">
-                <h2>🚀 Grow Together!</h2>
-                <p>Complete these tasks to unlock the community</p>
+                <h2>🚀 Join Our Community</h2>
+                <p>Complete these tasks to unlock access</p>
             </div>
-
-            <!-- Progress Bar -->
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-            </div>
-            
-            <div class="task-counter" id="taskCounter">0/2 tasks completed</div>
 
             <!-- Task 1: Subscribe -->
             <div class="task-item" id="task1">
-                <div class="task-title">
-                    <span class="task-icon">📺</span>
-                    Task 1: Subscribe to our channel
-                </div>
+                <div class="task-title">📺 Task 1: Subscribe to our channel</div>
                 <div class="task-buttons">
                     <a href="https://youtube.com/@YOURCHANNEL" target="_blank" class="btn-primary">Go to YouTube</a>
                     <label class="btn-secondary" style="cursor: pointer;">
-                        Upload Screenshot
+                        Upload Proof
                         <input type="file" accept="image/*" class="hidden" onchange="handleUpload(1, this)">
                     </label>
                 </div>
                 <div id="uploadStatus1" class="upload-status hidden">
                     <span class="status-dot"></span>
-                    <span>✓ Subscribed! Screenshot received</span>
+                    <span>✓ Screenshot uploaded</span>
                 </div>
             </div>
 
             <!-- Task 2: Watch Content -->
             <div class="task-item" id="task2">
-                <div class="task-title">
-                    <span class="task-icon">🎬</span>
-                    Task 2: Watch our content
-                </div>
+                <div class="task-title">🎬 Task 2: Watch our content</div>
                 <div class="task-buttons">
                     <a href="https://youtube.com/@YOURCHANNEL" target="_blank" class="btn-primary">Watch Videos</a>
                     <label class="btn-secondary" style="cursor: pointer;">
-                        Upload Screenshot
+                        Upload Proof
                         <input type="file" accept="image/*" class="hidden" onchange="handleUpload(2, this)">
                     </label>
                 </div>
                 <div id="uploadStatus2" class="upload-status hidden">
                     <span class="status-dot"></span>
-                    <span>✓ Watched! Screenshot received</span>
+                    <span>✓ Screenshot uploaded</span>
                 </div>
             </div>
 
-            <!-- Motivational Message -->
-            <div id="motivationMsg" style="text-align: center; margin: 10px 0; color: #667eea; font-style: italic;">
-                💪 Complete both tasks to join the community!
-            </div>
-
-            <!-- Submit Button -->
             <button class="btn-success" id="submitBtn" onclick="submitTasks()" disabled>
-                🎉 Unlock Community Access
+                Unlock Community Access
             </button>
-            
-            <div class="completed-tasks" id="completedMsg" style="display: none;">
-                ✅ Welcome to the community! You now have full access.
-            </div>
         </div>
     </div>
 
@@ -644,96 +807,64 @@
         // Track task completion
         let task1Completed = false;
         let task2Completed = false;
-
-        // Check if user already completed tasks
         const tasksCompleted = localStorage.getItem('tasksCompleted') === 'true';
-        
-        // Sample member data - REPLACE WITH YOUR COLLEAGUES
+
+        // Sample creators data
         const members = [
             {
                 name: 'Rihanna',
                 channel: '@rihannayoutube',
                 subscribers: '2.5M',
-                views: '120M',
-                avatar: 'R',
+                rating: '4.7',
+                avatar: '🎵',
                 link: 'https://youtube.com/@rihanna'
             },
             {
                 name: 'Eminem',
                 channel: '@eminem',
                 subscribers: '1.8M',
-                views: '95M',
-                avatar: 'E',
+                rating: '4.7',
+                avatar: '🎤',
                 link: 'https://youtube.com/@eminem'
             },
             {
                 name: 'Mac Miller',
                 channel: '@macmiller',
                 subscribers: '950K',
-                views: '45M',
-                avatar: 'M',
+                rating: '4.7',
+                avatar: '🎹',
                 link: 'https://youtube.com/@macmiller'
             },
             {
-                name: 'Your Name',
+                name: 'Your Channel',
                 channel: '@yourchannel',
                 subscribers: '5.2K',
-                views: '100K',
-                avatar: 'YN',
+                rating: '4.7',
+                avatar: '📺',
                 link: 'https://youtube.com/@YOURCHANNEL'
             },
             {
                 name: 'Sarah Johnson',
                 channel: '@sarahj',
                 subscribers: '12K',
-                views: '250K',
-                avatar: 'SJ',
+                rating: '4.7',
+                avatar: '🎥',
                 link: 'https://youtube.com/@sarahj'
             },
             {
                 name: 'Mike Chen',
                 channel: '@mikechen',
                 subscribers: '8.7K',
-                views: '180K',
-                avatar: 'MC',
+                rating: '4.7',
+                avatar: '🎬',
                 link: 'https://youtube.com/@mikechen'
             }
         ];
 
-        // Sample tracks
-        const bestDayTracks = [
-            { name: 'Set Cans', duration: '4:03' },
-            { name: 'Ladders', duration: '4:22' },
-            { name: 'Hunt Feelings', duration: '4:21' },
-            { name: 'Dang', duration: '2:35' },
-            { name: 'Stay', duration: '2:35' },
-            { name: 'Cordelia', duration: '2:35' }
-        ];
-
-        const beautifulTracks = [
-            { name: 'School', duration: '4:03' },
-            { name: 'All The Stars', duration: '4:22' },
-            { name: 'Weightless', duration: '4:21' },
-            { name: 'Wisdom', duration: '2:35' },
-            { name: 'S.Mike', duration: '5:18' },
-            { name: 'Electra', duration: '2:35' }
-        ];
-
-        const playlists = [
-            'Top Charts Compilation',
-            'This is Kanye',
-            'Best Hits of Mine',
-            'Best of Christmas Hits'
-        ];
-
-        // Show homepage first, then popup after 3 seconds
+        // Initialize
         window.onload = function() {
-            // Load all content
             loadMembers();
-            loadTracks();
-            loadPlaylists();
             
-            // If tasks not completed, show popup after 3 seconds
             if (!tasksCompleted) {
                 setTimeout(() => {
                     document.getElementById('mainContent').classList.add('blur');
@@ -742,72 +873,46 @@
             }
         };
 
-        // Load members
+        // Load members into grid
         function loadMembers() {
             const grid = document.getElementById('membersGrid');
-            grid.innerHTML = members.map((member, index) => `
-                <div class="member-card" style="animation-delay: ${index * 0.1}s">
-                    <div class="member-info">
-                        <div class="member-avatar">${member.avatar}</div>
-                        <div class="member-details">
-                            <h3>${member.name}</h3>
-                            <p>${member.channel}</p>
-                        </div>
+            grid.innerHTML = members.map(member => `
+                <div class="movie-card">
+                    <div class="movie-thumbnail">${member.avatar}</div>
+                    <div class="movie-rating">
+                        ⭐ ${member.rating} Ratings <span>UHD+</span>
                     </div>
-                    <div class="member-stats">
-                        <span>📊 ${member.subscribers} subs</span>
-                        <span>👁️ ${member.views} views</span>
-                    </div>
-                    <a href="${member.link}" target="_blank" class="channel-link">
-                        Subscribe to ${member.channel}
+                    <div class="movie-title">${member.name}</div>
+                    <div class="movie-channel">${member.channel}</div>
+                    <div style="color: #808080; font-size: 0.9em; margin: 5px 0;">${member.subscribers} subs</div>
+                    <a href="${member.link}" target="_blank" style="text-decoration: none;">
+                        <button style="width: 100%; background: #ff0000; color: white; border: none; padding: 8px; border-radius: 20px; margin-top: 10px; cursor: pointer;">Subscribe</button>
                     </a>
                 </div>
             `).join('');
         }
 
-        // Load tracks
-        function loadTracks() {
-            const bestDayList = document.getElementById('bestDayList');
-            bestDayList.innerHTML = bestDayTracks.map(track => `
-                <li class="track-item">
-                    <span class="track-name">
-                        <span>▶</span>
-                        <span>${track.name}</span>
-                    </span>
-                    <span class="track-duration">${track.duration}</span>
-                </li>
-            `).join('');
-
-            const beautifulList = document.getElementById('beautifulList');
-            beautifulList.innerHTML = beautifulTracks.map(track => `
-                <li class="track-item">
-                    <span class="track-name">
-                        <span>▶</span>
-                        <span>${track.name}</span>
-                    </span>
-                    <span class="track-duration">${track.duration}</span>
-                </li>
-            `).join('');
-        }
-
-        // Load playlists
-        function loadPlaylists() {
-            const grid = document.getElementById('playlistsGrid');
-            grid.innerHTML = playlists.map(playlist => `
-                <div class="playlist-chip">${playlist}</div>
-            `).join('');
+        // Search function
+        function searchCreator() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.movie-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.movie-title').textContent.toLowerCase();
+                if (title.includes(searchTerm) || searchTerm === '') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
 
         // Handle file upload
         function handleUpload(taskNum, input) {
             if (input.files && input.files[0]) {
-                const file = input.files[0];
-                
-                // Show upload status
                 const statusDiv = document.getElementById(`uploadStatus${taskNum}`);
                 statusDiv.classList.remove('hidden');
                 
-                // Mark task as completed
                 if (taskNum === 1) {
                     task1Completed = true;
                     document.getElementById('task1').classList.add('completed');
@@ -816,33 +921,8 @@
                     document.getElementById('task2').classList.add('completed');
                 }
                 
-                // Disable the upload button
-                const taskDiv = document.getElementById(`task${taskNum}`);
-                const uploadLabel = taskDiv.querySelector('.btn-secondary');
-                uploadLabel.style.opacity = '0.5';
-                uploadLabel.style.pointerEvents = 'none';
-                
-                // Update progress
-                updateProgress();
-                
-                // Check all tasks
                 checkAllTasks();
-                
-                // Show motivation
-                if (task1Completed && !task2Completed) {
-                    document.getElementById('motivationMsg').innerHTML = '👍 Great! Just one more task to go!';
-                } else if (!task1Completed && task2Completed) {
-                    document.getElementById('motivationMsg').innerHTML = '👍 Awesome! Now complete task 1!';
-                }
             }
-        }
-
-        // Update progress bar
-        function updateProgress() {
-            const completed = (task1Completed ? 1 : 0) + (task2Completed ? 1 : 0);
-            const progress = (completed / 2) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-            document.getElementById('taskCounter').innerHTML = `${completed}/2 tasks completed`;
         }
 
         // Check all tasks
@@ -850,46 +930,19 @@
             const submitBtn = document.getElementById('submitBtn');
             if (task1Completed && task2Completed) {
                 submitBtn.disabled = false;
-                document.getElementById('completedMsg').style.display = 'block';
-                document.getElementById('motivationMsg').innerHTML = '🎉 ALL DONE! Click the button to join!';
-                
-                // Create confetti effect
-                for (let i = 0; i < 50; i++) {
-                    createConfetti();
-                }
             }
-        }
-
-        // Create confetti
-        function createConfetti() {
-            const confetti = document.createElement('div');
-            confetti.classList.add('confetti');
-            confetti.style.left = Math.random() * 100 + '%';
-            confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-            confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-            document.body.appendChild(confetti);
-            
-            setTimeout(() => {
-                confetti.remove();
-            }, 5000);
         }
 
         // Submit tasks
         function submitTasks() {
             if (task1Completed && task2Completed) {
-                // Save to localStorage
                 localStorage.setItem('tasksCompleted', 'true');
-                
-                // Hide modal and remove blur
                 document.getElementById('taskModal').style.display = 'none';
                 document.getElementById('mainContent').classList.remove('blur');
-                
-                // Show success message
-                alert('🎉 Welcome to the community! You can now see all members.');
             }
         }
 
-        // Close modal (but only if tasks completed)
+        // Close modal
         function closeModal() {
             if (task1Completed && task2Completed) {
                 document.getElementById('taskModal').style.display = 'none';
@@ -897,6 +950,12 @@
             } else {
                 alert('Please complete both tasks first!');
             }
+        }
+
+        // Open modal
+        function openModal() {
+            document.getElementById('mainContent').classList.add('blur');
+            document.getElementById('taskModal').style.display = 'block';
         }
     </script>
 </body>
