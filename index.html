@@ -171,7 +171,7 @@
             color: white;
         }
         
-        /* Movie Cards Grid */
+        /* Creator Cards Grid */
         .movie-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -211,14 +211,21 @@
         .movie-thumbnail {
             width: 100%;
             height: 150px;
-            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
             border-radius: 10px;
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ff0000;
-            font-size: 3em;
+            overflow: hidden;
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+        }
+        
+        .movie-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .movie-thumbnail img:hover {
+            transform: scale(1.1);
         }
         
         .movie-rating {
@@ -284,17 +291,6 @@
         .subscription-card:hover {
             transform: scale(1.02);
             border-color: #ff0000;
-        }
-        
-        .subscription-card.free::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: rotate 10s linear infinite;
         }
         
         .subscription-card.premium {
@@ -475,12 +471,7 @@
             line-height: 2;
         }
         
-        .contact-info i {
-            color: #ff0000;
-            margin-right: 10px;
-        }
-        
-        /* Modal Styles - Keep existing modal styles from previous version */
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -613,12 +604,6 @@
             cursor: pointer;
         }
         
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Responsive Design */
         @media (max-width: 768px) {
             .hero-title { font-size: 2.5em; }
             .hero-section { padding: 30px; }
@@ -633,9 +618,9 @@
     <div class="container" id="mainContent">
         <!-- Hero Section -->
         <div class="hero-section">
-            <h1 class="hero-title">Lost.fm</h1>
-            <h2 class="hero-subtitle">Come Watch Various Streaming & Thriller Movies and Many others</h2>
-            <p class="hero-description">Enjoy the various services we provide for streaming movies & watching thrillers and you can also get other access at a very cheap price.</p>
+            <h1 class="hero-title">GrowTogether</h1>
+            <h2 class="hero-subtitle">Join our YouTube Creator Community & Grow Your Channel</h2>
+            <p class="hero-description">Support each other, share content, and grow your subscribers together. Complete the tasks to unlock access to our creator network.</p>
             <div>
                 <span class="show-package">Show Package</span>
                 <a href="#" class="get-started" onclick="openModal()">GET STARTED</a>
@@ -646,7 +631,7 @@
         <div class="search-section">
             <div class="welcome-text">Hi Welcome, Search your favorite creators in here</div>
             <div class="search-box">
-                <input type="text" class="search-input" placeholder="Batman v Superman: Dawn of Justice" id="searchInput">
+                <input type="text" class="search-input" placeholder="Search creators..." id="searchInput">
                 <button class="search-button" onclick="searchCreator()">Enter</button>
             </div>
         </div>
@@ -656,7 +641,7 @@
             <h2 class="featured-title">The Best Creator Recommendations & the Latest from our Community</h2>
         </div>
 
-        <!-- Creator Cards (formerly Movie Recommended) -->
+        <!-- Creator Cards -->
         <h2 class="section-header">Creators Recommended</h2>
         <div class="movie-grid" id="membersGrid">
             <!-- Members will be loaded here -->
@@ -713,7 +698,7 @@
         <!-- Footer -->
         <div class="footer">
             <div class="footer-section">
-                <h3>Lost.fm</h3>
+                <h3>GrowTogether</h3>
                 <p>We provide various services to help you discover new creators and grow your community for free.</p>
                 <div class="contact-info">
                     <div>📞 +82 990 1234 4567</div>
@@ -809,14 +794,14 @@
         let task2Completed = false;
         const tasksCompleted = localStorage.getItem('tasksCompleted') === 'true';
 
-        // Sample creators data
+        // Sample creators data with real avatar images
         const members = [
             {
                 name: 'Rihanna',
                 channel: '@rihannayoutube',
                 subscribers: '2.5M',
                 rating: '4.7',
-                avatar: '🎵',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rihanna&backgroundColor=b6e3f4',
                 link: 'https://youtube.com/@rihanna'
             },
             {
@@ -824,7 +809,7 @@
                 channel: '@eminem',
                 subscribers: '1.8M',
                 rating: '4.7',
-                avatar: '🎤',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Eminem&backgroundColor=c0aede',
                 link: 'https://youtube.com/@eminem'
             },
             {
@@ -832,7 +817,7 @@
                 channel: '@macmiller',
                 subscribers: '950K',
                 rating: '4.7',
-                avatar: '🎹',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=MacMiller&backgroundColor=d1d4f7',
                 link: 'https://youtube.com/@macmiller'
             },
             {
@@ -840,7 +825,7 @@
                 channel: '@yourchannel',
                 subscribers: '5.2K',
                 rating: '4.7',
-                avatar: '📺',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=YourChannel&backgroundColor=ffdfbf',
                 link: 'https://youtube.com/@YOURCHANNEL'
             },
             {
@@ -848,7 +833,7 @@
                 channel: '@sarahj',
                 subscribers: '12K',
                 rating: '4.7',
-                avatar: '🎥',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah&backgroundColor=ffb3ba',
                 link: 'https://youtube.com/@sarahj'
             },
             {
@@ -856,14 +841,38 @@
                 channel: '@mikechen',
                 subscribers: '8.7K',
                 rating: '4.7',
-                avatar: '🎬',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mike&backgroundColor=baffc9',
                 link: 'https://youtube.com/@mikechen'
+            },
+            {
+                name: 'Alex Rivera',
+                channel: '@alexr',
+                subscribers: '15.3K',
+                rating: '4.8',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=ffffba',
+                link: 'https://youtube.com/@alexr'
+            },
+            {
+                name: 'Priya Patel',
+                channel: '@priyap',
+                subscribers: '9.1K',
+                rating: '4.6',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Priya&backgroundColor=c0f0e8',
+                link: 'https://youtube.com/@priyap'
             }
+        ];
+
+        // Sample background images for featured section
+        const backgroundImages = [
+            'https://picsum.photos/1200/400?random=1',
+            'https://picsum.photos/1200/400?random=2',
+            'https://picsum.photos/1200/400?random=3'
         ];
 
         // Initialize
         window.onload = function() {
             loadMembers();
+            rotateBackground();
             
             if (!tasksCompleted) {
                 setTimeout(() => {
@@ -873,12 +882,25 @@
             }
         };
 
-        // Load members into grid
+        // Rotate featured background
+        function rotateBackground() {
+            const featured = document.querySelector('.featured-movie');
+            let index = 0;
+            
+            setInterval(() => {
+                featured.style.background = `linear-gradient(145deg, rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('${backgroundImages[index]}') center/cover`;
+                index = (index + 1) % backgroundImages.length;
+            }, 5000);
+        }
+
+        // Load members into grid with images
         function loadMembers() {
             const grid = document.getElementById('membersGrid');
-            grid.innerHTML = members.map(member => `
+            grid.innerHTML = members.map((member, index) => `
                 <div class="movie-card">
-                    <div class="movie-thumbnail">${member.avatar}</div>
+                    <div class="movie-thumbnail">
+                        <img src="${member.avatar}" alt="${member.name}" loading="lazy">
+                    </div>
                     <div class="movie-rating">
                         ⭐ ${member.rating} Ratings <span>UHD+</span>
                     </div>
