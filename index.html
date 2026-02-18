@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K.R.O Contracts - Full Working Version</title>
+    <title>K.R.O Contracts - Workplace Support System</title>
     <style>
         * {
             margin: 0;
@@ -95,6 +95,33 @@
         .add-btn {
             background: #d32f2f;
             color: white;
+        }
+        
+        /* Google Form Button */
+        .google-form-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: #4285f4;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 20px 0;
+            transition: background 0.3s;
+        }
+        
+        .google-form-btn:hover {
+            background: #3367d6;
+        }
+        
+        .google-form-btn small {
+            display: block;
+            font-size: 0.8em;
+            margin-top: 5px;
+            opacity: 0.9;
         }
         
         /* Contracts Grid */
@@ -225,6 +252,157 @@
             font-size: 0.85em;
         }
         
+        /* YouTube Banners Section */
+        .youtube-section {
+            margin: 50px 0;
+            padding: 30px 0;
+            border-top: 2px solid #ddd;
+            border-bottom: 2px solid #ddd;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .section-title {
+            color: white;
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .section-title span {
+            background: #ff0000;
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: 0.6em;
+            margin-left: 10px;
+        }
+        
+        .banners-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .banners-slider {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .banner-slide {
+            min-width: 100%;
+            padding: 0 20px;
+        }
+        
+        .youtube-banner {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .youtube-banner:hover {
+            transform: scale(1.02);
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .banner-content {
+            flex: 1;
+        }
+        
+        .banner-content h3 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .banner-content p {
+            opacity: 0.9;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        
+        .banner-stats {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .banner-button {
+            background: #ff0000;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .banner-button:hover {
+            transform: scale(1.05);
+            background: #cc0000;
+        }
+        
+        .banner-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            margin-left: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .slider-dot.active {
+            background: white;
+        }
+        
+        .slider-dot:hover {
+            background: rgba(255,255,255,0.8);
+        }
+        
         /* Modal */
         .modal {
             display: none;
@@ -243,10 +421,8 @@
             background: white;
             border-radius: 15px;
             padding: 30px;
-            max-width: 500px;
+            max-width: 400px;
             width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
         }
         
         .modal-header {
@@ -262,63 +438,6 @@
             font-size: 1.5em;
             cursor: pointer;
             color: #999;
-        }
-        
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #555;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        
-        .form-group textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        
-        .btn-primary {
-            width: 100%;
-            padding: 12px;
-            background: #d32f2f;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        
-        .btn-primary:hover {
-            background: #b71c1c;
-        }
-        
-        .btn-secondary {
-            padding: 8px 20px;
-            background: #f5f5f5;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
         
         /* Filter Options */
@@ -345,6 +464,14 @@
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid #eee;
+        }
+        
+        .btn-secondary {
+            padding: 8px 20px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         
         /* Detail View */
@@ -392,6 +519,16 @@
             color: #155724;
         }
         
+        .google-form-info {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            color: #0d47a1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        
         .hidden {
             display: none;
         }
@@ -409,7 +546,7 @@
 
     <!-- Status Message -->
     <div class="status-message" id="statusMessage">
-        ✅ App loaded. Click + Add to create a new contract.
+        ✅ App loaded. Click + Add to create a new contract via Google Form.
     </div>
 
     <!-- Action Bar -->
@@ -426,10 +563,39 @@
         </button>
     </div>
 
+    <!-- Google Form Info Banner -->
+    <div class="google-form-info" id="googleFormInfo">
+        📝 New contracts are created via Google Form. Click the button below to open the form.
+    </div>
+
+    <!-- Google Form Button -->
+    <a href="#" id="googleFormLink" target="_blank" class="google-form-btn">
+        📋 Open Google Form to Create Contract
+        <small>Your responses will be saved to Google Sheets</small>
+    </a>
+
     <!-- Home Page -->
     <div id="homePage">
         <div class="contracts-grid" id="contractsGrid">
             <!-- Contracts will be loaded here -->
+        </div>
+
+        <!-- YouTube Growth Banners Section -->
+        <div class="youtube-section">
+            <h2 class="section-title">
+                🎥 YouTube Creator Community 
+                <span>Support & Grow Together</span>
+            </h2>
+            
+            <div class="banners-container">
+                <div class="banners-slider" id="bannersSlider">
+                    <!-- Banners will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="slider-controls" id="sliderControls">
+                <!-- Dots will be loaded here -->
+            </div>
         </div>
     </div>
 
@@ -468,7 +634,7 @@
         </div>
     </div>
 
-    <!-- Add Contract Modal -->
+    <!-- Add Contract Modal - Now just a confirmation -->
     <div class="modal" id="addModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -476,52 +642,17 @@
                 <span class="close-btn" onclick="closeAddModal()">&times;</span>
             </div>
             
-            <form id="addContractForm" onsubmit="saveNewContract(event)">
-                <div class="form-group">
-                    <label>Company</label>
-                    <input type="text" id="company" placeholder="e.g., K.R.O Services" required>
-                </div>
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 3em; margin-bottom: 20px;">📋</div>
+                <h3 style="margin-bottom: 15px;">You'll be redirected to Google Forms</h3>
+                <p style="color: #666; margin-bottom: 25px;">All contract data will be saved in Google Sheets. Click the button below to open the form.</p>
                 
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="description" placeholder="Describe the contract..." required></textarea>
-                </div>
+                <a href="#" id="modalGoogleFormLink" target="_blank" style="display: block; padding: 15px; background: #4285f4; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; margin-bottom: 15px;" onclick="closeAddModal()">
+                    Open Google Form
+                </a>
                 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Duration</label>
-                        <input type="text" id="duration" placeholder="e.g., 2 Days Contract" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Worker ID</label>
-                        <input type="text" id="workerId" placeholder="e.g., wrk-012" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Amount (₦)</label>
-                        <input type="number" id="amount" placeholder="20000" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select id="status">
-                            <option value="Not Started">Not Started</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Completed">Completed</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Submission Date</label>
-                    <input type="date" id="submissionDate" required>
-                </div>
-                
-                <button type="submit" class="btn-primary">Create Contract</button>
-            </form>
+                <button onclick="closeAddModal()" class="btn-secondary" style="width: 100%;">Cancel</button>
+            </div>
         </div>
     </div>
 
@@ -539,7 +670,7 @@
             
             <div style="margin-top: 20px; display: flex; gap: 10px;">
                 <button class="btn-secondary" onclick="openEditModal()" style="flex: 1;">✏️ Edit</button>
-                <button class="btn-primary" onclick="openUpdateStatusModal()" style="flex: 1;">📊 Update Status</button>
+                <button class="btn-secondary" onclick="openUpdateStatusModal()" style="flex: 1; background: #d32f2f; color: white;">📊 Update Status</button>
             </div>
         </div>
     </div>
@@ -555,32 +686,32 @@
             <form id="editContractForm" onsubmit="updateContract(event)">
                 <input type="hidden" id="editContractId">
                 
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="editDescription" required></textarea>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Description</label>
+                    <textarea id="editDescription" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required></textarea>
                 </div>
                 
-                <div class="form-group">
-                    <label>Duration</label>
-                    <input type="text" id="editDuration" required>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Duration</label>
+                    <input type="text" id="editDuration" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
                 </div>
                 
-                <div class="form-group">
-                    <label>Worker ID</label>
-                    <input type="text" id="editWorkerId" required>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Worker ID</label>
+                    <input type="text" id="editWorkerId" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
                 </div>
                 
-                <div class="form-group">
-                    <label>Amount (₦)</label>
-                    <input type="number" id="editAmount" required>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Amount (₦)</label>
+                    <input type="number" id="editAmount" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
                 </div>
                 
-                <div class="form-group">
-                    <label>Submission Date</label>
-                    <input type="date" id="editSubmissionDate" required>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Submission Date</label>
+                    <input type="date" id="editSubmissionDate" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
                 </div>
                 
-                <button type="submit" class="btn-primary">Update Contract</button>
+                <button type="submit" style="width: 100%; padding: 12px; background: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer;">Update Contract</button>
             </form>
         </div>
     </div>
@@ -596,21 +727,79 @@
             <form id="updateStatusForm" onsubmit="updateContractStatus(event)">
                 <input type="hidden" id="statusContractId">
                 
-                <div class="form-group">
-                    <label>New Status</label>
-                    <select id="newStatus">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">New Status</label>
+                    <select id="newStatus" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
                         <option value="Not Started">Not Started</option>
                         <option value="In Progress">In Progress</option>
                         <option value="Completed">Completed</option>
                     </select>
                 </div>
                 
-                <button type="submit" class="btn-primary">Update Status</button>
+                <button type="submit" style="width: 100%; padding: 12px; background: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer;">Update Status</button>
             </form>
         </div>
     </div>
 
     <script>
+        // ==================== GOOGLE FORM URL ====================
+        // REPLACE THIS WITH YOUR ACTUAL GOOGLE FORM URL
+        const GOOGLE_FORM_URL = 'https://forms.google.com/your-form-id-here';
+        
+        // Update all Google Form links
+        document.getElementById('googleFormLink').href = GOOGLE_FORM_URL;
+        document.getElementById('modalGoogleFormLink').href = GOOGLE_FORM_URL;
+
+        // ==================== YOUTUBE CREATORS DATA ====================
+        // Add your colleagues' YouTube channels here
+        const youtubeCreators = [
+            {
+                name: 'Tech with Sarah',
+                channel: '@techsarah',
+                subscribers: '15.2K',
+                videos: '234',
+                avatar: '👩‍💻',
+                link: 'https://youtube.com/@techsarah',
+                description: 'Tech reviews & tutorials'
+            },
+            {
+                name: 'Mike Gaming',
+                channel: '@mikegaming',
+                subscribers: '28.7K',
+                videos: '567',
+                avatar: '🎮',
+                link: 'https://youtube.com/@mikegaming',
+                description: 'Daily gaming content & live streams'
+            },
+            {
+                name: 'Cooking with Priya',
+                channel: '@priyacooks',
+                subscribers: '42.3K',
+                videos: '189',
+                avatar: '👩‍🍳',
+                link: 'https://youtube.com/@priyacooks',
+                description: 'Easy recipes & cooking tips'
+            },
+            {
+                name: 'Fitness with Alex',
+                channel: '@alexfitness',
+                subscribers: '31.8K',
+                videos: '312',
+                avatar: '💪',
+                link: 'https://youtube.com/@alexfitness',
+                description: 'Home workouts & nutrition'
+            },
+            {
+                name: 'Music with James',
+                channel: '@jamesmusic',
+                subscribers: '53.1K',
+                videos: '178',
+                avatar: '🎸',
+                link: 'https://youtube.com/@jamesmusic',
+                description: 'Guitar lessons & music theory'
+            }
+        ];
+
         // ==================== INITIAL DATA ====================
         let contracts = [
             {
@@ -661,12 +850,16 @@
         let currentFilter = 'all';
         let currentPage = 'home';
         let selectedContractId = null;
+        let currentBannerIndex = 0;
+        let bannerInterval;
 
         // ==================== INITIAL LOAD ====================
         window.onload = function() {
             loadFromStorage();
             displayContracts();
             displayProgress();
+            loadBanners();
+            startBannerSlide();
             updateStatus('App loaded successfully');
         };
 
@@ -680,6 +873,71 @@
             if (saved) {
                 contracts = JSON.parse(saved);
             }
+        }
+
+        // ==================== YOUTUBE BANNERS ====================
+        function loadBanners() {
+            const slider = document.getElementById('bannersSlider');
+            const controls = document.getElementById('sliderControls');
+            
+            slider.innerHTML = youtubeCreators.map((creator, index) => `
+                <div class="banner-slide">
+                    <div class="youtube-banner" onclick="window.open('${creator.link}', '_blank')">
+                        <div class="banner-content">
+                            <h3>${creator.name}</h3>
+                            <p>${creator.description}</p>
+                            <div class="banner-stats">
+                                <div class="stat">
+                                    <div class="stat-number">${creator.subscribers}</div>
+                                    <div class="stat-label">Subscribers</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">${creator.videos}</div>
+                                    <div class="stat-label">Videos</div>
+                                </div>
+                            </div>
+                            <button class="banner-button" onclick="event.stopPropagation(); window.open('${creator.link}', '_blank')">Subscribe →</button>
+                        </div>
+                        <div class="banner-avatar">
+                            ${creator.avatar}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            controls.innerHTML = youtubeCreators.map((_, index) => `
+                <div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="goToBanner(${index})"></div>
+            `).join('');
+        }
+
+        function startBannerSlide() {
+            bannerInterval = setInterval(() => {
+                currentBannerIndex = (currentBannerIndex + 1) % youtubeCreators.length;
+                updateBannerPosition();
+            }, 5000);
+        }
+
+        function goToBanner(index) {
+            currentBannerIndex = index;
+            updateBannerPosition();
+            
+            // Reset interval
+            clearInterval(bannerInterval);
+            startBannerSlide();
+        }
+
+        function updateBannerPosition() {
+            const slider = document.getElementById('bannersSlider');
+            slider.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
+            
+            // Update dots
+            document.querySelectorAll('.slider-dot').forEach((dot, index) => {
+                if (index === currentBannerIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
         }
 
         // ==================== DISPLAY FUNCTIONS ====================
@@ -821,45 +1079,10 @@
 
         function openAddModal() {
             document.getElementById('addModal').style.display = 'flex';
-            // Set today's date as default
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('submissionDate').value = today;
         }
 
         function closeAddModal() {
             document.getElementById('addModal').style.display = 'none';
-            document.getElementById('addContractForm').reset();
-        }
-
-        // ==================== SAVE NEW CONTRACT ====================
-        function saveNewContract(event) {
-            event.preventDefault();
-            
-            const description = document.getElementById('description').value;
-            const title = description.split(' ').slice(0, 3).join(' ') + '...';
-            
-            const newContract = {
-                id: Date.now(), // Use timestamp as unique ID
-                amount: document.getElementById('amount').value,
-                title: title,
-                company: document.getElementById('company').value,
-                status: document.getElementById('status').value,
-                submissionDate: document.getElementById('submissionDate').value,
-                duration: document.getElementById('duration').value,
-                description: description,
-                workerId: document.getElementById('workerId').value,
-                submittedBy: 'Admin',
-                submittedEmail: 'admin@kro.com',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
-            };
-
-            contracts.push(newContract);
-            saveToStorage();
-            
-            closeAddModal();
-            displayContracts();
-            displayProgress();
-            updateStatus('New contract created successfully!');
         }
 
         // ==================== VIEW CONTRACT DETAIL ====================
