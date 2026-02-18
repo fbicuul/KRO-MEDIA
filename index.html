@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K.R.O Contracts - NEON MORPHIC</title>
+    <title>K.R.O Media</title>
     <style>
         * {
             margin: 0;
@@ -951,7 +951,7 @@
 <body>
     <!-- Header - Glass Morphism -->
     <div class="header" id="mainHeader">
-        <div class="logo">K.R.O <span>Contracts</span></div>
+        <div class="logo">K.R.O <span>Media</span></div>
         <div class="nav-buttons">
             <button class="nav-btn active" onclick="showPage('home')">HOME</button>
             <button class="nav-btn" onclick="showPage('progress')">PROGRESS</button>
@@ -963,16 +963,13 @@
         <!-- Hero Section -->
         <div class="hero-section">
             <h1 class="hero-title">
-                <span class="neon">NEON MORPHIC</span>
-                <span class="creators">WORKPLACE SUPPORT</span>
+                <span class="neon">K.R.O CONTRACTS</span>
+                <span class="creators">A WORKPLACE SUPPORT</span>
             </h1>
             <p class="hero-description">
                 K.R.O Contracts brings together colleagues to support each other through workplace challenges. Create, track, and resolve support contracts in a secure, transparent environment.
             </p>
-            <div class="hero-buttons">
-                <button class="btn-primary" onclick="openAddModal()">CREATE CONTRACT</button>
-                <button class="btn-secondary" onclick="showPage('progress')">VIEW PROGRESS</button>
-            </div>
+            
             <div class="stats-row">
                 <div class="stat-item">
                     <div class="stat-number">56000+</div>
@@ -987,16 +984,20 @@
                     <div class="stat-label">Total Support</div>
                 </div>
             </div>
+
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="openAddModal()">CREATE CONTRACT</button>
+                <button class="btn-secondary" onclick="showPage('progress')">VIEW PROGRESS</button>
+            </div>
         </div>
 
         <!-- Action Bar -->
         <div class="action-bar">
             <div class="search-box">
-                <span style="color: #666; margin-right: 10px;">🔍</span>
                 <input type="text" placeholder="Search contracts..." id="searchInput" onkeyup="searchContracts()">
             </div>
             <button class="filter-btn" onclick="openFilterModal()">
-                📊 FILTER
+                FILTER
             </button>
             <button class="add-btn" onclick="openAddModal()">
                 + CREATE
@@ -1026,6 +1027,29 @@
                     <div class="timer-value">43</div>
                     <div class="timer-label">Seconds</div>
                 </div>
+            </div>
+        </div>
+
+
+        <!-- Home Page Contracts Grid -->
+        <div id="homePage">
+            <div class="section-header">
+                <h2>Active Contracts</h2>
+                <span class="see-all">See All →</span>
+            </div>
+            <div class="contracts-grid" id="contractsGrid">
+                <!-- Contracts will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Progress Page -->
+        <div id="progressPage" style="display: none;">
+            <div class="section-header">
+                <h2>Progress Report</h2>
+                <span class="see-all">See All →</span>
+            </div>
+            <div class="progress-list" id="progressList">
+                <!-- Progress items will be loaded here -->
             </div>
         </div>
 
@@ -1112,28 +1136,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- Home Page Contracts Grid -->
-        <div id="homePage">
-            <div class="section-header">
-                <h2>📋 Active Contracts</h2>
-                <span class="see-all">See All →</span>
-            </div>
-            <div class="contracts-grid" id="contractsGrid">
-                <!-- Contracts will be loaded here -->
-            </div>
-        </div>
-
-        <!-- Progress Page -->
-        <div id="progressPage" style="display: none;">
-            <div class="section-header">
-                <h2>📊 Progress Report</h2>
-                <span class="see-all">See All →</span>
-            </div>
-            <div class="progress-list" id="progressList">
-                <!-- Progress items will be loaded here -->
-            </div>
-        </div>
+        
 
         <!-- YouTube Growth Banners Section -->
         <div class="youtube-section">
