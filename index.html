@@ -15,7 +15,6 @@
         body {
             background: #f5f5f5;
             color: #333;
-            overflow-x: hidden;
         }
         
         /* App Bar / Header */
@@ -67,12 +66,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            transition: filter 0.3s ease;
-        }
-        
-        .container.blur {
-            filter: blur(5px);
-            pointer-events: none;
         }
         
         /* Search & Filter Bar */
@@ -316,363 +309,6 @@
             font-size: 0.85em;
         }
         
-        /* YouTube Banners Section */
-        .youtube-section {
-            margin: 50px 0 30px;
-            padding: 20px 0;
-            border-top: 2px solid #eee;
-        }
-        
-        .section-title {
-            font-size: 1.5em;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .section-title span {
-            background: #ff0000;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 25px;
-            font-size: 0.8em;
-        }
-        
-        .banners-container {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            border-radius: 15px;
-        }
-        
-        .banners-slider {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-        
-        .banner-slide {
-            min-width: 100%;
-            padding: 0 10px;
-        }
-        
-        .youtube-banner {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            padding: 40px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: transform 0.3s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .youtube-banner:hover {
-            transform: scale(1.02);
-        }
-        
-        .banner-content {
-            flex: 1;
-        }
-        
-        .banner-content h3 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        
-        .banner-content p {
-            opacity: 0.9;
-            margin-bottom: 20px;
-            font-size: 1.1em;
-        }
-        
-        .banner-stats {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .stat {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 1.8em;
-            font-weight: 700;
-        }
-        
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-        
-        .banner-button {
-            background: white;
-            color: #333;
-            padding: 15px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-block;
-            transition: transform 0.3s;
-        }
-        
-        .banner-button:hover {
-            transform: scale(1.05);
-        }
-        
-        .banner-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3em;
-            margin-left: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .slider-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .slider-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #ddd;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .slider-dot.active {
-            background: #d32f2f;
-        }
-        
-        /* Task Popup Modal */
-        .task-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
-        }
-        
-        .task-content {
-            background: white;
-            border-radius: 20px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 30px;
-            position: relative;
-            animation: slideUp 0.5s ease;
-        }
-        
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        .task-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .task-header h2 {
-            color: #d32f2f;
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        
-        .task-header p {
-            color: #666;
-        }
-        
-        .progress-steps {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        .progress-steps::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #eee;
-            z-index: 1;
-        }
-        
-        .step {
-            position: relative;
-            z-index: 2;
-            background: white;
-            padding: 0 10px;
-            text-align: center;
-        }
-        
-        .step-number {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #f5f5f5;
-            color: #999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 5px;
-            font-weight: 600;
-        }
-        
-        .step.completed .step-number {
-            background: #4caf50;
-            color: white;
-        }
-        
-        .step-label {
-            font-size: 0.8em;
-            color: #666;
-        }
-        
-        .task-item {
-            background: #f9f9f9;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .task-title {
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .task-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        
-        .task-btn {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            text-align: center;
-            text-decoration: none;
-            transition: background 0.3s;
-        }
-        
-        .task-btn.primary {
-            background: #ff0000;
-            color: white;
-        }
-        
-        .task-btn.secondary {
-            background: #e0e0e0;
-            color: #333;
-        }
-        
-        .task-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .upload-status {
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-            color: #4caf50;
-            font-size: 0.9em;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #555;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1em;
-        }
-        
-        .image-preview {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 2px dashed #ddd;
-            margin: 10px 0;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .image-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: #d32f2f;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1.1em;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        
-        .submit-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
         /* Modal Styles */
         .modal {
             display: none;
@@ -718,19 +354,54 @@
             color: #999;
         }
         
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
         
-        textarea {
+        .image-preview {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
+            height: 150px;
+            border: 2px dashed #ddd;
             border-radius: 8px;
-            font-size: 1em;
-            resize: vertical;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
         
         .modal-actions {
@@ -838,6 +509,55 @@
             color: #666;
         }
         
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-box {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .login-box input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .login-box button {
+            width: 100%;
+            padding: 15px;
+            background: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
         @media (max-width: 768px) {
             .action-bar {
                 flex-wrap: wrap;
@@ -849,21 +569,6 @@
             .filter-btn, .add-btn {
                 flex: 1;
             }
-            .youtube-banner {
-                flex-direction: column;
-                text-align: center;
-                padding: 30px 20px;
-            }
-            .banner-avatar {
-                margin-left: 0;
-                margin-top: 20px;
-            }
-            .banner-stats {
-                justify-content: center;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
     
@@ -871,6 +576,17 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+    <!-- Admin Login Modal -->
+    <div class="login-modal" id="loginModal" style="display: flex;">
+        <div class="login-box">
+            <h2>🔐 Admin Access Only</h2>
+            <p style="color: #666; margin-bottom: 20px;">Enter credentials to manage contracts</p>
+            <input type="text" id="adminUsername" placeholder="Username" value="admin">
+            <input type="password" id="adminPassword" placeholder="Password" value="admin123">
+            <button onclick="adminLogin()">Login as Admin</button>
+        </div>
+    </div>
+
     <!-- App Bar -->
     <div class="app-bar">
         <div class="logo">K.R.O <span>Contracts</span></div>
@@ -901,23 +617,6 @@
                 <!-- Contracts will be loaded here -->
                 <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #999;">Loading contracts...</div>
             </div>
-
-            <!-- YouTube Growth Banners Section -->
-            <div class="youtube-section">
-                <div class="section-title">
-                    🎥 YouTube Creator Community <span>Support & Grow Together</span>
-                </div>
-                
-                <div class="banners-container">
-                    <div class="banners-slider" id="bannersSlider">
-                        <!-- Banners will be loaded here -->
-                    </div>
-                </div>
-                
-                <div class="slider-controls" id="sliderControls">
-                    <!-- Dots will be loaded here -->
-                </div>
-            </div>
         </div>
 
         <!-- Progress Report Page -->
@@ -938,104 +637,6 @@
             <div class="progress-list" id="progressList">
                 <!-- Progress items will be loaded here -->
                 <div style="text-align: center; padding: 50px; color: #999;">Loading contracts...</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Task Popup Modal -->
-    <div class="task-modal" id="taskModal">
-        <div class="task-content">
-            <div class="task-header">
-                <h2>🎯 Join Our Community</h2>
-                <p>Complete these steps to unlock full access</p>
-            </div>
-
-            <!-- Progress Steps -->
-            <div class="progress-steps">
-                <div class="step" id="step1">
-                    <div class="step-number">1</div>
-                    <div class="step-label">Tasks</div>
-                </div>
-                <div class="step" id="step2">
-                    <div class="step-number">2</div>
-                    <div class="step-label">Profile</div>
-                </div>
-                <div class="step" id="step3">
-                    <div class="step-number">3</div>
-                    <div class="step-label">Complete</div>
-                </div>
-            </div>
-
-            <!-- Step 1: Tasks -->
-            <div id="step1Content">
-                <!-- Task 1: Subscribe -->
-                <div class="task-item" id="task1">
-                    <div class="task-title">
-                        <span>📺</span> Task 1: Subscribe to our YouTube channel
-                    </div>
-                    <div class="task-buttons">
-                        <a href="https://youtube.com/@YOURCHANNEL" target="_blank" class="task-btn primary">Go to YouTube</a>
-                        <label class="task-btn secondary" style="cursor: pointer;">
-                            Upload Screenshot
-                            <input type="file" accept="image/*" class="hidden" onchange="uploadTaskProof(1, this)">
-                        </label>
-                    </div>
-                    <div id="task1Status" class="upload-status hidden">
-                        ✅ Task 1 completed!
-                    </div>
-                </div>
-
-                <!-- Task 2: Watch Content -->
-                <div class="task-item" id="task2">
-                    <div class="task-title">
-                        <span>🎬</span> Task 2: Watch any video
-                    </div>
-                    <div class="task-buttons">
-                        <a href="https://youtube.com/@YOURCHANNEL" target="_blank" class="task-btn primary">Watch Videos</a>
-                        <label class="task-btn secondary" style="cursor: pointer;">
-                            Upload Screenshot
-                            <input type="file" accept="image/*" class="hidden" onchange="uploadTaskProof(2, this)">
-                        </label>
-                    </div>
-                    <div id="task2Status" class="upload-status hidden">
-                        ✅ Task 2 completed!
-                    </div>
-                </div>
-
-                <button class="submit-btn" id="nextToProfile" onclick="goToProfileStep()" disabled>Next: Profile Info →</button>
-            </div>
-
-            <!-- Step 2: Profile Info -->
-            <div id="step2Content" style="display: none;">
-                <form id="profileForm" onsubmit="submitProfile(event)">
-                    <div class="form-group">
-                        <label>Your Name</label>
-                        <input type="text" id="userName" placeholder="Enter your name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Your YouTube Channel Link</label>
-                        <input type="url" id="youtubeLink" placeholder="https://youtube.com/@yourchannel" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Your Photo</label>
-                        <input type="file" id="userPhoto" accept="image/*" onchange="previewUserPhoto(event)" required>
-                        <div class="image-preview" id="userPhotoPreview">
-                            <span style="color: #999;">Preview</span>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn" id="submitProfileBtn">Submit & Join Community</button>
-                </form>
-            </div>
-
-            <!-- Step 3: Completion Message -->
-            <div id="step3Content" style="display: none; text-align: center;">
-                <div style="font-size: 4em; margin: 20px 0;">🎉</div>
-                <h2 style="color: #4caf50; margin-bottom: 20px;">Welcome to the Community!</h2>
-                <p style="color: #666; margin-bottom: 30px;">You now have full access to all features.</p>
-                <button class="submit-btn" onclick="closeTaskModal()">Start Exploring</button>
             </div>
         </div>
     </div>
@@ -1084,7 +685,7 @@
                 
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea id="description" rows="3" required></textarea>
+                    <textarea id="description" required></textarea>
                 </div>
                 
                 <div class="form-row">
@@ -1144,7 +745,7 @@
                 <span class="close-btn" onclick="closeDetailModal()">&times;</span>
             </div>
             
-            <div class="detail-actions">
+            <div class="detail-actions" style="margin-bottom: 20px;">
                 <button class="edit-btn" onclick="openEditModal()">✏️ Edit</button>
                 <button class="status-btn" onclick="openUpdateStatusModal()">📊 Update Status</button>
             </div>
@@ -1168,7 +769,7 @@
                 
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea id="editDescription" rows="3" required></textarea>
+                    <textarea id="editDescription" required></textarea>
                 </div>
                 
                 <div class="form-group">
@@ -1206,6 +807,17 @@
                     <label>Image</label>
                     <input type="file" id="editImage" accept="image/*" onchange="previewEditImage(event)">
                     <div class="image-preview" id="editImagePreview"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Submitted By</label>
+                    <div class="submitted-by" style="margin-top: 0;">
+                        <img src="" id="editAvatar" alt="">
+                        <div class="submitted-info">
+                            <h4 id="editSubmitterName">Sophia Patel</h4>
+                            <p id="editSubmitterEmail">Marketing:spatel@careconnect.com</p>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="modal-actions">
@@ -1254,202 +866,23 @@
         let currentFilter = 'all';
         let currentPage = 'home';
         let selectedContract = null;
-        let contracts = [];
-        let youtubeCreators = [];
-        let currentBannerIndex = 0;
-        let bannerInterval;
-        let tasksCompleted = { task1: false, task2: false };
-        let hasCompletedOnboarding = localStorage.getItem('kro_onboarding_completed') === 'true';
-        let popupTriggered = false;
+        let isAdmin = false;
 
-        // ==================== YOUTUBE CREATORS DATA ====================
-        const creators = [
-            {
-                name: 'Tech with Sarah',
-                channel: '@techsarah',
-                subscribers: '15.2K',
-                videos: '234',
-                avatar: '👩‍💻',
-                color: 'linear-gradient(135deg, #ff6b6b, #ff8e8e)',
-                link: 'https://youtube.com/@techsarah',
-                description: 'Tech reviews & tutorials'
-            },
-            {
-                name: 'Mike Gaming',
-                channel: '@mikegaming',
-                subscribers: '28.7K',
-                videos: '567',
-                avatar: '🎮',
-                color: 'linear-gradient(135deg, #4ecdc4, #45b7d1)',
-                link: 'https://youtube.com/@mikegaming',
-                description: 'Daily gaming content & live streams'
-            },
-            {
-                name: 'Cooking with Priya',
-                channel: '@priyacooks',
-                subscribers: '42.3K',
-                videos: '189',
-                avatar: '👩‍🍳',
-                color: 'linear-gradient(135deg, #f9d56e, #f8c471)',
-                link: 'https://youtube.com/@priyacooks',
-                description: 'Easy recipes & cooking tips'
-            },
-            {
-                name: 'Fitness with Alex',
-                channel: '@alexfitness',
-                subscribers: '31.8K',
-                videos: '312',
-                avatar: '💪',
-                color: 'linear-gradient(135deg, #a8e6cf, #d4edda)',
-                link: 'https://youtube.com/@alexfitness',
-                description: 'Home workouts & nutrition'
-            },
-            {
-                name: 'Music with James',
-                channel: '@jamesmusic',
-                subscribers: '53.1K',
-                videos: '178',
-                avatar: '🎸',
-                color: 'linear-gradient(135deg, #d4a5a5, #e6b8b8)',
-                link: 'https://youtube.com/@jamesmusic',
-                description: 'Guitar lessons & music theory'
-            }
-        ];
-
-        // ==================== ONBOARDING TASKS ====================
-        // Show popup when user clicks anywhere on page (if not completed)
-        document.addEventListener('click', function() {
-            if (!hasCompletedOnboarding && !popupTriggered) {
-                popupTriggered = true;
-                setTimeout(() => {
-                    showTaskModal();
-                }, 500); // Small delay for better UX
-            }
-        });
-
-        function showTaskModal() {
-            document.getElementById('mainContainer').classList.add('blur');
-            document.getElementById('taskModal').style.display = 'flex';
-        }
-
-        function uploadTaskProof(taskNum, input) {
-            if (input.files && input.files[0]) {
-                tasksCompleted[`task${taskNum}`] = true;
-                
-                // Update UI
-                document.getElementById(`task${taskNum}Status`).classList.remove('hidden');
-                document.getElementById(`task${taskNum}`).style.opacity = '0.7';
-                
-                // Disable upload button
-                const uploadBtn = document.querySelector(`#task${taskNum} .task-btn.secondary`);
-                uploadBtn.style.opacity = '0.5';
-                uploadBtn.style.pointerEvents = 'none';
-                
-                // Check if both tasks completed
-                checkTasksCompletion();
+        // ==================== ADMIN LOGIN ====================
+        function adminLogin() {
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (username === 'admin' && password === 'admin123') {
+                isAdmin = true;
+                document.getElementById('loginModal').style.display = 'none';
+                loadContracts();
+            } else {
+                alert('Invalid credentials');
             }
         }
 
-        function checkTasksCompletion() {
-            if (tasksCompleted.task1 && tasksCompleted.task2) {
-                document.getElementById('nextToProfile').disabled = false;
-            }
-        }
-
-        function goToProfileStep() {
-            // Update steps
-            document.getElementById('step1').classList.add('completed');
-            
-            // Show step 2
-            document.getElementById('step1Content').style.display = 'none';
-            document.getElementById('step2Content').style.display = 'block';
-        }
-
-        async function submitProfile(event) {
-            event.preventDefault();
-            
-            const userName = document.getElementById('userName').value;
-            const youtubeLink = document.getElementById('youtubeLink').value;
-            const photoFile = document.getElementById('userPhoto').files[0];
-            
-            let photoUrl = '';
-            
-            // Upload photo if provided
-            if (photoFile) {
-                try {
-                    photoUrl = await uploadUserPhoto(photoFile);
-                } catch (error) {
-                    console.error('Photo upload failed:', error);
-                }
-            }
-            
-            // Save user data to Supabase
-            const userData = {
-                name: userName,
-                youtube_channel: youtubeLink,
-                photo_url: photoUrl,
-                completed_tasks: true,
-                created_at: new Date().toISOString()
-            };
-            
-            try {
-                const { error } = await supabase
-                    .from('community_members')
-                    .insert([userData]);
-                
-                if (error) throw error;
-                
-                // Mark onboarding as completed
-                localStorage.setItem('kro_onboarding_completed', 'true');
-                hasCompletedOnboarding = true;
-                
-                // Update steps
-                document.getElementById('step2').classList.add('completed');
-                document.getElementById('step3').classList.add('completed');
-                
-                // Show step 3
-                document.getElementById('step2Content').style.display = 'none';
-                document.getElementById('step3Content').style.display = 'block';
-                
-            } catch (error) {
-                console.error('Error saving user data:', error);
-                alert('Error saving your information. Please try again.');
-            }
-        }
-
-        async function uploadUserPhoto(file) {
-            const fileName = `user_${Date.now()}_${file.name}`;
-            
-            const { data, error } = await supabase.storage
-                .from('user-photos')
-                .upload(fileName, file);
-            
-            if (error) throw error;
-            
-            const { data: { publicUrl } } = supabase.storage
-                .from('user-photos')
-                .getPublicUrl(fileName);
-            
-            return publicUrl;
-        }
-
-        function previewUserPhoto(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('userPhotoPreview').innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function closeTaskModal() {
-            document.getElementById('taskModal').style.display = 'none';
-            document.getElementById('mainContainer').classList.remove('blur');
-        }
-
-        // ==================== CONTRACTS FUNCTIONS ====================
+        // ==================== LOAD CONTRACTS ====================
         async function loadContracts() {
             try {
                 const { data, error } = await supabase
@@ -1459,66 +892,69 @@
                 
                 if (error) throw error;
                 
-                contracts = data || [];
-                displayContracts();
-                displayProgress();
+                if (data && data.length > 0) {
+                    displayContracts(data);
+                    displayProgress(data);
+                } else {
+                    // Sample data if no contracts exist
+                    const sampleContracts = [
+                        {
+                            id: 1,
+                            amount: '20000',
+                            title: 'Cleaning Lady Needed',
+                            company: 'K.R.O Services',
+                            status: 'In Progress',
+                            submissionDate: '2023-02-12',
+                            duration: '2 Days Contract',
+                            description: 'To work with K.R.O Cleaning Service on a two days cleaning contract at Maitama',
+                            workerId: 'wrk-012',
+                            submittedBy: 'Sophia Patel',
+                            submittedEmail: 'spatel@careconnect.com',
+                            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sophia'
+                        },
+                        {
+                            id: 2,
+                            amount: '15000',
+                            title: 'harassment',
+                            company: 'Workplace Resolution',
+                            status: 'Completed',
+                            submissionDate: '2024-06-18',
+                            duration: '1 Day Contract',
+                            description: 'Workplace harassment mediation session',
+                            workerId: 'wrk-023',
+                            submittedBy: 'John Doe',
+                            submittedEmail: 'jdoe@company.com',
+                            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John'
+                        },
+                        {
+                            id: 3,
+                            amount: '5000',
+                            title: 'mental health',
+                            company: 'Employee Wellness',
+                            status: 'Not Started',
+                            submissionDate: '2023-09-10',
+                            duration: '3 Days Contract',
+                            description: 'Mental health awareness session',
+                            workerId: 'wrk-045',
+                            submittedBy: 'Jane Smith',
+                            submittedEmail: 'jsmith@company.com',
+                            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jane'
+                        }
+                    ];
+                    displayContracts(sampleContracts);
+                    displayProgress(sampleContracts);
+                }
             } catch (error) {
                 console.error('Error loading contracts:', error);
-                // Use sample data if no contracts exist
-                contracts = [
-                    {
-                        id: 1,
-                        amount: '20000',
-                        title: 'Cleaning Lady Needed',
-                        company: 'K.R.O Services',
-                        status: 'In Progress',
-                        submissionDate: '2023-02-12',
-                        duration: '2 Days Contract',
-                        description: 'To work with K.R.O Cleaning Service on a two days cleaning contract at Maitama',
-                        workerId: 'wrk-012',
-                        submittedBy: 'Admin',
-                        submittedEmail: 'admin@kro.com',
-                        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
-                    },
-                    {
-                        id: 2,
-                        amount: '15000',
-                        title: 'harassment',
-                        company: 'Workplace Resolution',
-                        status: 'Completed',
-                        submissionDate: '2024-06-18',
-                        duration: '1 Day Contract',
-                        description: 'Workplace harassment mediation session',
-                        workerId: 'wrk-023',
-                        submittedBy: 'Admin',
-                        submittedEmail: 'admin@kro.com',
-                        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
-                    },
-                    {
-                        id: 3,
-                        amount: '5000',
-                        title: 'mental health',
-                        company: 'Employee Wellness',
-                        status: 'Not Started',
-                        submissionDate: '2023-09-10',
-                        duration: '3 Days Contract',
-                        description: 'Mental health awareness session',
-                        workerId: 'wrk-045',
-                        submittedBy: 'Admin',
-                        submittedEmail: 'admin@kro.com',
-                        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
-                    }
-                ];
-                displayContracts();
-                displayProgress();
             }
         }
 
-        function displayContracts() {
+        // ==================== DISPLAY FUNCTIONS ====================
+        function displayContracts(contracts) {
             const filtered = filterContracts(contracts);
             const grid = document.getElementById('contractsGrid');
             
-            if (!filtered || filtered.length === 0) {
+            if (filtered.length === 0) {
                 grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #999;">No contracts found</div>';
                 return;
             }
@@ -1526,31 +962,31 @@
             grid.innerHTML = filtered.map(contract => `
                 <div class="contract-card" data-status="${contract.status}" onclick="viewContract('${contract.id}')">
                     <div class="contract-amount">₦${parseFloat(contract.amount).toLocaleString()}</div>
-                    <div class="contract-title">${contract.title || contract.description?.substring(0, 30) + '...'}</div>
+                    <div class="contract-title">${contract.title}</div>
                     <div class="contract-company">at ${contract.company}</div>
                     <div class="contract-meta">
-                        <span class="status-badge ${contract.status?.toLowerCase().replace(' ', '-')}">${contract.status}</span>
+                        <span class="status-badge ${contract.status.toLowerCase().replace(' ', '-')}">${contract.status}</span>
                         <span>📅 ${new Date(contract.submissionDate).toLocaleDateString()}</span>
                     </div>
                 </div>
             `).join('');
         }
 
-        function displayProgress() {
+        function displayProgress(contracts) {
             const filtered = filterContracts(contracts);
             const list = document.getElementById('progressList');
             
-            if (!filtered || filtered.length === 0) {
+            if (filtered.length === 0) {
                 list.innerHTML = '<div style="text-align: center; padding: 50px; color: #999;">No contracts found</div>';
                 return;
             }
             
             list.innerHTML = filtered.map(contract => `
                 <div class="progress-item" onclick="viewContract('${contract.id}')">
-                    <div class="progress-status ${contract.status?.toLowerCase().replace(' ', '-')}"></div>
+                    <div class="progress-status ${contract.status.toLowerCase().replace(' ', '-')}"></div>
                     <div class="progress-content">
                         <div class="progress-title">
-                            <span style="font-weight: 600;">${contract.status?.toUpperCase()}</span> — ${contract.title || contract.description?.substring(0, 30) + '...'}
+                            <span style="font-weight: 600;">${contract.status.toUpperCase()}</span> — ${contract.title}
                         </div>
                         <div class="progress-date">Posted on ${new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
                     </div>
@@ -1558,68 +994,39 @@
             `).join('');
         }
 
-        function filterContracts(contractsList) {
-            if (currentFilter === 'all') return contractsList;
-            return contractsList.filter(c => c.status === currentFilter);
+        // ==================== FILTER FUNCTIONS ====================
+        function filterContracts(contracts) {
+            if (currentFilter === 'all') return contracts;
+            return contracts.filter(c => c.status === currentFilter);
         }
 
         // ==================== SEARCH FUNCTIONS ====================
         function searchContracts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = contracts.filter(c => 
-                c.title?.toLowerCase().includes(searchTerm) || 
-                c.description?.toLowerCase().includes(searchTerm) ||
-                c.company?.toLowerCase().includes(searchTerm)
-            );
-            displayFilteredResults(filtered);
+            const cards = document.querySelectorAll('.contract-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.contract-title').textContent.toLowerCase();
+                if (title.includes(searchTerm) || searchTerm === '') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
 
         function searchProgress() {
             const searchTerm = document.getElementById('progressSearchInput').value.toLowerCase();
-            const filtered = contracts.filter(c => 
-                c.title?.toLowerCase().includes(searchTerm) || 
-                c.description?.toLowerCase().includes(searchTerm) ||
-                c.company?.toLowerCase().includes(searchTerm)
-            );
-            displayFilteredResults(filtered);
-        }
-
-        function displayFilteredResults(filtered) {
-            if (currentPage === 'home') {
-                const grid = document.getElementById('contractsGrid');
-                if (filtered.length === 0) {
-                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #999;">No contracts found</div>';
+            const items = document.querySelectorAll('.progress-item');
+            
+            items.forEach(item => {
+                const title = item.querySelector('.progress-title').textContent.toLowerCase();
+                if (title.includes(searchTerm) || searchTerm === '') {
+                    item.style.display = 'flex';
                 } else {
-                    grid.innerHTML = filtered.map(contract => `
-                        <div class="contract-card" data-status="${contract.status}" onclick="viewContract('${contract.id}')">
-                            <div class="contract-amount">₦${parseFloat(contract.amount).toLocaleString()}</div>
-                            <div class="contract-title">${contract.title || contract.description?.substring(0, 30) + '...'}</div>
-                            <div class="contract-company">at ${contract.company}</div>
-                            <div class="contract-meta">
-                                <span class="status-badge ${contract.status?.toLowerCase().replace(' ', '-')}">${contract.status}</span>
-                                <span>📅 ${new Date(contract.submissionDate).toLocaleDateString()}</span>
-                            </div>
-                        </div>
-                    `).join('');
+                    item.style.display = 'none';
                 }
-            } else {
-                const list = document.getElementById('progressList');
-                if (filtered.length === 0) {
-                    list.innerHTML = '<div style="text-align: center; padding: 50px; color: #999;">No contracts found</div>';
-                } else {
-                    list.innerHTML = filtered.map(contract => `
-                        <div class="progress-item" onclick="viewContract('${contract.id}')">
-                            <div class="progress-status ${contract.status?.toLowerCase().replace(' ', '-')}"></div>
-                            <div class="progress-content">
-                                <div class="progress-title">
-                                    <span style="font-weight: 600;">${contract.status?.toUpperCase()}</span> — ${contract.title || contract.description?.substring(0, 30) + '...'}
-                                </div>
-                                <div class="progress-date">Posted on ${new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
-                            </div>
-                        </div>
-                    `).join('');
-                }
-            }
+            });
         }
 
         // ==================== PAGE NAVIGATION ====================
@@ -1655,16 +1062,14 @@
 
         function applyFilter() {
             closeFilterModal();
-            displayContracts();
-            displayProgress();
+            loadContracts();
         }
 
         function clearFilter() {
             currentFilter = 'all';
             document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
             document.getElementById('filterAll').classList.add('selected');
-            displayContracts();
-            displayProgress();
+            loadContracts();
         }
 
         // ==================== ADD CONTRACT MODAL ====================
@@ -1682,7 +1087,7 @@
             event.preventDefault();
             
             const description = document.getElementById('description').value;
-            const title = description.split(' ').slice(0, 4).join(' ') + '...';
+            const title = description.split(' ').slice(0, 3).join(' ') + '...';
             
             const newContract = {
                 amount: document.getElementById('amount').value,
@@ -1693,20 +1098,10 @@
                 duration: document.getElementById('duration').value,
                 description: description,
                 workerId: document.getElementById('workerId').value,
-                submittedBy: 'Community Member',
-                submittedEmail: 'member@kro.com',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Member'
+                submittedBy: 'Admin',
+                submittedEmail: 'admin@kro.com',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
             };
-
-            const imageFile = document.getElementById('contractImage').files[0];
-            if (imageFile) {
-                try {
-                    const imageUrl = await uploadImage(imageFile);
-                    newContract.image_url = imageUrl;
-                } catch (error) {
-                    console.error('Image upload failed:', error);
-                }
-            }
 
             try {
                 const { data, error } = await supabase
@@ -1721,27 +1116,13 @@
                 alert('Contract created successfully!');
             } catch (error) {
                 console.error('Error saving contract:', error);
-                alert('Error saving contract. Please try again.');
+                alert('Demo mode: Contract would be saved here');
+                closeAddModal();
+                loadContracts();
             }
         }
 
-        // ==================== IMAGE UPLOAD ====================
-        async function uploadImage(file) {
-            const fileName = `${Date.now()}_${file.name}`;
-            
-            const { data, error } = await supabase.storage
-                .from('contract-images')
-                .upload(fileName, file);
-            
-            if (error) throw error;
-            
-            const { data: { publicUrl } } = supabase.storage
-                .from('contract-images')
-                .getPublicUrl(fileName);
-            
-            return publicUrl;
-        }
-
+        // ==================== IMAGE PREVIEW ====================
         function previewImage(event) {
             const file = event.target.files[0];
             if (file) {
@@ -1799,7 +1180,7 @@
                     </div>
                     <div class="detail-row">
                         <div class="detail-label">Amount</div>
-                        <div class="detail-value">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
+                        <div class="detail-value">₦${parseFloat(contract.amount).toLocaleString() || '0'}</div>
                     </div>
                     <div class="detail-row">
                         <div class="detail-label">Submission Date</div>
@@ -1811,7 +1192,7 @@
                             <div class="submitted-by">
                                 <img src="${contract.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=User'}" alt="">
                                 <div class="submitted-info">
-                                    <h4>${contract.submittedBy || 'Community Member'}</h4>
+                                    <h4>${contract.submittedBy || 'Unknown'}</h4>
                                     <p>${contract.submittedEmail || ''}</p>
                                 </div>
                             </div>
@@ -1827,6 +1208,9 @@
                 document.getElementById('editAmount').value = contract.amount || '';
                 document.getElementById('editStatus').value = contract.status || 'Not Started';
                 document.getElementById('editSubmissionDate').value = contract.submissionDate || '';
+                document.getElementById('editSubmitterName').textContent = contract.submittedBy || 'Sophia Patel';
+                document.getElementById('editSubmitterEmail').textContent = contract.submittedEmail || 'Marketing:spatel@careconnect.com';
+                document.getElementById('editAvatar').src = contract.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sophia';
                 
                 // Pre-fill status modal
                 document.getElementById('statusContractId').value = contract.id;
@@ -1835,7 +1219,7 @@
                 document.getElementById('detailModal').style.display = 'block';
             } catch (error) {
                 console.error('Error loading contract:', error);
-                alert('Error loading contract details');
+                alert('Demo mode: Viewing contract');
             }
         }
 
@@ -1866,18 +1250,8 @@
                 amount: document.getElementById('editAmount').value,
                 status: document.getElementById('editStatus').value,
                 submissionDate: document.getElementById('editSubmissionDate').value,
-                title: description.split(' ').slice(0, 4).join(' ') + '...'
+                title: description.split(' ').slice(0, 3).join(' ') + '...'
             };
-
-            const imageFile = document.getElementById('editImage').files[0];
-            if (imageFile) {
-                try {
-                    const imageUrl = await uploadImage(imageFile);
-                    updates.image_url = imageUrl;
-                } catch (error) {
-                    console.error('Image upload failed:', error);
-                }
-            }
 
             try {
                 const { error } = await supabase
@@ -1892,7 +1266,9 @@
                 alert('Contract updated successfully!');
             } catch (error) {
                 console.error('Error updating contract:', error);
-                alert('Error updating contract');
+                alert('Demo mode: Contract would be updated here');
+                closeEditModal();
+                loadContracts();
             }
         }
 
@@ -1925,88 +1301,16 @@
                 alert('Status updated successfully!');
             } catch (error) {
                 console.error('Error updating status:', error);
-                alert('Error updating status');
+                alert('Demo mode: Status would be updated here');
+                closeStatusModal();
+                loadContracts();
             }
-        }
-
-        // ==================== YOUTUBE BANNERS ====================
-        function initBanners() {
-            youtubeCreators = creators;
-            loadBanners();
-            startBannerSlide();
-        }
-
-        function loadBanners() {
-            const slider = document.getElementById('bannersSlider');
-            const controls = document.getElementById('sliderControls');
-            
-            slider.innerHTML = youtubeCreators.map((creator, index) => `
-                <div class="banner-slide">
-                    <div class="youtube-banner" onclick="window.open('${creator.link}', '_blank')" style="background: ${creator.color}">
-                        <div class="banner-content">
-                            <h3>${creator.name}</h3>
-                            <p>${creator.description}</p>
-                            <div class="banner-stats">
-                                <div class="stat">
-                                    <div class="stat-number">${creator.subscribers}</div>
-                                    <div class="stat-label">Subscribers</div>
-                                </div>
-                                <div class="stat">
-                                    <div class="stat-number">${creator.videos}</div>
-                                    <div class="stat-label">Videos</div>
-                                </div>
-                            </div>
-                            <span class="banner-button">Subscribe →</span>
-                        </div>
-                        <div class="banner-avatar">
-                            ${creator.avatar}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-            
-            controls.innerHTML = youtubeCreators.map((_, index) => `
-                <div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="goToBanner(${index})"></div>
-            `).join('');
-        }
-
-        function startBannerSlide() {
-            bannerInterval = setInterval(() => {
-                currentBannerIndex = (currentBannerIndex + 1) % youtubeCreators.length;
-                updateBannerPosition();
-            }, 5000);
-        }
-
-        function goToBanner(index) {
-            currentBannerIndex = index;
-            updateBannerPosition();
-            
-            clearInterval(bannerInterval);
-            startBannerSlide();
-        }
-
-        function updateBannerPosition() {
-            const slider = document.getElementById('bannersSlider');
-            slider.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
-            
-            document.querySelectorAll('.slider-dot').forEach((dot, index) => {
-                if (index === currentBannerIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
         }
 
         // ==================== INITIALIZATION ====================
         window.onload = function() {
-            loadContracts();
-            initBanners();
-            
-            // Check if user already completed onboarding
-            if (hasCompletedOnboarding) {
-                console.log('User already completed onboarding');
-            }
+            // Login modal is shown by default
+            // loadContracts will be called after login
         };
     </script>
 </body>
