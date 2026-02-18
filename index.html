@@ -3,472 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GrowTogether - YouTube Community</title>
+    <title>K.R.O Contracts - Workplace Support System</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
         body {
-            background: #0f0f0f;
-            color: #ffffff;
+            background: #f5f5f5;
+            color: #333;
         }
         
+        /* App Bar / Header */
+        .app-bar {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #d32f2f;
+        }
+        
+        .logo span {
+            color: #333;
+            font-weight: 400;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-btn {
+            padding: 8px 20px;
+            border: none;
+            background: transparent;
+            font-size: 1em;
+            cursor: pointer;
+            color: #666;
+            border-radius: 20px;
+        }
+        
+        .nav-btn.active {
+            background: #d32f2f;
+            color: white;
+        }
+        
+        /* Main Container */
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            transition: filter 0.5s ease;
         }
         
-        .container.blur {
-            filter: blur(8px);
-            pointer-events: none;
-        }
-        
-        /* Header with Gradient */
-        .hero-section {
-            background: linear-gradient(145deg, #1a1a1a 0%, #000000 100%);
-            border-radius: 30px;
-            padding: 50px;
-            margin-bottom: 40px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        
-        .hero-title {
-            font-size: 4em;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.5em;
-            color: #b0b0b0;
+        /* Search & Filter Bar */
+        .action-bar {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
             margin-bottom: 20px;
-            max-width: 600px;
-            line-height: 1.4;
-        }
-        
-        .hero-description {
-            color: #808080;
-            max-width: 600px;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
-        .show-package {
-            display: inline-block;
-            color: #ff0000;
-            font-weight: 600;
-            margin-right: 20px;
-            cursor: pointer;
-        }
-        
-        .get-started {
-            display: inline-block;
-            background: #ff0000;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s;
-        }
-        
-        .get-started:hover {
-            transform: scale(1.05);
-            background: #cc0000;
-        }
-        
-        /* Search Section */
-        .search-section {
-            background: #1a1a1a;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .welcome-text {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: #e0e0e0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         
         .search-box {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .search-input {
             flex: 1;
-            background: #2a2a2a;
-            border: none;
-            padding: 15px 20px;
-            border-radius: 30px;
-            color: white;
-            font-size: 1em;
-            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 0 15px;
         }
         
-        .search-input:focus {
+        .search-box input {
+            flex: 1;
+            padding: 12px 0;
+            border: none;
+            background: transparent;
             outline: none;
-            border-color: #ff0000;
+            font-size: 1em;
         }
         
-        .search-button {
-            background: #ff0000;
+        .filter-btn {
+            padding: 12px 25px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .add-btn {
+            padding: 12px 25px;
+            background: #d32f2f;
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 30px;
+            border-radius: 8px;
+            cursor: pointer;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Filter Dropdown Modal */
+        .filter-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .filter-content {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            width: 90%;
+            max-width: 350px;
+        }
+        
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .filter-option {
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 8px;
             cursor: pointer;
             transition: background 0.3s;
         }
         
-        .search-button:hover {
-            background: #cc0000;
+        .filter-option:hover {
+            background: #f5f5f5;
         }
         
-        /* Featured Movie */
-        .featured-movie {
-            background: linear-gradient(145deg, #1a1a1a 0%, #000000 100%);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 40px;
-            border: 1px solid #333;
-        }
-        
-        .featured-title {
-            font-size: 2em;
-            color: #ff0000;
-            margin-bottom: 10px;
-        }
-        
-        /* Section Headers */
-        .section-header {
-            font-size: 2em;
-            font-weight: 700;
-            margin-bottom: 30px;
+        .filter-option.selected {
+            background: #d32f2f;
             color: white;
         }
         
-        /* Creator Cards Grid */
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-        
-        .movie-card {
-            background: #1a1a1a;
-            border-radius: 15px;
-            padding: 20px;
-            transition: all 0.3s;
-            border: 1px solid #333;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .movie-card:hover {
-            transform: translateY(-10px);
-            border-color: #ff0000;
-            box-shadow: 0 10px 30px rgba(255,0,0,0.2);
-        }
-        
-        .movie-card::before {
-            content: 'UHD+';
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff0000;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.7em;
-            font-weight: 600;
-        }
-        
-        .movie-thumbnail {
-            width: 100%;
-            height: 150px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-        }
-        
-        .movie-thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-        
-        .movie-thumbnail img:hover {
-            transform: scale(1.1);
-        }
-        
-        .movie-rating {
+        .filter-actions {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Contracts Grid */
+        .contracts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .contract-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid;
+        }
+        
+        .contract-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .contract-card[data-status="In Progress"] {
+            border-left-color: #ff9800;
+        }
+        
+        .contract-card[data-status="Completed"] {
+            border-left-color: #4caf50;
+        }
+        
+        .contract-card[data-status="Not Started"] {
+            border-left-color: #f44336;
+        }
+        
+        .contract-amount {
+            font-size: 1.5em;
+            font-weight: 700;
             margin-bottom: 10px;
-            color: #ffd700;
+            color: #333;
         }
         
-        .movie-rating span {
-            color: #808080;
-            font-size: 0.9em;
-        }
-        
-        .movie-title {
+        .contract-title {
+            font-size: 1.1em;
             font-weight: 600;
             margin-bottom: 5px;
         }
         
-        .movie-channel {
-            color: #808080;
+        .contract-company {
+            color: #666;
             font-size: 0.9em;
-        }
-        
-        /* Subscription Section */
-        .subscription-section {
-            margin: 60px 0;
-        }
-        
-        .subscription-header {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 40px;
-        }
-        
-        .subscription-header h2 {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-        }
-        
-        .subscription-header p {
-            color: #808080;
-        }
-        
-        .subscription-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin-top: 40px;
-        }
-        
-        .subscription-card {
-            background: linear-gradient(145deg, #1a1a1a, #000000);
-            border-radius: 30px;
-            padding: 40px;
-            border: 1px solid #333;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .subscription-card:hover {
-            transform: scale(1.02);
-            border-color: #ff0000;
-        }
-        
-        .subscription-card.premium {
-            background: linear-gradient(145deg, #2a1a1a, #1a0000);
-            border-color: #ff0000;
-        }
-        
-        .subscription-card.premium::before {
-            content: 'BEST VALUE';
-            position: absolute;
-            top: 20px;
-            right: -30px;
-            background: #ff0000;
-            color: white;
-            padding: 5px 30px;
-            transform: rotate(45deg);
-            font-size: 0.8em;
-            font-weight: 600;
-        }
-        
-        .plan-name {
-            font-size: 1.8em;
-            font-weight: 700;
             margin-bottom: 10px;
         }
         
-        .plan-description {
-            color: #808080;
-            margin-bottom: 20px;
+        .contract-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #999;
+            font-size: 0.85em;
+            margin-top: 10px;
         }
         
-        .plan-price {
-            font-size: 2.5em;
-            font-weight: 800;
-            margin-bottom: 25px;
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
         }
         
-        .plan-price span {
-            font-size: 0.4em;
-            color: #808080;
-            font-weight: normal;
+        .status-badge.in-progress {
+            background: #fff3e0;
+            color: #ff9800;
         }
         
-        .plan-features {
-            list-style: none;
-            margin-bottom: 30px;
+        .status-badge.completed {
+            background: #e8f5e8;
+            color: #4caf50;
         }
         
-        .plan-features li {
-            margin: 15px 0;
-            color: #b0b0b0;
+        .status-badge.not-started {
+            background: #ffebee;
+            color: #f44336;
+        }
+        
+        /* Progress Report Page */
+        .progress-list {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        
-        .plan-features li::before {
-            content: '✓';
-            color: #ff0000;
-            font-weight: bold;
-        }
-        
-        .plan-button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: #2a2a2a;
-            color: white;
-        }
-        
-        .premium .plan-button {
-            background: #ff0000;
-            color: white;
-        }
-        
-        .premium .plan-button:hover {
-            background: #cc0000;
-        }
-        
-        /* Newsletter Section */
-        .newsletter {
-            background: linear-gradient(145deg, #1a1a1a, #000000);
-            border-radius: 30px;
-            padding: 60px;
-            text-align: center;
-            margin: 60px 0;
-            border: 1px solid #333;
-        }
-        
-        .newsletter h2 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        
-        .newsletter p {
-            color: #808080;
-            margin-bottom: 30px;
-        }
-        
-        .newsletter-form {
-            display: flex;
-            max-width: 500px;
-            margin: 0 auto;
-            gap: 10px;
-        }
-        
-        .newsletter-input {
-            flex: 1;
-            background: #2a2a2a;
-            border: none;
             padding: 15px 20px;
-            border-radius: 30px;
-            color: white;
-            border: 1px solid #333;
-        }
-        
-        .newsletter-input:focus {
-            outline: none;
-            border-color: #ff0000;
-        }
-        
-        .newsletter-button {
-            background: #ff0000;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 30px;
-            font-weight: 600;
+            border-bottom: 1px solid #eee;
             cursor: pointer;
+            transition: background 0.2s;
         }
         
-        /* Footer */
-        .footer {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 40px;
-            padding: 60px 0;
-            border-top: 1px solid #333;
+        .progress-item:hover {
+            background: #f9f9f9;
         }
         
-        .footer-section h3 {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: white;
+        .progress-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 15px;
         }
         
-        .footer-section p {
-            color: #808080;
-            line-height: 1.6;
-            margin-bottom: 20px;
+        .progress-status.in-progress { background: #ff9800; }
+        .progress-status.completed { background: #4caf50; }
+        .progress-status.not-started { background: #f44336; }
+        
+        .progress-content {
+            flex: 1;
         }
         
-        .footer-section ul {
-            list-style: none;
+        .progress-title {
+            font-weight: 600;
+            margin-bottom: 5px;
         }
         
-        .footer-section ul li {
-            margin: 10px 0;
-        }
-        
-        .footer-section ul li a {
-            color: #808080;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-section ul li a:hover {
-            color: #ff0000;
-        }
-        
-        .contact-info {
-            color: #808080;
-            line-height: 2;
+        .progress-date {
+            color: #999;
+            font-size: 0.85em;
         }
         
         /* Modal Styles */
@@ -479,505 +317,945 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
-            backdrop-filter: blur(10px);
+            overflow-y: auto;
+            padding: 20px;
         }
         
         .modal-content {
-            background: linear-gradient(145deg, #1a1a1a, #000000);
-            border-radius: 30px;
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
             position: relative;
-            border: 1px solid #333;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         .modal-header {
-            text-align: center;
-            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f5f5f5;
         }
         
         .modal-header h2 {
-            font-size: 2em;
-            color: white;
-            margin-bottom: 10px;
+            font-size: 1.5em;
+            color: #333;
         }
         
-        .modal-header p {
-            color: #808080;
+        .close-btn {
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #999;
         }
         
-        .task-item {
-            background: #2a2a2a;
-            border-radius: 15px;
-            padding: 20px;
+        .form-group {
             margin-bottom: 20px;
-            border: 1px solid #333;
         }
         
-        .task-item.completed {
-            border-color: #ff0000;
-            background: linear-gradient(145deg, #2a1a1a, #1a1a1a);
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
         }
         
-        .task-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: white;
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
         }
         
-        .task-buttons {
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 15px;
+        }
+        
+        .image-preview {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
         }
         
         .btn-primary {
-            background: #ff0000;
+            flex: 1;
+            padding: 15px;
+            background: #d32f2f;
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 25px;
-            cursor: pointer;
+            border-radius: 8px;
             font-weight: 600;
-            text-decoration: none;
-            text-align: center;
+            cursor: pointer;
         }
         
         .btn-secondary {
-            background: #2a2a2a;
-            color: white;
-            border: 1px solid #333;
-            padding: 12px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            text-align: center;
-        }
-        
-        .btn-success {
-            background: #ff0000;
-            color: white;
-            border: none;
+            flex: 1;
             padding: 15px;
-            border-radius: 30px;
+            background: #f5f5f5;
+            color: #333;
+            border: none;
+            border-radius: 8px;
             font-weight: 600;
-            font-size: 1.1em;
-            width: 100%;
-            margin-top: 20px;
             cursor: pointer;
         }
         
-        .btn-success:disabled {
-            background: #333;
-            cursor: not-allowed;
+        .btn-danger {
+            background: #f44336;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         
-        .upload-status {
+        /* Contract Detail Page */
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .detail-title {
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+        
+        .detail-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .edit-btn, .status-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .edit-btn {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .status-btn {
+            background: #d32f2f;
+            color: white;
+        }
+        
+        .detail-grid {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .detail-row {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            padding: 15px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            color: #333;
+        }
+        
+        .submitted-by {
             display: flex;
             align-items: center;
-            margin-top: 10px;
-            color: #ff0000;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
         }
         
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #ff0000;
+        .submitted-by img {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            margin-right: 5px;
+            object-fit: cover;
+        }
+        
+        .submitted-info h4 {
+            margin-bottom: 5px;
+        }
+        
+        .submitted-info p {
+            color: #666;
+        }
+        
+        /* Admin Panel */
+        .admin-badge {
+            background: #333;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-box {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .login-box input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .login-box button {
+            width: 100%;
+            padding: 15px;
+            background: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
         }
         
         .hidden {
             display: none;
         }
         
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            color: #666;
-            font-size: 1.5em;
-            cursor: pointer;
-        }
-        
         @media (max-width: 768px) {
-            .hero-title { font-size: 2.5em; }
-            .hero-section { padding: 30px; }
-            .subscription-grid { grid-template-columns: 1fr; }
-            .footer { grid-template-columns: 1fr; }
-            .newsletter-form { flex-direction: column; }
+            .action-bar {
+                flex-wrap: wrap;
+            }
+            .search-box {
+                width: 100%;
+                order: 1;
+            }
+            .filter-btn, .add-btn {
+                flex: 1;
+            }
         }
     </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 </head>
 <body>
-    <!-- Main Content -->
-    <div class="container" id="mainContent">
-        <!-- Hero Section -->
-        <div class="hero-section">
-            <h1 class="hero-title">GrowTogether</h1>
-            <h2 class="hero-subtitle">Join our YouTube Creator Community & Grow Your Channel</h2>
-            <p class="hero-description">Support each other, share content, and grow your subscribers together. Complete the tasks to unlock access to our creator network.</p>
-            <div>
-                <span class="show-package">Show Package</span>
-                <a href="#" class="get-started" onclick="openModal()">GET STARTED</a>
-            </div>
+    <!-- Admin Login Modal -->
+    <div class="login-modal" id="loginModal" style="display: flex;">
+        <div class="login-box">
+            <h2>🔐 Admin Access Only</h2>
+            <p style="color: #666; margin-bottom: 20px;">Enter credentials to manage contracts</p>
+            <input type="text" id="adminUsername" placeholder="Username" value="admin">
+            <input type="password" id="adminPassword" placeholder="Password" value="admin123">
+            <button onclick="adminLogin()">Login as Admin</button>
         </div>
+    </div>
 
-        <!-- Search Section -->
-        <div class="search-section">
-            <div class="welcome-text">Hi Welcome, Search your favorite creators in here</div>
-            <div class="search-box">
-                <input type="text" class="search-input" placeholder="Search creators..." id="searchInput">
-                <button class="search-button" onclick="searchCreator()">Enter</button>
-            </div>
+    <!-- App Bar -->
+    <div class="app-bar">
+        <div class="logo">K.R.O <span>Contracts</span></div>
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="showPage('home')">Home</button>
+            <button class="nav-btn" onclick="showPage('progress')">Progress</button>
         </div>
+    </div>
 
-        <!-- Featured Section -->
-        <div class="featured-movie">
-            <h2 class="featured-title">The Best Creator Recommendations & the Latest from our Community</h2>
-        </div>
-
-        <!-- Creator Cards -->
-        <h2 class="section-header">Creators Recommended</h2>
-        <div class="movie-grid" id="membersGrid">
-            <!-- Members will be loaded here -->
-        </div>
-
-        <!-- Subscription Section -->
-        <div class="subscription-section">
-            <div class="subscription-header">
-                <h2>Choose the Subscription package that you Like & get other Benefits</h2>
-                <p>Enjoy various creators that we have recommended for you and your community</p>
-            </div>
-
-            <div class="subscription-grid">
-                <!-- Free Plan -->
-                <div class="subscription-card free">
-                    <h3 class="plan-name">Free Plan</h3>
-                    <p class="plan-description">For those of you who like to support creators for free</p>
-                    <div class="plan-price">$0 <span>/ New Account</span></div>
-                    <ul class="plan-features">
-                        <li>You get free access to support creators</li>
-                        <li>Get +10 access to subscribe</li>
-                        <li>Ad-free browsing</li>
-                    </ul>
-                    <button class="plan-button">Get Started</button>
+    <!-- Main Container -->
+    <div class="container" id="mainContainer">
+        <!-- Home Page -->
+        <div id="homePage">
+            <div class="action-bar">
+                <div class="search-box">
+                    <span style="color: #999; margin-right: 10px;">🔍</span>
+                    <input type="text" placeholder="Search contracts..." id="searchInput" onkeyup="searchContracts()">
                 </div>
+                <button class="filter-btn" onclick="openFilterModal()">
+                    <span>📊</span> Filter
+                </button>
+                <button class="add-btn" onclick="openAddModal()">
+                    <span>+</span> Add
+                </button>
+            </div>
 
-                <!-- Premium Plan -->
-                <div class="subscription-card premium">
-                    <h3 class="plan-name">Premium Plan</h3>
-                    <p class="plan-description">For those who want to maximize their community growth</p>
-                    <div class="plan-price">$29.99 <span>/ Years</span></div>
-                    <ul class="plan-features">
-                        <li>You get unlimited access to all creators</li>
-                        <li>Get +50 access to subscribe</li>
-                        <li>Ad-free experience</li>
-                        <li>Access to latest creator content</li>
-                        <li>Unlimited community support</li>
-                    </ul>
-                    <button class="plan-button">Buy Packt Now</button>
-                </div>
+            <div class="contracts-grid" id="contractsGrid">
+                <!-- Contracts will be loaded here -->
             </div>
         </div>
 
-        <!-- Newsletter Section -->
-        <div class="newsletter">
-            <h2>Are you ready to join?</h2>
-            <p>Enter your Email to sign up and subscribe with us for free, Let's Register now</p>
-            <div class="newsletter-form">
-                <input type="email" class="newsletter-input" placeholder="Enter your email address">
-                <button class="newsletter-button">Subscribe</button>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <div class="footer-section">
-                <h3>GrowTogether</h3>
-                <p>We provide various services to help you discover new creators and grow your community for free.</p>
-                <div class="contact-info">
-                    <div>📞 +82 990 1234 4567</div>
-                    <div>📞 +82 990 1234 5678</div>
+        <!-- Progress Report Page -->
+        <div id="progressPage" style="display: none;">
+            <div class="action-bar">
+                <div class="search-box">
+                    <span style="color: #999; margin-right: 10px;">🔍</span>
+                    <input type="text" placeholder="Search contracts..." id="progressSearchInput" onkeyup="searchProgress()">
                 </div>
+                <button class="filter-btn" onclick="openFilterModal()">
+                    <span>📊</span> Filter
+                </button>
+                <button class="add-btn" onclick="openAddModal()">
+                    <span>+</span> Add
+                </button>
             </div>
 
-            <div class="footer-section">
-                <h3>Categories</h3>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Unlimited Streaming</a></li>
-                    <li><a href="#">24 Hours Service</a></li>
-                    <li><a href="#">Free Access Download</a></li>
-                    <li><a href="#">Access TV - Show</a></li>
-                    <li><a href="#">Conditions of Use</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h3>Support for you</h3>
-                <ul>
-                    <li><a href="#">Horror</a></li>
-                    <li><a href="#">Family</a></li>
-                    <li><a href="#">Service Status</a></li>
-                    <li><a href="#">Crime</a></li>
-                    <li><a href="#">Advantage</a></li>
-                    <li><a href="#">Thriller</a></li>
-                    <li><a href="#">Advertising</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h3>Contact Info</h3>
-                <div class="contact-info">
-                    22006 Uton Panyang 04/03
-                </div>
+            <div class="progress-list" id="progressList">
+                <!-- Progress items will be loaded here -->
             </div>
         </div>
     </div>
 
-    <!-- Task Modal -->
-    <div class="modal" id="taskModal">
+    <!-- Filter Modal -->
+    <div class="filter-modal" id="filterModal">
+        <div class="filter-content">
+            <div class="filter-header">
+                <h3>Filter by Status</h3>
+                <span class="close-btn" onclick="closeFilterModal()">&times;</span>
+            </div>
+            
+            <div class="filter-option" onclick="selectFilter('all')" id="filterAll">
+                📋 All Contracts
+            </div>
+            <div class="filter-option" onclick="selectFilter('In Progress')" id="filterInProgress">
+                ⏳ In Progress
+            </div>
+            <div class="filter-option" onclick="selectFilter('Completed')" id="filterCompleted">
+                ✅ Completed
+            </div>
+            <div class="filter-option" onclick="selectFilter('Not Started')" id="filterNotStarted">
+                ⚠️ Not Started
+            </div>
+            
+            <div class="filter-actions">
+                <button onclick="clearFilter()" style="background: none; border: none; color: #666; cursor: pointer;">Clear all</button>
+                <button onclick="applyFilter()" style="background: #d32f2f; color: white; border: none; padding: 8px 25px; border-radius: 5px; cursor: pointer;">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Contract Modal -->
+    <div class="modal" id="addModal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            
             <div class="modal-header">
-                <h2>🚀 Join Our Community</h2>
-                <p>Complete these tasks to unlock access</p>
+                <h2>Create New Contract</h2>
+                <span class="close-btn" onclick="closeAddModal()">&times;</span>
             </div>
-
-            <!-- Task 1: Subscribe -->
-            <div class="task-item" id="task1">
-                <div class="task-title">📺 Task 1: Subscribe to our channel</div>
-                <div class="task-buttons">
-                    <a href="https://youtube.com/@YOURCHANNEL" target="_blank" class="btn-primary">Go to YouTube</a>
-                    <label class="btn-secondary" style="cursor: pointer;">
-                        Upload Proof
-                        <input type="file" accept="image/*" class="hidden" onchange="handleUpload(1, this)">
-                    </label>
+            
+            <form id="addContractForm" onsubmit="saveNewContract(event)">
+                <div class="form-group">
+                    <label>Company</label>
+                    <input type="text" id="company" required>
                 </div>
-                <div id="uploadStatus1" class="upload-status hidden">
-                    <span class="status-dot"></span>
-                    <span>✓ Screenshot uploaded</span>
+                
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="description" required></textarea>
                 </div>
-            </div>
-
-            <!-- Task 2: Watch Content -->
-            <div class="task-item" id="task2">
-                <div class="task-title">🎬 Task 2: Watch our content</div>
-                <div class="task-buttons">
-                    <a href="https://youtube.com/@YOURCHANNEL" target="_blank" class="btn-primary">Watch Videos</a>
-                    <label class="btn-secondary" style="cursor: pointer;">
-                        Upload Proof
-                        <input type="file" accept="image/*" class="hidden" onchange="handleUpload(2, this)">
-                    </label>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" id="duration" placeholder="e.g., 2 Days Contract" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Linked Worker ID</label>
+                        <input type="text" id="workerId" required>
+                    </div>
                 </div>
-                <div id="uploadStatus2" class="upload-status hidden">
-                    <span class="status-dot"></span>
-                    <span>✓ Screenshot uploaded</span>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Amount (₦)</label>
+                        <input type="number" id="amount" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="status">
+                            <option value="Not Started">Not Started</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-
-            <button class="btn-success" id="submitBtn" onclick="submitTasks()" disabled>
-                Unlock Community Access
-            </button>
+                
+                <div class="form-group">
+                    <label>Submission Date</label>
+                    <input type="date" id="submissionDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Image</label>
+                    <input type="file" id="contractImage" accept="image/*" onchange="previewImage(event)">
+                    <div class="image-preview" id="imagePreview">
+                        <span style="color: #999;">Choose an image...</span>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Submit</button>
+                    <button type="button" class="btn-secondary" onclick="closeAddModal()">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
+    <!-- Contract Detail Modal -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="detailTitle">Contract Details</h2>
+                <span class="close-btn" onclick="closeDetailModal()">&times;</span>
+            </div>
+            
+            <div class="detail-actions" style="margin-bottom: 20px;">
+                <button class="edit-btn" onclick="openEditModal()">✏️ Edit</button>
+                <button class="status-btn" onclick="openUpdateStatusModal()">📊 Update Status</button>
+            </div>
+            
+            <div class="detail-grid" id="detailContent">
+                <!-- Detail content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Contract Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Contract</h2>
+                <span class="close-btn" onclick="closeEditModal()">&times;</span>
+            </div>
+            
+            <form id="editContractForm" onsubmit="updateContract(event)">
+                <input type="hidden" id="editContractId">
+                
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="editDescription" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Type</label>
+                    <input type="text" id="editDuration" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Linked Worker ID</label>
+                    <input type="text" id="editWorkerId" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Progress Status</label>
+                    <input type="text" id="editAmount" placeholder="Amount" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="editStatus">
+                            <option value="Not Started">Not Started</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Submission Date</label>
+                        <input type="date" id="editSubmissionDate" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Image</label>
+                    <input type="file" id="editImage" accept="image/*" onchange="previewEditImage(event)">
+                    <div class="image-preview" id="editImagePreview"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Submitted By</label>
+                    <div class="submitted-by" style="margin-top: 0;">
+                        <img src="" id="editAvatar" alt="">
+                        <div class="submitted-info">
+                            <h4 id="editSubmitterName">Sophia Patel</h4>
+                            <p id="editSubmitterEmail">Marketing:spatel@careconnect.com</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Update Contract</button>
+                    <button type="button" class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Update Status Modal -->
+    <div class="modal" id="statusModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Update Contract Status</h2>
+                <span class="close-btn" onclick="closeStatusModal()">&times;</span>
+            </div>
+            
+            <form id="updateStatusForm" onsubmit="updateContractStatus(event)">
+                <input type="hidden" id="statusContractId">
+                
+                <div class="form-group">
+                    <label>Current Status</label>
+                    <select id="newStatus">
+                        <option value="Not Started">Not Started</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-primary" style="margin-top: 20px;">Update Status</button>
+            </form>
+        </div>
+    </div>
+
+    
+  
+    <!-- Remove Firebase scripts, add Supabase -->
     <script>
-        // Track task completion
-        let task1Completed = false;
-        let task2Completed = false;
-        const tasksCompleted = localStorage.getItem('tasksCompleted') === 'true';
+        // Initialize Supabase
+        const supabaseUrl = 'https://alstwqjloygtixumjqvu.supabase.co';
+        const supabaseKey = 'sb_publishable_kd3TziVC0QM_-IF0IcFqFw_nHCwPkkj';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Sample creators data with real avatar images
-        const members = [
-            {
-                name: 'Rihanna',
-                channel: '@rihannayoutube',
-                subscribers: '2.5M',
-                rating: '4.7',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rihanna&backgroundColor=b6e3f4',
-                link: 'https://youtube.com/@rihanna'
-            },
-            {
-                name: 'Eminem',
-                channel: '@eminem',
-                subscribers: '1.8M',
-                rating: '4.7',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Eminem&backgroundColor=c0aede',
-                link: 'https://youtube.com/@eminem'
-            },
-            {
-                name: 'Mac Miller',
-                channel: '@macmiller',
-                subscribers: '950K',
-                rating: '4.7',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=MacMiller&backgroundColor=d1d4f7',
-                link: 'https://youtube.com/@macmiller'
-            },
-            {
-                name: 'Your Channel',
-                channel: '@yourchannel',
-                subscribers: '5.2K',
-                rating: '4.7',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=YourChannel&backgroundColor=ffdfbf',
-                link: 'https://youtube.com/@YOURCHANNEL'
-            },
-            {
-                name: 'Sarah Johnson',
-                channel: '@sarahj',
-                subscribers: '12K',
-                rating: '4.7',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah&backgroundColor=ffb3ba',
-                link: 'https://youtube.com/@sarahj'
-            },
-            {
-                name: 'Mike Chen',
-                channel: '@mikechen',
-                subscribers: '8.7K',
-                rating: '4.7',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mike&backgroundColor=baffc9',
-                link: 'https://youtube.com/@mikechen'
-            },
-            {
-                name: 'Alex Rivera',
-                channel: '@alexr',
-                subscribers: '15.3K',
-                rating: '4.8',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=ffffba',
-                link: 'https://youtube.com/@alexr'
-            },
-            {
-                name: 'Priya Patel',
-                channel: '@priyap',
-                subscribers: '9.1K',
-                rating: '4.6',
-                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Priya&backgroundColor=c0f0e8',
-                link: 'https://youtube.com/@priyap'
-            }
-        ];
 
-        // Sample background images for featured section
-        const backgroundImages = [
-            'https://picsum.photos/1200/400?random=1',
-            'https://picsum.photos/1200/400?random=2',
-            'https://picsum.photos/1200/400?random=3'
-        ];
-
-        // Initialize
-        window.onload = function() {
-            loadMembers();
-            rotateBackground();
+        async function loadContracts() {
+            const { data: contracts, error } = await supabase
+                .from('contracts')
+                .select('*')
+                .order('submissionDate', { ascending: false });
             
-            if (!tasksCompleted) {
-                setTimeout(() => {
-                    document.getElementById('mainContent').classList.add('blur');
-                    document.getElementById('taskModal').style.display = 'block';
-                }, 3000);
+            if (error) console.error('Error:', error);
+            else {
+                displayContracts(contracts);
+                displayProgress(contracts);
             }
-        };
-
-        // Rotate featured background
-        function rotateBackground() {
-            const featured = document.querySelector('.featured-movie');
-            let index = 0;
-            
-            setInterval(() => {
-                featured.style.background = `linear-gradient(145deg, rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('${backgroundImages[index]}') center/cover`;
-                index = (index + 1) % backgroundImages.length;
-            }, 5000);
         }
 
-        // Load members into grid with images
-        function loadMembers() {
-            const grid = document.getElementById('membersGrid');
-            grid.innerHTML = members.map((member, index) => `
-                <div class="movie-card">
-                    <div class="movie-thumbnail">
-                        <img src="${member.avatar}" alt="${member.name}" loading="lazy">
+        async function uploadImage(file) {
+            const fileName = `${Date.now()}_${file.name}`;
+            const { data, error } = await supabase.storage
+                .from('contract-images')
+                .upload(fileName, file);
+            
+            if (error) throw error;
+            
+            // Get public URL
+            const { data: { publicUrl } } = supabase.storage
+                .from('contract-images')
+                .getPublicUrl(fileName);
+            
+            return publicUrl;
+        }
+
+        // Initialize Firebase
+        const db = firebase.firestore();
+
+        // Global variables
+        let currentFilter = 'all';
+        let currentPage = 'home';
+        let selectedContract = null;
+        let isAdmin = false;
+
+        // Admin Login
+        function adminLogin() {
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            // Simple admin check - in production, use Firebase Auth
+            if (username === 'admin' && password === 'admin123') {
+                isAdmin = true;
+                document.getElementById('loginModal').style.display = 'none';
+                loadContracts();
+            } else {
+                alert('Invalid credentials');
+            }
+        }
+
+
+        // Display contracts on homepage
+        function displayContracts(contracts) {
+            const filtered = filterContracts(contracts);
+            const grid = document.getElementById('contractsGrid');
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #999;">No contracts found</div>';
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(contract => `
+                <div class="contract-card" data-status="${contract.status}" onclick="viewContract('${contract.id}')">
+                    <div class="contract-amount">₦${contract.amount}</div>
+                    <div class="contract-title">${contract.title}</div>
+                    <div class="contract-company">at ${contract.company}</div>
+                    <div class="contract-meta">
+                        <span class="status-badge ${contract.status.toLowerCase().replace(' ', '-')}">${contract.status}</span>
+                        <span>📅 ${new Date(contract.submissionDate).toLocaleDateString()}</span>
                     </div>
-                    <div class="movie-rating">
-                        ⭐ ${member.rating} Ratings <span>UHD+</span>
-                    </div>
-                    <div class="movie-title">${member.name}</div>
-                    <div class="movie-channel">${member.channel}</div>
-                    <div style="color: #808080; font-size: 0.9em; margin: 5px 0;">${member.subscribers} subs</div>
-                    <a href="${member.link}" target="_blank" style="text-decoration: none;">
-                        <button style="width: 100%; background: #ff0000; color: white; border: none; padding: 8px; border-radius: 20px; margin-top: 10px; cursor: pointer;">Subscribe</button>
-                    </a>
                 </div>
             `).join('');
         }
 
-        // Search function
-        function searchCreator() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.movie-card');
+        // Display progress list
+        function displayProgress(contracts) {
+            const filtered = filterContracts(contracts);
+            const list = document.getElementById('progressList');
             
-            cards.forEach(card => {
-                const title = card.querySelector('.movie-title').textContent.toLowerCase();
-                if (title.includes(searchTerm) || searchTerm === '') {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // Handle file upload
-        function handleUpload(taskNum, input) {
-            if (input.files && input.files[0]) {
-                const statusDiv = document.getElementById(`uploadStatus${taskNum}`);
-                statusDiv.classList.remove('hidden');
-                
-                if (taskNum === 1) {
-                    task1Completed = true;
-                    document.getElementById('task1').classList.add('completed');
-                } else {
-                    task2Completed = true;
-                    document.getElementById('task2').classList.add('completed');
-                }
-                
-                checkAllTasks();
+            if (filtered.length === 0) {
+                list.innerHTML = '<div style="text-align: center; padding: 50px; color: #999;">No contracts found</div>';
+                return;
             }
+            
+            list.innerHTML = filtered.map(contract => `
+                <div class="progress-item" onclick="viewContract('${contract.id}')">
+                    <div class="progress-status ${contract.status.toLowerCase().replace(' ', '-')}"></div>
+                    <div class="progress-content">
+                        <div class="progress-title">
+                            <span style="font-weight: 600;">${contract.status.toUpperCase()}</span> — ${contract.title}
+                        </div>
+                        <div class="progress-date">Posted on ${new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // Check all tasks
-        function checkAllTasks() {
-            const submitBtn = document.getElementById('submitBtn');
-            if (task1Completed && task2Completed) {
-                submitBtn.disabled = false;
-            }
+        // Filter contracts by status
+        function filterContracts(contracts) {
+            if (currentFilter === 'all') return contracts;
+            return contracts.filter(c => c.status === currentFilter);
         }
 
-        // Submit tasks
-        function submitTasks() {
-            if (task1Completed && task2Completed) {
-                localStorage.setItem('tasksCompleted', 'true');
-                document.getElementById('taskModal').style.display = 'none';
-                document.getElementById('mainContent').classList.remove('blur');
-            }
+        // Search contracts
+        function searchContracts() {
+            // Implementation would search through contracts
+            loadContracts();
         }
 
-        // Close modal
-        function closeModal() {
-            if (task1Completed && task2Completed) {
-                document.getElementById('taskModal').style.display = 'none';
-                document.getElementById('mainContent').classList.remove('blur');
+        function searchProgress() {
+            loadContracts();
+        }
+
+        // Page navigation
+        function showPage(page) {
+            currentPage = page;
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (page === 'home') {
+                document.getElementById('homePage').style.display = 'block';
+                document.getElementById('progressPage').style.display = 'none';
             } else {
-                alert('Please complete both tasks first!');
+                document.getElementById('homePage').style.display = 'none';
+                document.getElementById('progressPage').style.display = 'block';
             }
         }
 
-        // Open modal
-        function openModal() {
-            document.getElementById('mainContent').classList.add('blur');
-            document.getElementById('taskModal').style.display = 'block';
+        // Filter modal
+        function openFilterModal() {
+            document.getElementById('filterModal').style.display = 'flex';
+        }
+
+        function closeFilterModal() {
+            document.getElementById('filterModal').style.display = 'none';
+        }
+
+        function selectFilter(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById(`filter${status === 'all' ? 'All' : status.replace(' ', '')}`).classList.add('selected');
+        }
+
+        function applyFilter() {
+            closeFilterModal();
+            loadContracts();
+        }
+
+        function clearFilter() {
+            currentFilter = 'all';
+            document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById('filterAll').classList.add('selected');
+        }
+
+        // Add contract modal
+        function openAddModal() {
+            document.getElementById('addModal').style.display = 'block';
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').style.display = 'none';
+            document.getElementById('addContractForm').reset();
+        }
+
+        async function saveNewContract(event) {
+            event.preventDefault();
+            
+            const contract = {
+                amount: document.getElementById('amount').value,
+                title: document.getElementById('description').value.split(' ').slice(0, 3).join(' ') + '...',
+                company: document.getElementById('company').value,
+                status: document.getElementById('status').value,
+                submissionDate: document.getElementById('submissionDate').value,
+                duration: document.getElementById('duration').value,
+                description: document.getElementById('description').value,
+                workerId: document.getElementById('workerId').value,
+                submittedBy: 'Admin',
+                submittedEmail: 'admin@kro.com',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
+            };
+
+            try {
+                await db.collection('contracts').add(contract);
+                closeAddModal();
+                loadContracts();
+                alert('Contract created successfully!');
+            } catch (error) {
+                console.error('Error saving contract:', error);
+                alert('Demo mode: Contract would be saved here');
+                closeAddModal();
+                loadContracts();
+            }
+        }
+
+        // View contract details
+        async function viewContract(id) {
+            selectedContract = id;
+            
+            try {
+                const doc = await db.collection('contracts').doc(id).get();
+                const contract = { id: doc.id, ...doc.data() };
+                
+                document.getElementById('detailTitle').textContent = contract.title || 'Contract Details';
+                document.getElementById('detailContent').innerHTML = `
+                    <div class="detail-row">
+                        <div class="detail-label">Contract Details</div>
+                        <div class="detail-value">${contract.duration || 'N/A'}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Description</div>
+                        <div class="detail-value">${contract.description || 'N/A'}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Duration</div>
+                        <div class="detail-value">${contract.duration || 'N/A'}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value">
+                            <span class="status-badge ${contract.status?.toLowerCase().replace(' ', '-')}">${contract.status || 'N/A'}</span>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Amount</div>
+                        <div class="detail-value">₦${contract.amount || '0'}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Submission Date</div>
+                        <div class="detail-value">${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'N/A'}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Submitted By</div>
+                        <div class="detail-value">
+                            <div class="submitted-by">
+                                <img src="${contract.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=User'}" alt="">
+                                <div class="submitted-info">
+                                    <h4>${contract.submittedBy || 'Unknown'}</h4>
+                                    <p>${contract.submittedEmail || ''}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Pre-fill edit form
+                document.getElementById('editContractId').value = contract.id;
+                document.getElementById('editDescription').value = contract.description || '';
+                document.getElementById('editDuration').value = contract.duration || '';
+                document.getElementById('editWorkerId').value = contract.workerId || '';
+                document.getElementById('editAmount').value = contract.amount || '';
+                document.getElementById('editStatus').value = contract.status || 'Not Started';
+                document.getElementById('editSubmissionDate').value = contract.submissionDate || '';
+                document.getElementById('editSubmitterName').textContent = contract.submittedBy || 'Sophia Patel';
+                document.getElementById('editSubmitterEmail').textContent = contract.submittedEmail || 'Marketing:spatel@careconnect.com';
+                document.getElementById('editAvatar').src = contract.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sophia';
+                
+                // Pre-fill status modal
+                document.getElementById('statusContractId').value = contract.id;
+                document.getElementById('newStatus').value = contract.status || 'Not Started';
+                
+                document.getElementById('detailModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading contract:', error);
+                alert('Demo mode: Viewing contract');
+            }
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        // Edit modal
+        function openEditModal() {
+            closeDetailModal();
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        async function updateContract(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('editContractId').value;
+            
+            const updates = {
+                description: document.getElementById('editDescription').value,
+                duration: document.getElementById('editDuration').value,
+                workerId: document.getElementById('editWorkerId').value,
+                amount: document.getElementById('editAmount').value,
+                status: document.getElementById('editStatus').value,
+                submissionDate: document.getElementById('editSubmissionDate').value,
+                title: document.getElementById('editDescription').value.split(' ').slice(0, 3).join(' ') + '...'
+            };
+
+            try {
+                await db.collection('contracts').doc(id).update(updates);
+                closeEditModal();
+                loadContracts();
+                alert('Contract updated successfully!');
+            } catch (error) {
+                console.error('Error updating contract:', error);
+                alert('Demo mode: Contract would be updated here');
+                closeEditModal();
+                loadContracts();
+            }
+        }
+
+        // Status modal
+        function openUpdateStatusModal() {
+            closeDetailModal();
+            document.getElementById('statusModal').style.display = 'block';
+        }
+
+        function closeStatusModal() {
+            document.getElementById('statusModal').style.display = 'none';
+        }
+
+        async function updateContractStatus(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('statusContractId').value;
+            const newStatus = document.getElementById('newStatus').value;
+
+            try {
+                await db.collection('contracts').doc(id).update({ status: newStatus });
+                closeStatusModal();
+                loadContracts();
+                alert('Status updated successfully!');
+            } catch (error) {
+                console.error('Error updating status:', error);
+                alert('Demo mode: Status would be updated here');
+                closeStatusModal();
+                loadContracts();
+            }
+        }
+
+        // Image preview
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewEditImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('editImagePreview').innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
         }
     </script>
 </body>
