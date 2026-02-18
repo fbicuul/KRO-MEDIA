@@ -309,6 +309,147 @@
             font-size: 0.85em;
         }
         
+        /* YouTube Banners Section */
+        .youtube-section {
+            margin: 50px 0 30px;
+            padding: 20px 0;
+            border-top: 2px solid #eee;
+        }
+        
+        .section-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title span {
+            background: #ff0000;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: 0.8em;
+        }
+        
+        .banners-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+        
+        .banners-slider {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .banner-slide {
+            min-width: 100%;
+            padding: 0 10px;
+        }
+        
+        .youtube-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 40px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .youtube-banner:hover {
+            transform: scale(1.02);
+        }
+        
+        .banner-content {
+            flex: 1;
+        }
+        
+        .banner-content h3 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .banner-content p {
+            opacity: 0.9;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        
+        .banner-stats {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .banner-button {
+            background: white;
+            color: #333;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+        
+        .banner-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .banner-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            margin-left: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .slider-dot.active {
+            background: #d32f2f;
+        }
+        
         /* Modal Styles */
         .modal {
             display: none;
@@ -429,15 +570,6 @@
             border: none;
             border-radius: 8px;
             font-weight: 600;
-            cursor: pointer;
-        }
-        
-        .btn-danger {
-            background: #f44336;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
         }
         
@@ -599,14 +731,23 @@
             .filter-btn, .add-btn {
                 flex: 1;
             }
+            .youtube-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 30px 20px;
+            }
+            .banner-avatar {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+            .banner-stats {
+                justify-content: center;
+            }
         }
     </style>
     
+    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 </head>
 <body>
     <!-- Admin Login Modal -->
@@ -648,6 +789,24 @@
 
             <div class="contracts-grid" id="contractsGrid">
                 <!-- Contracts will be loaded here -->
+                <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #999;">Loading contracts...</div>
+            </div>
+
+            <!-- YouTube Growth Banners Section -->
+            <div class="youtube-section">
+                <div class="section-title">
+                    🎥 YouTube Creator Community <span>Support & Grow Together</span>
+                </div>
+                
+                <div class="banners-container">
+                    <div class="banners-slider" id="bannersSlider">
+                        <!-- Banners will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="slider-controls" id="sliderControls">
+                    <!-- Dots will be loaded here -->
+                </div>
             </div>
         </div>
 
@@ -668,6 +827,7 @@
 
             <div class="progress-list" id="progressList">
                 <!-- Progress items will be loaded here -->
+                <div style="text-align: center; padding: 50px; color: #999;">Loading contracts...</div>
             </div>
         </div>
     </div>
@@ -814,8 +974,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Progress Status</label>
-                    <input type="text" id="editAmount" placeholder="Amount" required>
+                    <label>Amount (₦)</label>
+                    <input type="number" id="editAmount" required>
                 </div>
                 
                 <div class="form-row">
@@ -845,8 +1005,8 @@
                     <div class="submitted-by" style="margin-top: 0;">
                         <img src="" id="editAvatar" alt="">
                         <div class="submitted-info">
-                            <h4 id="editSubmitterName">Sophia Patel</h4>
-                            <p id="editSubmitterEmail">Marketing:spatel@careconnect.com</p>
+                            <h4 id="editSubmitterName">Admin</h4>
+                            <p id="editSubmitterEmail">admin@kro.com</p>
                         </div>
                     </div>
                 </div>
@@ -871,7 +1031,7 @@
                 <input type="hidden" id="statusContractId">
                 
                 <div class="form-group">
-                    <label>Current Status</label>
+                    <label>New Status</label>
                     <select id="newStatus">
                         <option value="Not Started">Not Started</option>
                         <option value="In Progress">In Progress</option>
@@ -884,109 +1044,199 @@
         </div>
     </div>
 
-    
-  
-    <!-- Remove Firebase scripts, add Supabase -->
     <script>
+        // ==================== SUPABASE CONFIGURATION ====================
+        // REPLACE THESE WITH YOUR ACTUAL SUPABASE CREDENTIALS
+        const SUPABASE_URL = 'https://alstwqjloygtixumjqvu.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_kd3TziVC0QM_-IF0IcFqFw_nHCwPkkj';
+        
         // Initialize Supabase
-        const supabaseUrl = 'https://alstwqjloygtixumjqvu.supabase.co';
-        const supabaseKey = 'sb_publishable_kd3TziVC0QM_-IF0IcFqFw_nHCwPkkj';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-
-        async function loadContracts() {
-            const { data: contracts, error } = await supabase
-                .from('contracts')
-                .select('*')
-                .order('submissionDate', { ascending: false });
-            
-            if (error) console.error('Error:', error);
-            else {
-                displayContracts(contracts);
-                displayProgress(contracts);
-            }
-        }
-
-        async function uploadImage(file) {
-            const fileName = `${Date.now()}_${file.name}`;
-            const { data, error } = await supabase.storage
-                .from('contract-images')
-                .upload(fileName, file);
-            
-            if (error) throw error;
-            
-            // Get public URL
-            const { data: { publicUrl } } = supabase.storage
-                .from('contract-images')
-                .getPublicUrl(fileName);
-            
-            return publicUrl;
-        }
-
-        // Initialize Firebase
-        const db = firebase.firestore();
-
-        // Global variables
+        // ==================== GLOBAL VARIABLES ====================
         let currentFilter = 'all';
         let currentPage = 'home';
         let selectedContract = null;
         let isAdmin = false;
+        let contracts = [];
+        let youtubeCreators = [];
+        let currentBannerIndex = 0;
+        let bannerInterval;
 
-        // Admin Login
+        // ==================== YOUTUBE CREATORS DATA ====================
+        // Add your colleagues' YouTube channels here
+        const creators = [
+            {
+                name: 'Tech with Sarah',
+                channel: '@techsarah',
+                subscribers: '15.2K',
+                videos: '234',
+                avatar: '👩‍💻',
+                color: 'linear-gradient(135deg, #ff6b6b, #ff8e8e)',
+                link: 'https://youtube.com/@techsarah',
+                description: 'Tech reviews & tutorials'
+            },
+            {
+                name: 'Mike Gaming',
+                channel: '@mikegaming',
+                subscribers: '28.7K',
+                videos: '567',
+                avatar: '🎮',
+                color: 'linear-gradient(135deg, #4ecdc4, #45b7d1)',
+                link: 'https://youtube.com/@mikegaming',
+                description: 'Daily gaming content & live streams'
+            },
+            {
+                name: 'Cooking with Priya',
+                channel: '@priyacooks',
+                subscribers: '42.3K',
+                videos: '189',
+                avatar: '👩‍🍳',
+                color: 'linear-gradient(135deg, #f9d56e, #f8c471)',
+                link: 'https://youtube.com/@priyacooks',
+                description: 'Easy recipes & cooking tips'
+            },
+            {
+                name: 'Fitness with Alex',
+                channel: '@alexfitness',
+                subscribers: '31.8K',
+                videos: '312',
+                avatar: '💪',
+                color: 'linear-gradient(135deg, #a8e6cf, #d4edda)',
+                link: 'https://youtube.com/@alexfitness',
+                description: 'Home workouts & nutrition'
+            },
+            {
+                name: 'Music with James',
+                channel: '@jamesmusic',
+                subscribers: '53.1K',
+                videos: '178',
+                avatar: '🎸',
+                color: 'linear-gradient(135deg, #d4a5a5, #e6b8b8)',
+                link: 'https://youtube.com/@jamesmusic',
+                description: 'Guitar lessons & music theory'
+            }
+        ];
+
+        // ==================== ADMIN LOGIN ====================
         function adminLogin() {
             const username = document.getElementById('adminUsername').value;
             const password = document.getElementById('adminPassword').value;
             
-            // Simple admin check - in production, use Firebase Auth
             if (username === 'admin' && password === 'admin123') {
                 isAdmin = true;
                 document.getElementById('loginModal').style.display = 'none';
                 loadContracts();
+                initBanners();
             } else {
                 alert('Invalid credentials');
             }
         }
 
+        // ==================== CONTRACTS FUNCTIONS ====================
+        async function loadContracts() {
+            try {
+                const { data, error } = await supabase
+                    .from('contracts')
+                    .select('*')
+                    .order('submissionDate', { ascending: false });
+                
+                if (error) throw error;
+                
+                contracts = data || [];
+                displayContracts();
+                displayProgress();
+            } catch (error) {
+                console.error('Error loading contracts:', error);
+                // Use sample data if no contracts exist
+                if (contracts.length === 0) {
+                    contracts = [
+                        {
+                            id: 1,
+                            amount: '20000',
+                            title: 'Cleaning Lady Needed',
+                            company: 'K.R.O Services',
+                            status: 'In Progress',
+                            submissionDate: '2023-02-12',
+                            duration: '2 Days Contract',
+                            description: 'To work with K.R.O Cleaning Service on a two days cleaning contract at Maitama',
+                            workerId: 'wrk-012',
+                            submittedBy: 'Admin',
+                            submittedEmail: 'admin@kro.com',
+                            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
+                        },
+                        {
+                            id: 2,
+                            amount: '15000',
+                            title: 'harassment',
+                            company: 'Workplace Resolution',
+                            status: 'Completed',
+                            submissionDate: '2024-06-18',
+                            duration: '1 Day Contract',
+                            description: 'Workplace harassment mediation session',
+                            workerId: 'wrk-023',
+                            submittedBy: 'Admin',
+                            submittedEmail: 'admin@kro.com',
+                            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
+                        },
+                        {
+                            id: 3,
+                            amount: '5000',
+                            title: 'mental health',
+                            company: 'Employee Wellness',
+                            status: 'Not Started',
+                            submissionDate: '2023-09-10',
+                            duration: '3 Days Contract',
+                            description: 'Mental health awareness session',
+                            workerId: 'wrk-045',
+                            submittedBy: 'Admin',
+                            submittedEmail: 'admin@kro.com',
+                            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
+                        }
+                    ];
+                    displayContracts();
+                    displayProgress();
+                }
+            }
+        }
 
-        // Display contracts on homepage
-        function displayContracts(contracts) {
+        function displayContracts() {
             const filtered = filterContracts(contracts);
             const grid = document.getElementById('contractsGrid');
             
-            if (filtered.length === 0) {
+            if (!filtered || filtered.length === 0) {
                 grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #999;">No contracts found</div>';
                 return;
             }
             
             grid.innerHTML = filtered.map(contract => `
                 <div class="contract-card" data-status="${contract.status}" onclick="viewContract('${contract.id}')">
-                    <div class="contract-amount">₦${contract.amount}</div>
-                    <div class="contract-title">${contract.title}</div>
+                    <div class="contract-amount">₦${parseFloat(contract.amount).toLocaleString()}</div>
+                    <div class="contract-title">${contract.title || contract.description?.substring(0, 30) + '...'}</div>
                     <div class="contract-company">at ${contract.company}</div>
                     <div class="contract-meta">
-                        <span class="status-badge ${contract.status.toLowerCase().replace(' ', '-')}">${contract.status}</span>
+                        <span class="status-badge ${contract.status?.toLowerCase().replace(' ', '-')}">${contract.status}</span>
                         <span>📅 ${new Date(contract.submissionDate).toLocaleDateString()}</span>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Display progress list
-        function displayProgress(contracts) {
+        function displayProgress() {
             const filtered = filterContracts(contracts);
             const list = document.getElementById('progressList');
             
-            if (filtered.length === 0) {
+            if (!filtered || filtered.length === 0) {
                 list.innerHTML = '<div style="text-align: center; padding: 50px; color: #999;">No contracts found</div>';
                 return;
             }
             
             list.innerHTML = filtered.map(contract => `
                 <div class="progress-item" onclick="viewContract('${contract.id}')">
-                    <div class="progress-status ${contract.status.toLowerCase().replace(' ', '-')}"></div>
+                    <div class="progress-status ${contract.status?.toLowerCase().replace(' ', '-')}"></div>
                     <div class="progress-content">
                         <div class="progress-title">
-                            <span style="font-weight: 600;">${contract.status.toUpperCase()}</span> — ${contract.title}
+                            <span style="font-weight: 600;">${contract.status?.toUpperCase()}</span> — ${contract.title || contract.description?.substring(0, 30) + '...'}
                         </div>
                         <div class="progress-date">Posted on ${new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
                     </div>
@@ -994,23 +1244,71 @@
             `).join('');
         }
 
-        // Filter contracts by status
-        function filterContracts(contracts) {
-            if (currentFilter === 'all') return contracts;
-            return contracts.filter(c => c.status === currentFilter);
+        function filterContracts(contractsList) {
+            if (currentFilter === 'all') return contractsList;
+            return contractsList.filter(c => c.status === currentFilter);
         }
 
-        // Search contracts
+        // ==================== SEARCH FUNCTIONS ====================
         function searchContracts() {
-            // Implementation would search through contracts
-            loadContracts();
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = contracts.filter(c => 
+                c.title?.toLowerCase().includes(searchTerm) || 
+                c.description?.toLowerCase().includes(searchTerm) ||
+                c.company?.toLowerCase().includes(searchTerm)
+            );
+            displayFilteredResults(filtered);
         }
 
         function searchProgress() {
-            loadContracts();
+            const searchTerm = document.getElementById('progressSearchInput').value.toLowerCase();
+            const filtered = contracts.filter(c => 
+                c.title?.toLowerCase().includes(searchTerm) || 
+                c.description?.toLowerCase().includes(searchTerm) ||
+                c.company?.toLowerCase().includes(searchTerm)
+            );
+            displayFilteredResults(filtered);
         }
 
-        // Page navigation
+        function displayFilteredResults(filtered) {
+            if (currentPage === 'home') {
+                const grid = document.getElementById('contractsGrid');
+                if (filtered.length === 0) {
+                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #999;">No contracts found</div>';
+                } else {
+                    grid.innerHTML = filtered.map(contract => `
+                        <div class="contract-card" data-status="${contract.status}" onclick="viewContract('${contract.id}')">
+                            <div class="contract-amount">₦${parseFloat(contract.amount).toLocaleString()}</div>
+                            <div class="contract-title">${contract.title || contract.description?.substring(0, 30) + '...'}</div>
+                            <div class="contract-company">at ${contract.company}</div>
+                            <div class="contract-meta">
+                                <span class="status-badge ${contract.status?.toLowerCase().replace(' ', '-')}">${contract.status}</span>
+                                <span>📅 ${new Date(contract.submissionDate).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } else {
+                const list = document.getElementById('progressList');
+                if (filtered.length === 0) {
+                    list.innerHTML = '<div style="text-align: center; padding: 50px; color: #999;">No contracts found</div>';
+                } else {
+                    list.innerHTML = filtered.map(contract => `
+                        <div class="progress-item" onclick="viewContract('${contract.id}')">
+                            <div class="progress-status ${contract.status?.toLowerCase().replace(' ', '-')}"></div>
+                            <div class="progress-content">
+                                <div class="progress-title">
+                                    <span style="font-weight: 600;">${contract.status?.toUpperCase()}</span> — ${contract.title || contract.description?.substring(0, 30) + '...'}
+                                </div>
+                                <div class="progress-date">Posted on ${new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        // ==================== PAGE NAVIGATION ====================
         function showPage(page) {
             currentPage = page;
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -1025,7 +1323,7 @@
             }
         }
 
-        // Filter modal
+        // ==================== FILTER MODAL ====================
         function openFilterModal() {
             document.getElementById('filterModal').style.display = 'flex';
         }
@@ -1037,21 +1335,25 @@
         function selectFilter(status) {
             currentFilter = status;
             document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
-            document.getElementById(`filter${status === 'all' ? 'All' : status.replace(' ', '')}`).classList.add('selected');
+            const filterId = status === 'all' ? 'filterAll' : `filter${status.replace(' ', '')}`;
+            document.getElementById(filterId).classList.add('selected');
         }
 
         function applyFilter() {
             closeFilterModal();
-            loadContracts();
+            displayContracts();
+            displayProgress();
         }
 
         function clearFilter() {
             currentFilter = 'all';
             document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
             document.getElementById('filterAll').classList.add('selected');
+            displayContracts();
+            displayProgress();
         }
 
-        // Add contract modal
+        // ==================== ADD CONTRACT MODAL ====================
         function openAddModal() {
             document.getElementById('addModal').style.display = 'block';
         }
@@ -1059,45 +1361,109 @@
         function closeAddModal() {
             document.getElementById('addModal').style.display = 'none';
             document.getElementById('addContractForm').reset();
+            document.getElementById('imagePreview').innerHTML = '<span style="color: #999;">Choose an image...</span>';
         }
 
         async function saveNewContract(event) {
             event.preventDefault();
             
-            const contract = {
+            // Get form values
+            const description = document.getElementById('description').value;
+            const title = description.split(' ').slice(0, 4).join(' ') + '...';
+            
+            const newContract = {
                 amount: document.getElementById('amount').value,
-                title: document.getElementById('description').value.split(' ').slice(0, 3).join(' ') + '...',
+                title: title,
                 company: document.getElementById('company').value,
                 status: document.getElementById('status').value,
                 submissionDate: document.getElementById('submissionDate').value,
                 duration: document.getElementById('duration').value,
-                description: document.getElementById('description').value,
+                description: description,
                 workerId: document.getElementById('workerId').value,
                 submittedBy: 'Admin',
                 submittedEmail: 'admin@kro.com',
                 avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
             };
 
+            // Handle image upload if present
+            const imageFile = document.getElementById('contractImage').files[0];
+            if (imageFile) {
+                try {
+                    const imageUrl = await uploadImage(imageFile);
+                    newContract.image_url = imageUrl;
+                } catch (error) {
+                    console.error('Image upload failed:', error);
+                }
+            }
+
             try {
-                await db.collection('contracts').add(contract);
+                const { data, error } = await supabase
+                    .from('contracts')
+                    .insert([newContract])
+                    .select();
+                
+                if (error) throw error;
+                
                 closeAddModal();
                 loadContracts();
                 alert('Contract created successfully!');
             } catch (error) {
                 console.error('Error saving contract:', error);
-                alert('Demo mode: Contract would be saved here');
-                closeAddModal();
-                loadContracts();
+                alert('Error saving contract. Please try again.');
             }
         }
 
-        // View contract details
+        // ==================== IMAGE UPLOAD ====================
+        async function uploadImage(file) {
+            const fileName = `${Date.now()}_${file.name}`;
+            
+            const { data, error } = await supabase.storage
+                .from('contract-images')
+                .upload(fileName, file);
+            
+            if (error) throw error;
+            
+            const { data: { publicUrl } } = supabase.storage
+                .from('contract-images')
+                .getPublicUrl(fileName);
+            
+            return publicUrl;
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewEditImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('editImagePreview').innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // ==================== CONTRACT DETAIL ====================
         async function viewContract(id) {
             selectedContract = id;
             
             try {
-                const doc = await db.collection('contracts').doc(id).get();
-                const contract = { id: doc.id, ...doc.data() };
+                const { data: contract, error } = await supabase
+                    .from('contracts')
+                    .select('*')
+                    .eq('id', id)
+                    .single();
+                
+                if (error) throw error;
                 
                 document.getElementById('detailTitle').textContent = contract.title || 'Contract Details';
                 document.getElementById('detailContent').innerHTML = `
@@ -1121,7 +1487,7 @@
                     </div>
                     <div class="detail-row">
                         <div class="detail-label">Amount</div>
-                        <div class="detail-value">₦${contract.amount || '0'}</div>
+                        <div class="detail-value">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
                     </div>
                     <div class="detail-row">
                         <div class="detail-label">Submission Date</div>
@@ -1131,9 +1497,9 @@
                         <div class="detail-label">Submitted By</div>
                         <div class="detail-value">
                             <div class="submitted-by">
-                                <img src="${contract.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=User'}" alt="">
+                                <img src="${contract.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'}" alt="">
                                 <div class="submitted-info">
-                                    <h4>${contract.submittedBy || 'Unknown'}</h4>
+                                    <h4>${contract.submittedBy || 'Admin'}</h4>
                                     <p>${contract.submittedEmail || ''}</p>
                                 </div>
                             </div>
@@ -1149,9 +1515,9 @@
                 document.getElementById('editAmount').value = contract.amount || '';
                 document.getElementById('editStatus').value = contract.status || 'Not Started';
                 document.getElementById('editSubmissionDate').value = contract.submissionDate || '';
-                document.getElementById('editSubmitterName').textContent = contract.submittedBy || 'Sophia Patel';
-                document.getElementById('editSubmitterEmail').textContent = contract.submittedEmail || 'Marketing:spatel@careconnect.com';
-                document.getElementById('editAvatar').src = contract.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sophia';
+                document.getElementById('editSubmitterName').textContent = contract.submittedBy || 'Admin';
+                document.getElementById('editSubmitterEmail').textContent = contract.submittedEmail || 'admin@kro.com';
+                document.getElementById('editAvatar').src = contract.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin';
                 
                 // Pre-fill status modal
                 document.getElementById('statusContractId').value = contract.id;
@@ -1160,7 +1526,7 @@
                 document.getElementById('detailModal').style.display = 'block';
             } catch (error) {
                 console.error('Error loading contract:', error);
-                alert('Demo mode: Viewing contract');
+                alert('Error loading contract details');
             }
         }
 
@@ -1168,7 +1534,7 @@
             document.getElementById('detailModal').style.display = 'none';
         }
 
-        // Edit modal
+        // ==================== EDIT CONTRACT ====================
         function openEditModal() {
             closeDetailModal();
             document.getElementById('editModal').style.display = 'block';
@@ -1182,31 +1548,47 @@
             event.preventDefault();
             
             const id = document.getElementById('editContractId').value;
+            const description = document.getElementById('editDescription').value;
             
             const updates = {
-                description: document.getElementById('editDescription').value,
+                description: description,
                 duration: document.getElementById('editDuration').value,
                 workerId: document.getElementById('editWorkerId').value,
                 amount: document.getElementById('editAmount').value,
                 status: document.getElementById('editStatus').value,
                 submissionDate: document.getElementById('editSubmissionDate').value,
-                title: document.getElementById('editDescription').value.split(' ').slice(0, 3).join(' ') + '...'
+                title: description.split(' ').slice(0, 4).join(' ') + '...'
             };
 
+            // Handle image upload if present
+            const imageFile = document.getElementById('editImage').files[0];
+            if (imageFile) {
+                try {
+                    const imageUrl = await uploadImage(imageFile);
+                    updates.image_url = imageUrl;
+                } catch (error) {
+                    console.error('Image upload failed:', error);
+                }
+            }
+
             try {
-                await db.collection('contracts').doc(id).update(updates);
+                const { error } = await supabase
+                    .from('contracts')
+                    .update(updates)
+                    .eq('id', id);
+                
+                if (error) throw error;
+                
                 closeEditModal();
                 loadContracts();
                 alert('Contract updated successfully!');
             } catch (error) {
                 console.error('Error updating contract:', error);
-                alert('Demo mode: Contract would be updated here');
-                closeEditModal();
-                loadContracts();
+                alert('Error updating contract');
             }
         }
 
-        // Status modal
+        // ==================== UPDATE STATUS ====================
         function openUpdateStatusModal() {
             closeDetailModal();
             document.getElementById('statusModal').style.display = 'block';
@@ -1223,40 +1605,103 @@
             const newStatus = document.getElementById('newStatus').value;
 
             try {
-                await db.collection('contracts').doc(id).update({ status: newStatus });
+                const { error } = await supabase
+                    .from('contracts')
+                    .update({ status: newStatus })
+                    .eq('id', id);
+                
+                if (error) throw error;
+                
                 closeStatusModal();
                 loadContracts();
                 alert('Status updated successfully!');
             } catch (error) {
                 console.error('Error updating status:', error);
-                alert('Demo mode: Status would be updated here');
-                closeStatusModal();
-                loadContracts();
+                alert('Error updating status');
             }
         }
 
-        // Image preview
-        function previewImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('imagePreview').innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-                };
-                reader.readAsDataURL(file);
-            }
+        // ==================== YOUTUBE BANNERS ====================
+        function initBanners() {
+            // Populate creators array with your colleagues
+            youtubeCreators = creators;
+            
+            // Load banners
+            loadBanners();
+            
+            // Start auto-slide
+            startBannerSlide();
         }
 
-        function previewEditImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('editImagePreview').innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-                };
-                reader.readAsDataURL(file);
-            }
+        function loadBanners() {
+            const slider = document.getElementById('bannersSlider');
+            const controls = document.getElementById('sliderControls');
+            
+            slider.innerHTML = youtubeCreators.map((creator, index) => `
+                <div class="banner-slide">
+                    <div class="youtube-banner" onclick="window.open('${creator.link}', '_blank')" style="background: ${creator.color}">
+                        <div class="banner-content">
+                            <h3>${creator.name}</h3>
+                            <p>${creator.description}</p>
+                            <div class="banner-stats">
+                                <div class="stat">
+                                    <div class="stat-number">${creator.subscribers}</div>
+                                    <div class="stat-label">Subscribers</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">${creator.videos}</div>
+                                    <div class="stat-label">Videos</div>
+                                </div>
+                            </div>
+                            <span class="banner-button">Subscribe →</span>
+                        </div>
+                        <div class="banner-avatar">
+                            ${creator.avatar}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            controls.innerHTML = youtubeCreators.map((_, index) => `
+                <div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="goToBanner(${index})"></div>
+            `).join('');
         }
+
+        function startBannerSlide() {
+            bannerInterval = setInterval(() => {
+                currentBannerIndex = (currentBannerIndex + 1) % youtubeCreators.length;
+                updateBannerPosition();
+            }, 5000);
+        }
+
+        function goToBanner(index) {
+            currentBannerIndex = index;
+            updateBannerPosition();
+            
+            // Reset interval
+            clearInterval(bannerInterval);
+            startBannerSlide();
+        }
+
+        function updateBannerPosition() {
+            const slider = document.getElementById('bannersSlider');
+            slider.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
+            
+            // Update dots
+            document.querySelectorAll('.slider-dot').forEach((dot, index) => {
+                if (index === currentBannerIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            // Login modal is shown by default
+            // Everything else loads after admin login
+        };
     </script>
 </body>
 </html>
