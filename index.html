@@ -943,10 +943,7 @@
                 margin-left: 0;
                 margin-top: 30px;
             }
-            .nav-buttons {
-                display: none;
-            }
-            .media-col{
+            .action-bar{
                 flex-direction: column;
                 gap: 30px;
             }
@@ -998,19 +995,15 @@
 
         <!-- Action Bar -->
         <div class="action-bar">
-            <div class="media-col">
-                <div class="search-box">
-                    <input type="text" placeholder="Search contracts..." id="searchInput" onkeyup="searchContracts()">
-                </div>
-                <div>
-                    <button class="filter-btn" onclick="openFilterModal()">
-                    FILTER
-                    </button>
-                    <button class="add-btn" onclick="openAddModal()">
-                    + CREATE
-                    </button>
-                </div>
+            <div class="search-box">
+                <input type="text" placeholder="Search contracts..." id="searchInput" onkeyup="searchContracts()">
             </div>
+            <button class="filter-btn" onclick="openFilterModal()">
+                FILTER
+            </button>
+            <button class="add-btn" onclick="openAddModal()">
+                + CREATE
+            </button>
         </div>
 
 
@@ -1444,16 +1437,6 @@
                         <div class="banner-content">
                             <h3>${creator.name}</h3>
                             <p>${creator.description}</p>
-                            <div class="banner-stats">
-                                <div class="stat">
-                                    <div class="stat-number">${creator.subscribers}</div>
-                                    <div class="stat-label">Subscribers</div>
-                                </div>
-                                <div class="stat">
-                                    <div class="stat-number">${creator.videos}</div>
-                                    <div class="stat-label">Videos</div>
-                                </div>
-                            </div>
                             <button class="banner-button" onclick="event.stopPropagation(); window.open('${creator.link}', '_blank')">Subscribe →</button>
                         </div>
                         <div class="banner-avatar">
