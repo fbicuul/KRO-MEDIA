@@ -946,7 +946,7 @@
             .nav-buttons {
                 display: none;
             }
-            .filter-btn, .add-btn {
+            .media-col{
                 flex-direction: column;
                 gap: 30px;
             }
@@ -998,15 +998,19 @@
 
         <!-- Action Bar -->
         <div class="action-bar">
-            <div class="search-box">
-                <input type="text" placeholder="Search contracts..." id="searchInput" onkeyup="searchContracts()">
+            <div class="media-col">
+                <div class="search-box">
+                    <input type="text" placeholder="Search contracts..." id="searchInput" onkeyup="searchContracts()">
+                </div>
+                <div>
+                    <button class="filter-btn" onclick="openFilterModal()">
+                    FILTER
+                    </button>
+                    <button class="add-btn" onclick="openAddModal()">
+                    + CREATE
+                    </button>
+                </div>
             </div>
-            <button class="filter-btn" onclick="openFilterModal()">
-                FILTER
-            </button>
-            <button class="add-btn" onclick="openAddModal()">
-                + CREATE
-            </button>
         </div>
 
 
