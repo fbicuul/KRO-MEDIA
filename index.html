@@ -203,10 +203,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5em;
             margin-left: 30px;
             border: 3px solid rgba(255,255,255,0.3);
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .banner-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .slider-controls {
@@ -517,7 +523,9 @@
                                 <p>Loading creator information...</p>
                                 <button class="banner-button">Subscribe →</button>
                             </div>
-                            <div class="banner-avatar">⏳</div>
+                            <div class="banner-avatar">
+                                <img src="https://via.placeholder.com/150/ff3b9c/ffffff?text=..." alt="Avatar">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -598,21 +606,25 @@
 
         <!-- Featured Sections -->
         <div class="featured-section">
+            <!-- Top 5 Highest Contracts -->
             <div class="featured-card">
                 <div class="featured-header">
-                    <h3>⚡ Highest Contract</h3>
+                    <h3>⚡ Top 5 Highest Contracts</h3>
                     <span class="see-all">See All →</span>
                 </div>
                 
-                <div class="bid-item" id="highestContract1">
-                    <div class="bid-info">
-                        <div class="bid-avatar">💰</div>
-                        <div>
-                            <div class="bid-name">Loading...</div>
-                            <div class="bid-amount">₦0</div>
+                <div id="topContractsList">
+                    <!-- Top 5 contracts will be loaded here -->
+                    <div class="bid-item">
+                        <div class="bid-info">
+                            <div class="bid-avatar">💰</div>
+                            <div>
+                                <div class="bid-name">Loading...</div>
+                                <div class="bid-amount">₦0</div>
+                            </div>
                         </div>
+                        <button class="bid-button">View</button>
                     </div>
-                    <button class="bid-button">View</button>
                 </div>
             </div>
 
@@ -830,7 +842,7 @@
         // Your existing Google Sheets API for contracts
         const GOOGLE_SHEETS_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         
-        // NEW: YouTube Creators Google Sheets API URL
+        // YouTube Creators Google Sheets API URL
         const YOUTUBE_CREATORS_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         
         // Your imgbb API key
@@ -864,6 +876,7 @@
                             channel: '@techsarah',
                             subscribers: '15.2K',
                             avatar: '👩‍💻',
+                            avatar_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=150&auto=format',
                             link: 'https://youtube.com/@techsarah',
                             description: 'Tech reviews & tutorials',
                             image_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format'
@@ -873,6 +886,7 @@
                             channel: '@mikegaming',
                             subscribers: '28.7K',
                             avatar: '🎮',
+                            avatar_url: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&auto=format',
                             link: 'https://youtube.com/@mikegaming',
                             description: 'Daily gaming content & live streams',
                             image_url: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1400&auto=format'
@@ -888,6 +902,7 @@
                         name: 'Tech with Sarah',
                         subscribers: '15.2K',
                         avatar: '👩‍💻',
+                        avatar_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=150&auto=format',
                         link: 'https://youtube.com/@techsarah',
                         description: 'Tech reviews & tutorials',
                         image_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format'
@@ -910,7 +925,9 @@
                                 <h3>No Creators Found</h3>
                                 <p>Add creators to your Google Sheet to see them here</p>
                             </div>
-                            <div class="banner-avatar">📺</div>
+                            <div class="banner-avatar">
+                                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=150&auto=format" alt="Avatar">
+                            </div>
                         </div>
                     </div>
                 `;
@@ -934,7 +951,7 @@
                             <button class="banner-button" onclick="event.stopPropagation(); window.open('${creator.link}', '_blank')">Subscribe →</button>
                         </div>
                         <div class="banner-avatar">
-                            ${creator.avatar || '📺'}
+                            <img src="${creator.avatar_url || 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=150&auto=format'}" alt="${creator.name}">
                         </div>
                     </div>
                 </div>
@@ -1053,6 +1070,8 @@
                 
                 if (result.success) {
                     contracts = result.data;
+                    // Sort contracts by submission date (newest first)
+                    contracts.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
                     saveToStorage();
                     updateDisplay();
                 } else {
@@ -1166,7 +1185,7 @@
             displayContracts();
             displayProgress();
             updateStats();
-            updateHighestContract();
+            updateTopContracts();
         }
 
         // ==================== DISPLAY CONTRACTS WITH IMAGES ====================
@@ -1256,24 +1275,39 @@
             document.getElementById('activeUsers').textContent = activeUsers || '1,609';
             document.getElementById('completedContracts').textContent = completed || '247';
             document.getElementById('totalSupport').textContent = `₦${(total / 1000).toFixed(1)}K`;
-        }
-
-        // ==================== UPDATE HIGHEST CONTRACT ====================
-        function updateHighestContract() {
-            const highest = [...contracts].sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount))[0];
-            if (highest) {
-                document.getElementById('highestContract1').innerHTML = `
-                    <div class="bid-info">
-                        <div class="bid-avatar">💰</div>
-                        <div>
-                            <div class="bid-name">${highest.title}</div>
-                            <div class="bid-amount">₦${parseFloat(highest.amount).toLocaleString()}</div>
-                        </div>
-                    </div>
-                    <button class="bid-button" onclick="viewContract(${highest.id})">View</button>
-                `;
+            
+            // Update today's highest
+            if (contracts.length > 0) {
+                const highest = [...contracts].sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount))[0];
                 document.getElementById('todayHighest').innerHTML = `₦${parseFloat(highest.amount).toLocaleString()} by ${highest.company}`;
             }
+        }
+
+        // ==================== UPDATE TOP 5 CONTRACTS ====================
+        function updateTopContracts() {
+            const topContracts = [...contracts]
+                .sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount))
+                .slice(0, 5);
+            
+            const container = document.getElementById('topContractsList');
+            
+            if (topContracts.length === 0) {
+                container.innerHTML = '<div class="bid-item">No contracts found</div>';
+                return;
+            }
+            
+            container.innerHTML = topContracts.map((contract, index) => `
+                <div class="bid-item">
+                    <div class="bid-info">
+                        <div class="bid-avatar">${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '💰'}</div>
+                        <div>
+                            <div class="bid-name">${contract.title}</div>
+                            <div class="bid-amount">₦${parseFloat(contract.amount).toLocaleString()}</div>
+                        </div>
+                    </div>
+                    <button class="bid-button" onclick="viewContract(${contract.id})">View</button>
+                </div>
+            `).join('');
         }
 
         // ==================== LOCAL STORAGE ====================
@@ -1285,6 +1319,7 @@
             const saved = localStorage.getItem('kro_contracts');
             if (saved) {
                 contracts = JSON.parse(saved);
+                contracts.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
                 updateDisplay();
             }
         }
