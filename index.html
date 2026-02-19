@@ -69,6 +69,169 @@
         
         .container { max-width: 1400px; margin: 0 auto; padding: 100px 40px 40px; }
         
+        /* YouTube Banners - Updated for full-width background images */
+        .youtube-section { margin: 10px 0 80px 0; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .section-header h2 { font-size: 2em; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .see-all { color: #4d9eff; cursor: pointer; font-size: 0.9em; }
+        
+        .banners-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 30px;
+        }
+        
+        .banners-slider {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .banner-slide {
+            min-width: 100%;
+            padding: 0 10px;
+        }
+        
+        .youtube-banner {
+            position: relative;
+            border-radius: 30px;
+            padding: 80px 60px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.3s;
+            box-shadow: 0 0 40px rgba(255, 59, 156, 0.3);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 400px;
+        }
+        
+        .youtube-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+            border-radius: 30px;
+            z-index: 1;
+        }
+        
+        .youtube-banner:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 60px rgba(255, 59, 156, 0.5);
+        }
+        
+        .banner-content {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            max-width: 60%;
+        }
+        
+        .banner-content h3 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .banner-content p {
+            opacity: 0.95;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .banner-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .banner-stats .stat {
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            padding: 10px 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .banner-stats .stat-number {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 0 10px #ff3b9c;
+        }
+        
+        .banner-stats .stat-label {
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .banner-button {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+            color: white;
+            padding: 15px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 0 20px rgba(255, 59, 156, 0.5);
+        }
+        
+        .banner-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 59, 156, 0.8);
+        }
+        
+        .banner-avatar {
+            position: relative;
+            z-index: 2;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+            margin-left: 30px;
+            border: 3px solid rgba(255,255,255,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .slider-dot.active {
+            background: #ff3b9c;
+            box-shadow: 0 0 20px #ff3b9c;
+            transform: scale(1.2);
+        }
+        
+        /* Rest of your CSS remains exactly the same */
         .hero-section { margin-bottom: 60px; }
         .hero-title { font-size: 5em; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
         .hero-title .neon { background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
@@ -94,7 +257,6 @@
         .add-btn { background: linear-gradient(135deg, #ff3b9c, #9d4edd); color: white; box-shadow: 0 0 20px rgba(255, 59, 156, 0.3); }
         .add-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255, 59, 156, 0.6); }
         
-        /* Contracts Grid - Updated for images */
         .contracts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; margin-bottom: 60px; }
         
         .contract-card {
@@ -163,7 +325,6 @@
         
         .contract-date { color: #666; font-size: 0.9em; }
         
-        /* Progress List */
         .progress-list { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 25px; overflow: hidden; }
         .progress-item { display: flex; align-items: center; padding: 20px 25px; border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: all 0.3s; }
         .progress-item:hover { background: rgba(255, 255, 255, 0.05); }
@@ -176,7 +337,6 @@
         .progress-title span { color: #ff3b9c; margin-right: 10px; }
         .progress-date { color: #666; font-size: 0.9em; }
         
-        /* Featured Section */
         .featured-section { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 60px 0; }
         .featured-card { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 30px; }
         .featured-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
@@ -191,7 +351,6 @@
         .bid-button { padding: 8px 20px; border: 1px solid #4d9eff; border-radius: 25px; background: transparent; color: white; cursor: pointer; transition: all 0.3s; }
         .bid-button:hover { background: #4d9eff; box-shadow: 0 0 20px #4d9eff; }
         
-        /* Timer Section */
         .timer-section { background: linear-gradient(135deg, rgba(255, 59, 156, 0.1), rgba(157, 78, 221, 0.1)); border: 1px solid var(--glass-border); border-radius: 30px; padding: 40px; margin: 60px 0; display: flex; justify-content: space-between; align-items: center; }
         .timer-info h3 { font-size: 2em; margin-bottom: 10px; }
         .timer-info p { color: #b0b0b0; }
@@ -200,26 +359,6 @@
         .timer-value { font-size: 2.5em; font-weight: 700; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .timer-label { color: #666; font-size: 0.9em; }
         
-        /* YouTube Banners */
-        .youtube-section { margin: 10px 0 80px 0; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .section-header h2 { font-size: 2em; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .banners-container { position: relative; width: 100%; overflow: hidden; border-radius: 30px; }
-        .banners-slider { display: flex; transition: transform 0.5s ease; }
-        .banner-slide { min-width: 100%; padding: 0 10px; }
-        .youtube-banner { background: linear-gradient(135deg, #ff3b9c, #9d4edd); border-radius: 30px; padding: 50px; color: white; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: transform 0.3s; box-shadow: 0 0 40px rgba(255, 59, 156, 0.3); }
-        .youtube-banner:hover { transform: scale(1.02); box-shadow: 0 0 60px rgba(255, 59, 156, 0.5); }
-        .banner-content { flex: 1; }
-        .banner-content h3 { font-size: 3em; margin-bottom: 15px; }
-        .banner-content p { opacity: 0.9; margin-bottom: 30px; font-size: 1.2em; }
-        .banner-button { background: white; color: #333; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-block; transition: transform 0.3s; border: none; cursor: pointer; font-size: 1.1em; }
-        .banner-button:hover { transform: scale(1.05); background: #f0f0f0; }
-        .banner-avatar { width: 150px; height: 150px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 5em; margin-left: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .slider-controls { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
-        .slider-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); cursor: pointer; transition: all 0.3s; }
-        .slider-dot.active { background: #ff3b9c; box-shadow: 0 0 20px #ff3b9c; transform: scale(1.2); }
-        
-        /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; }
         .modal-content { background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 40px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 0 50px rgba(255, 59, 156, 0.3); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--glass-border); }
@@ -227,7 +366,6 @@
         .close-btn { font-size: 1.5em; cursor: pointer; color: #666; transition: color 0.3s; }
         .close-btn:hover { color: #ff3b9c; }
         
-        /* Form Styles */
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; color: #b0b0b0; font-size: 0.9em; }
         .form-group input, .form-group select, .form-group textarea {
@@ -239,7 +377,6 @@
         .form-group textarea { min-height: 80px; resize: vertical; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         
-        /* Image Upload */
         .image-upload-container {
             border: 2px dashed var(--glass-border);
             border-radius: 15px;
@@ -300,11 +437,9 @@
         .success-message { background: rgba(164, 255, 124, 0.1); border: 1px solid #a4ff7c; color: #a4ff7c; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
         .error-message { background: rgba(255, 59, 156, 0.1); border: 1px solid #ff3b9c; color: #ff3b9c; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
         
-        /* Loading Spinner */
         .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #ff3b9c; animation: spin 1s ease-in-out infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* Detail View with Image */
         .detail-image {
             width: 100%;
             max-height: 300px;
@@ -339,6 +474,8 @@
             .featured-section { grid-template-columns: 1fr; }
             .timer-section { flex-direction: column; gap: 30px; }
             .youtube-banner { flex-direction: column; text-align: center; padding: 30px; }
+            .banner-content { max-width: 100%; }
+            .banner-content h3 { font-size: 2.5em; }
             .banner-avatar { margin-left: 0; margin-top: 30px; }
             .action-bar { flex-direction: column; }
             .search-box input { padding: 15px 40px; }
@@ -346,6 +483,8 @@
             .hero-buttons { display: none; }
             .form-row { grid-template-columns: 1fr; }
             .section-header h2 { font-size: 1.5em; }
+            .banner-stats { flex-wrap: wrap; gap: 15px; }
+            .banner-stats .stat { padding: 8px 15px; }
         }
     </style>
 </head>
@@ -361,7 +500,7 @@
 
     <!-- Main Container -->
     <div class="container">
-        <!-- YouTube Banners Section -->
+        <!-- YouTube Banners Section - Now Dynamic -->
         <div class="youtube-section">
             <div class="section-header">
                 <h2>🎥 K.R.O MOVIES</h2>
@@ -370,12 +509,22 @@
             
             <div class="banners-container">
                 <div class="banners-slider" id="bannersSlider">
-                    <!-- Banners will be loaded here -->
+                    <!-- Banners will be loaded dynamically from Google Sheets -->
+                    <div class="banner-slide">
+                        <div class="youtube-banner" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1400x400/ff3b9c/ffffff?text=Loading...')">
+                            <div class="banner-content">
+                                <h3>Loading...</h3>
+                                <p>Loading creator information...</p>
+                                <button class="banner-button">Subscribe →</button>
+                            </div>
+                            <div class="banner-avatar">⏳</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="slider-controls" id="sliderControls">
-                <!-- Dots will be loaded here -->
+                <div class="slider-dot active"></div>
             </div>
         </div>
 
@@ -678,14 +827,18 @@
 
     <script>
         // ==================== CONFIGURATION ====================
-        // REPLACE WITH YOUR ACTUAL GOOGLE APPS SCRIPT URL
+        // Your existing Google Sheets API for contracts
         const GOOGLE_SHEETS_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         
-        // REPLACE WITH YOUR IMGBB API KEY
+        // NEW: YouTube Creators Google Sheets API URL
+        const YOUTUBE_CREATORS_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
+        
+        // Your imgbb API key
         const IMGBB_API_KEY = '***REMOVED***';
         
         // ==================== GLOBAL VARIABLES ====================
         let contracts = [];
+        let youtubeCreators = [];
         let currentFilter = 'all';
         let currentPage = 'home';
         let selectedContractId = null;
@@ -693,39 +846,138 @@
         let bannerInterval;
         let selectedImageFile = null;
 
-        // ==================== YOUTUBE CREATORS DATA ====================
-        const youtubeCreators = [
-            {
-                name: 'Tech with Sarah',
-                avatar: '👩‍💻',
-                link: 'https://youtube.com/@techsarah',
-                description: 'Tech reviews & tutorials'
-            },
-            {
-                name: 'Mike Gaming',
-                avatar: '🎮',
-                link: 'https://youtube.com/@mikegaming',
-                description: 'Daily gaming content & live streams'
-            },
-            {
-                name: 'Cooking with Priya',
-                avatar: '👩‍🍳',
-                link: 'https://youtube.com/@priyacooks',
-                description: 'Easy recipes & cooking tips'
-            },
-            {
-                name: 'Fitness with Alex',
-                avatar: '💪',
-                link: 'https://youtube.com/@alexfitness',
-                description: 'Home workouts & nutrition'
-            },
-            {
-                name: 'Music with James',
-                avatar: '🎸',
-                link: 'https://youtube.com/@jamesmusic',
-                description: 'Guitar lessons & music theory'
+        // ==================== LOAD YOUTUBE CREATORS ====================
+        async function loadYouTubeCreators() {
+            try {
+                const response = await fetch(YOUTUBE_CREATORS_API_URL);
+                const result = await response.json();
+                
+                if (result.success) {
+                    youtubeCreators = result.data;
+                    loadBanners(); // Reload banners with new data
+                } else {
+                    console.error('Failed to load YouTube creators:', result.error);
+                    // Fallback to default creators if API fails
+                    youtubeCreators = [
+                        {
+                            name: 'Tech with Sarah',
+                            channel: '@techsarah',
+                            subscribers: '15.2K',
+                            avatar: '👩‍💻',
+                            link: 'https://youtube.com/@techsarah',
+                            description: 'Tech reviews & tutorials',
+                            image_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format'
+                        },
+                        {
+                            name: 'Mike Gaming',
+                            channel: '@mikegaming',
+                            subscribers: '28.7K',
+                            avatar: '🎮',
+                            link: 'https://youtube.com/@mikegaming',
+                            description: 'Daily gaming content & live streams',
+                            image_url: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1400&auto=format'
+                        }
+                    ];
+                    loadBanners();
+                }
+            } catch (error) {
+                console.error('Error loading YouTube creators:', error);
+                // Fallback to default
+                youtubeCreators = [
+                    {
+                        name: 'Tech with Sarah',
+                        subscribers: '15.2K',
+                        avatar: '👩‍💻',
+                        link: 'https://youtube.com/@techsarah',
+                        description: 'Tech reviews & tutorials',
+                        image_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format'
+                    }
+                ];
+                loadBanners();
             }
-        ];
+        }
+
+        // ==================== YOUTUBE BANNERS ====================
+        function loadBanners() {
+            const slider = document.getElementById('bannersSlider');
+            const controls = document.getElementById('sliderControls');
+            
+            if (!youtubeCreators || youtubeCreators.length === 0) {
+                slider.innerHTML = `
+                    <div class="banner-slide">
+                        <div class="youtube-banner" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format')">
+                            <div class="banner-content">
+                                <h3>No Creators Found</h3>
+                                <p>Add creators to your Google Sheet to see them here</p>
+                            </div>
+                            <div class="banner-avatar">📺</div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            slider.innerHTML = youtubeCreators.map((creator, index) => `
+                <div class="banner-slide">
+                    <div class="youtube-banner" onclick="window.open('${creator.link}', '_blank')" style="background-image: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%), url('${creator.image_url || 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format'}')">
+                        <div class="banner-content">
+                            <h3>${creator.name}</h3>
+                            <p>${creator.description || 'YouTube Creator'}</p>
+                            ${creator.subscribers ? `
+                            <div class="banner-stats">
+                                <div class="stat">
+                                    <div class="stat-number">${creator.subscribers}</div>
+                                    <div class="stat-label">Subscribers</div>
+                                </div>
+                            </div>
+                            ` : ''}
+                            <button class="banner-button" onclick="event.stopPropagation(); window.open('${creator.link}', '_blank')">Subscribe →</button>
+                        </div>
+                        <div class="banner-avatar">
+                            ${creator.avatar || '📺'}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            controls.innerHTML = youtubeCreators.map((_, index) => `
+                <div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="goToBanner(${index})"></div>
+            `).join('');
+            
+            // Reset slider position
+            currentBannerIndex = 0;
+            updateBannerPosition();
+        }
+
+        function startBannerSlide() {
+            if (bannerInterval) clearInterval(bannerInterval);
+            bannerInterval = setInterval(() => {
+                if (youtubeCreators.length > 0) {
+                    currentBannerIndex = (currentBannerIndex + 1) % youtubeCreators.length;
+                    updateBannerPosition();
+                }
+            }, 5000);
+        }
+
+        function goToBanner(index) {
+            currentBannerIndex = index;
+            updateBannerPosition();
+            clearInterval(bannerInterval);
+            startBannerSlide();
+        }
+
+        function updateBannerPosition() {
+            const slider = document.getElementById('bannersSlider');
+            slider.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
+            
+            document.querySelectorAll('.slider-dot').forEach((dot, index) => {
+                if (index === currentBannerIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
 
         // ==================== IMAGE UPLOAD HANDLERS ====================
         function handleImageSelect(event) {
@@ -1037,58 +1289,6 @@
             }
         }
 
-        // ==================== YOUTUBE BANNERS ====================
-        function loadBanners() {
-            const slider = document.getElementById('bannersSlider');
-            const controls = document.getElementById('sliderControls');
-            
-            slider.innerHTML = youtubeCreators.map((creator, index) => `
-                <div class="banner-slide">
-                    <div class="youtube-banner" onclick="window.open('${creator.link}', '_blank')">
-                        <div class="banner-content">
-                            <h3>${creator.name}</h3>
-                            <p>${creator.description}</p>
-                            <button class="banner-button" onclick="event.stopPropagation(); window.open('${creator.link}', '_blank')">Subscribe →</button>
-                        </div>
-                        <div class="banner-avatar">
-                            ${creator.avatar}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-            
-            controls.innerHTML = youtubeCreators.map((_, index) => `
-                <div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="goToBanner(${index})"></div>
-            `).join('');
-        }
-
-        function startBannerSlide() {
-            bannerInterval = setInterval(() => {
-                currentBannerIndex = (currentBannerIndex + 1) % youtubeCreators.length;
-                updateBannerPosition();
-            }, 5000);
-        }
-
-        function goToBanner(index) {
-            currentBannerIndex = index;
-            updateBannerPosition();
-            clearInterval(bannerInterval);
-            startBannerSlide();
-        }
-
-        function updateBannerPosition() {
-            const slider = document.getElementById('bannersSlider');
-            slider.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
-            
-            document.querySelectorAll('.slider-dot').forEach((dot, index) => {
-                if (index === currentBannerIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        }
-
         // ==================== FILTER FUNCTIONS ====================
         function filterContracts(contractsList) {
             if (currentFilter === 'all') return contractsList;
@@ -1223,9 +1423,9 @@
 
         // ==================== INITIAL LOAD ====================
         window.onload = function() {
-            loadBanners();
+            loadYouTubeCreators(); // Load dynamic YouTube creators first
+            loadContracts(); // Load contracts
             startBannerSlide();
-            loadContracts();
         };
 
         // Close modals when clicking outside
