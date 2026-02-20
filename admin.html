@@ -97,12 +97,35 @@
             margin-bottom: 30px;
         }
         
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
         .logo {
             font-size: 1.5em;
             font-weight: 800;
             background: linear-gradient(135deg, #a4ff7c, #4d9eff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+        
+        .phone-btn {
+            padding: 8px 20px;
+            background: transparent;
+            border: 1px solid #4d9eff;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .phone-btn:hover {
+            background: #4d9eff;
         }
         
         .logout-btn {
@@ -252,60 +275,70 @@
             box-shadow: 0 0 15px currentColor;
         }
         
-        .softphone {
+        /* Softphone Modal */
+        .softphone-modal {
+            display: none;
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            background: rgba(20, 20, 30, 0.95);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .softphone-content {
+            background: rgba(20,20,30,0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 0 30px rgba(255,59,156,0.3);
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(77,158,255,0.3);
         }
         
-        .softphone-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .softphone-header h3 {
+        .softphone-content h2 {
             color: #a4ff7c;
+            margin-bottom: 30px;
+            text-align: center;
         }
         
-        .softphone-toggle {
-            background: transparent;
-            border: none;
-            color: #666;
-            font-size: 1.2em;
-            cursor: pointer;
-        }
-        
-        .call-input {
+        .softphone-content input,
+        .softphone-content select {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
+            margin: 10px 0;
             background: rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 10px;
             color: white;
-            margin-bottom: 10px;
         }
         
-        .call-btn {
+        .softphone-content button {
             width: 100%;
-            padding: 10px;
-            background: #4d9eff;
+            padding: 15px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #4d9eff, #0ef0f0);
             color: white;
             border: none;
             border-radius: 10px;
             cursor: pointer;
         }
         
-        .call-btn:hover {
-            background: #ff3b9c;
+        .close-softphone {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #666;
+            font-size: 2em;
+            cursor: pointer;
+        }
+        
+        .close-softphone:hover {
+            color: #ff3b9c;
         }
         
         .modal {
@@ -358,11 +391,9 @@
         }
         
         @media (max-width: 768px) {
-            .softphone {
-                width: 100%;
-                bottom: 0;
-                right: 0;
-                border-radius: 20px 20px 0 0;
+            .header {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
@@ -385,7 +416,12 @@
     <!-- Dashboard -->
     <div class="dashboard" id="dashboard">
         <div class="header">
-            <div class="logo">K.R.O ADMIN</div>
+            <div class="header-left">
+                <div class="logo">K.R.O ADMIN</div>
+                <button class="phone-btn" onclick="openSoftphone()">
+                    📞 Phone
+                </button>
+            </div>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
 
@@ -416,7 +452,7 @@
         <!-- Pending Requests -->
         <div class="section-header">
             <h2>⏳ Pending Payment Requests</h2>
-            <button class="refresh-btn" onclick="loadPendingRequests()">↻ Refresh</button>
+            <button class="refresh-btn" onclick="loadAllData()">↻ Refresh</button>
         </div>
 
         <div class="requests-table">
@@ -467,21 +503,19 @@
         </div>
     </div>
 
-    <!-- Softphone -->
-    <div class="softphone" id="softphone">
-        <div class="softphone-header">
-            <h3>📞 Internet Call</h3>
-            <button class="softphone-toggle" onclick="toggleSoftphone()">−</button>
-        </div>
-        <div id="softphoneContent">
-            <input type="text" class="call-input" id="phoneNumber" placeholder="Enter phone number">
-            <select class="call-input" id="callPlatform">
+    <!-- Softphone Modal -->
+    <div class="softphone-modal" id="softphoneModal">
+        <div class="softphone-content">
+            <span class="close-softphone" onclick="closeSoftphone()">&times;</span>
+            <h2>📞 Internet Call</h2>
+            <input type="text" id="phoneNumber" placeholder="Enter phone number">
+            <select id="callPlatform">
                 <option value="skype">Skype</option>
                 <option value="whatsapp">WhatsApp</option>
                 <option value="telegram">Telegram</option>
                 <option value="zoom">Zoom</option>
             </select>
-            <button class="call-btn" onclick="makeCall()">Start Call</button>
+            <button onclick="makeCall()">Start Call</button>
         </div>
     </div>
 
@@ -513,8 +547,24 @@
 
     <script>
         // ==================== CONFIG ====================
-        const ADMIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec'; // Replace with your deployed URL
-        let adminUser = '';
+        const ADMIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
+        let adminUser = localStorage.getItem('kro_admin_user') || '';
+
+        // ==================== CHECK SESSION ON LOAD ====================
+        window.onload = function() {
+            if (adminUser) {
+                // Auto-login if session exists
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadAllData();
+            }
+        };
+
+        // ==================== LOAD ALL DATA ====================
+        async function loadAllData() {
+            await loadDashboardStats();
+            await loadPendingRequests();
+        }
 
         // ==================== LOGIN ====================
         async function adminLogin() {
@@ -527,10 +577,10 @@
 
                 if (result.success) {
                     adminUser = username;
+                    localStorage.setItem('kro_admin_user', username);
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('dashboard').style.display = 'block';
-                    loadDashboardStats();
-                    loadPendingRequests();
+                    loadAllData();
                 } else {
                     alert('❌ Invalid credentials');
                 }
@@ -563,19 +613,19 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    displayPendingRequests(result.pending);
+                    displayRequests(result.pending);
                 }
             } catch (error) {
                 console.error('Error loading requests:', error);
             }
         }
 
-        function displayPendingRequests(pending) {
+        function displayRequests(allRequests) {
             const pendingBody = document.getElementById('pendingBody');
             const paidBody = document.getElementById('paidBody');
 
-            const pendingRows = pending.filter(r => r.status === 'pending');
-            const paidRows = pending.filter(r => r.status === 'paid');
+            const pendingRows = allRequests.filter(r => r.status === 'pending');
+            const paidRows = allRequests.filter(r => r.status === 'paid');
 
             // Pending Table
             if (pendingRows.length === 0) {
@@ -638,8 +688,7 @@
                 if (result.success) {
                     alert('✅ Payment verified! Ready to generate pins.');
                     closeModal();
-                    loadPendingRequests();
-                    loadDashboardStats();
+                    loadAllData();
                 } else {
                     alert('❌ Error: ' + result.error);
                 }
@@ -668,8 +717,7 @@
                 if (result.success) {
                     alert(`✅ ${result.message}`);
                     closeGenerateModal();
-                    loadPendingRequests();
-                    loadDashboardStats();
+                    loadAllData();
                 } else {
                     alert('❌ Error: ' + result.error);
                 }
@@ -679,16 +727,12 @@
         }
 
         // ==================== SOFT PHONE ====================
-        function toggleSoftphone() {
-            const content = document.getElementById('softphoneContent');
-            const toggle = document.querySelector('.softphone-toggle');
-            if (content.style.display === 'none') {
-                content.style.display = 'block';
-                toggle.textContent = '−';
-            } else {
-                content.style.display = 'none';
-                toggle.textContent = '+';
-            }
+        function openSoftphone() {
+            document.getElementById('softphoneModal').style.display = 'flex';
+        }
+
+        function closeSoftphone() {
+            document.getElementById('softphoneModal').style.display = 'none';
         }
 
         function makeCall() {
@@ -717,6 +761,7 @@
             }
 
             window.open(url, '_blank');
+            closeSoftphone();
         }
 
         // ==================== MODAL CONTROLS ====================
@@ -731,40 +776,28 @@
 
         // ==================== LOGOUT ====================
         function logout() {
+            localStorage.removeItem('kro_admin_user');
+            adminUser = '';
             document.getElementById('loginPage').style.display = 'block';
             document.getElementById('dashboard').style.display = 'none';
-            adminUser = '';
         }
 
-        // ==================== UPDATE USER HTML ====================
-        // Add this to your existing HTML's processPurchase function
-        async function processPurchase() {
-            const email = document.getElementById('purchaseEmail').value;
-            if (!email) {
-                alert('Please enter your email');
-                return;
-            }
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const verifyModal = document.getElementById('verifyModal');
+            const generateModal = document.getElementById('generateModal');
+            const softphoneModal = document.getElementById('softphoneModal');
             
-            // Get amount based on selected package
-            let amount = '$10';
-            if (selectedPinPackage === 25) amount = '$20';
-            if (selectedPinPackage === 50) amount = '$35';
-            
-            try {
-                const response = await fetch(`${ADMIN_API_URL}?action=createPinRequest&email=${encodeURIComponent(email)}&package=${selectedPinPackage}&amount=${amount}`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    alert(`✅ ${result.message}\n\nRequest ID: ${result.requestId}`);
-                    closeBuyPinsModal();
-                } else {
-                    alert(`❌ ${result.error}`);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error submitting request. Please try again.');
+            if (event.target === verifyModal) {
+                verifyModal.style.display = 'none';
             }
-        }
+            if (event.target === generateModal) {
+                generateModal.style.display = 'none';
+            }
+            if (event.target === softphoneModal) {
+                softphoneModal.style.display = 'none';
+            }
+        };
     </script>
 </body>
 </html>
