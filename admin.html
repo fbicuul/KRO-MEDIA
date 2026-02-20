@@ -614,36 +614,60 @@
 
                 if (result.success) {
                     displayRequests(result.pending);
+                } else {
+                    console.error('API Error:', result.error);
                 }
             } catch (error) {
                 console.error('Error loading requests:', error);
             }
         }
 
+        // ==================== FIXED DISPLAY REQUESTS FUNCTION ====================
         function displayRequests(allRequests) {
             const pendingBody = document.getElementById('pendingBody');
             const paidBody = document.getElementById('paidBody');
 
-            const pendingRows = allRequests.filter(r => r.status === 'pending');
-            const paidRows = allRequests.filter(r => r.status === 'paid');
+            // Ensure allRequests is an array
+            const requests = Array.isArray(allRequests) ? allRequests : [];
+            
+            console.log('All requests received:', requests); // Debug log
+            console.log('Number of requests:', requests.length);
+
+            // Filter requests by status
+            const pendingRows = requests.filter(r => r && r.status === 'pending');
+            const paidRows = requests.filter(r => r && r.status === 'paid');
+
+            console.log('Pending count:', pendingRows.length);
+            console.log('Paid count:', paidRows.length);
 
             // Pending Table
             if (pendingRows.length === 0) {
                 pendingBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">No pending requests</td></tr>';
             } else {
-                pendingBody.innerHTML = pendingRows.map(req => `
+                pendingBody.innerHTML = pendingRows.map(req => {
+                    // Format date safely
+                    let formattedDate = 'Invalid Date';
+                    try {
+                        if (req.requestedAt) {
+                            formattedDate = new Date(req.requestedAt).toLocaleString();
+                        }
+                    } catch (e) {
+                        console.error('Date parsing error:', e);
+                    }
+                    
+                    return `
                     <tr>
-                        <td><strong>${req.requestId}</strong></td>
-                        <td>${req.email}</td>
-                        <td>${req.package} pins</td>
-                        <td>${req.amount}</td>
-                        <td>${new Date(req.requestedAt).toLocaleString()}</td>
+                        <td><strong>${req.requestId || 'N/A'}</strong></td>
+                        <td>${req.email || 'N/A'}</td>
+                        <td>${req.package || 'N/A'} pins</td>
+                        <td>${req.amount || 'N/A'}</td>
+                        <td>${formattedDate}</td>
                         <td><span class="status-badge status-pending">Pending</span></td>
                         <td>
                             <button class="action-btn btn-verify" onclick="openVerifyModal('${req.requestId}')">✓ Verify</button>
                         </td>
                     </tr>
-                `).join('');
+                `}).join('');
             }
 
             // Paid Table (ready to generate pins)
@@ -652,10 +676,10 @@
             } else {
                 paidBody.innerHTML = paidRows.map(req => `
                     <tr>
-                        <td><strong>${req.requestId}</strong></td>
-                        <td>${req.email}</td>
-                        <td>${req.package} pins</td>
-                        <td>${req.amount}</td>
+                        <td><strong>${req.requestId || 'N/A'}</strong></td>
+                        <td>${req.email || 'N/A'}</td>
+                        <td>${req.package || 'N/A'} pins</td>
+                        <td>${req.amount || 'N/A'}</td>
                         <td style="color: #a4ff7c;">${req.paymentNote || '—'}</td>
                         <td><span class="status-badge status-paid">Paid</span></td>
                         <td>
