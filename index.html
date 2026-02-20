@@ -69,7 +69,7 @@
         
         .container { max-width: 1400px; margin: 0 auto; padding: 100px 40px 40px; }
         
-        /* YouTube Banners - Updated for full-width background images */
+        /* YouTube Banners */
         .youtube-section { margin: 10px 0 80px 0; }
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .section-header h2 { font-size: 2em; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -237,7 +237,7 @@
             transform: scale(1.2);
         }
         
-        /* Rest of your CSS remains exactly the same */
+        /* Hero Section */
         .hero-section { margin-bottom: 60px; }
         .hero-title { font-size: 5em; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
         .hero-title .neon { background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
@@ -263,6 +263,7 @@
         .add-btn { background: linear-gradient(135deg, #ff3b9c, #9d4edd); color: white; box-shadow: 0 0 20px rgba(255, 59, 156, 0.3); }
         .add-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255, 59, 156, 0.6); }
         
+        /* Contracts Grid */
         .contracts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; margin-bottom: 60px; }
         
         .contract-card {
@@ -365,6 +366,7 @@
         .timer-value { font-size: 2.5em; font-weight: 700; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .timer-label { color: #666; font-size: 0.9em; }
         
+        /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; }
         .modal-content { background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 40px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 0 50px rgba(255, 59, 156, 0.3); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--glass-border); }
@@ -372,6 +374,7 @@
         .close-btn { font-size: 1.5em; cursor: pointer; color: #666; transition: color 0.3s; }
         .close-btn:hover { color: #ff3b9c; }
         
+        /* Form Styles */
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; color: #b0b0b0; font-size: 0.9em; }
         .form-group input, .form-group select, .form-group textarea {
@@ -446,6 +449,7 @@
         .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #ff3b9c; animation: spin 1s ease-in-out infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
+        /* Detail Views */
         .detail-image {
             width: 100%;
             max-height: 300px;
@@ -475,7 +479,7 @@
         .submitted-by { display: flex; align-items: center; gap: 20px; margin-top: 20px; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 15px; border: 1px solid var(--glass-border); }
         .submitted-by img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ff3b9c; }
         
-        /* Staff Detail Modal */
+        /* Staff Detail Modal - Updated for 6 categories */
         .staff-info {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 20px;
@@ -540,7 +544,7 @@
         
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
         }
         
@@ -604,7 +608,7 @@
             .section-header h2 { font-size: 1.5em; }
             .banner-stats { flex-wrap: wrap; gap: 15px; }
             .banner-stats .stat { padding: 8px 15px; }
-            .category-grid { grid-template-columns: 1fr; }
+            .category-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -742,7 +746,7 @@
                 </div>
             </div>
 
-            <!-- Top 5 Staff - Now Dynamic -->
+            <!-- Top 5 Staff -->
             <div class="featured-card">
                 <div class="featured-header">
                     <h3>🏆 Top 5 Staff</h3>
@@ -816,7 +820,7 @@
         </div>
     </div>
 
-    <!-- ADD CONTRACT MODAL WITH IMAGE UPLOAD -->
+    <!-- ADD CONTRACT MODAL -->
     <div class="modal" id="addModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -944,7 +948,7 @@
         // YouTube Creators Google Sheets API URL
         const YOUTUBE_CREATORS_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         
-        // NEW: Top Staff Google Sheets API URL
+        // Top Staff Google Sheets API URL - REPLACE WITH YOUR URL
         const TOP_STAFF_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         
         // Your imgbb API key
@@ -972,25 +976,135 @@
                     displayTopStaff();
                 } else {
                     console.error('Failed to load top staff:', result.error);
-                    // Fallback data
+                    // Fallback data with multipleDeals
                     topStaff = [
-                        { name: 'Chukwudi', position: 'Contract Staff', joined: '2 weeks ago', companyMeetings: 1, wellBehaved: 4, consistentMarketing: 7, broughtClient: 100, closedDeal: 1000, totalPoints: 1112 },
-                        { name: 'Cynthia', position: 'Marketing Lead', joined: '1 month ago', companyMeetings: 3, wellBehaved: 5, consistentMarketing: 10, broughtClient: 200, closedDeal: 500, totalPoints: 718 },
-                        { name: 'Godwin', position: 'Sales Rep', joined: '3 weeks ago', companyMeetings: 2, wellBehaved: 3, consistentMarketing: 5, broughtClient: 150, closedDeal: 300, totalPoints: 460 },
-                        { name: 'Samuel', position: 'Team Lead', joined: '1 week ago', companyMeetings: 4, wellBehaved: 5, consistentMarketing: 8, broughtClient: 50, closedDeal: 200, totalPoints: 267 },
-                        { name: 'Obina', position: 'Junior Staff', joined: '2 days ago', companyMeetings: 1, wellBehaved: 2, consistentMarketing: 3, broughtClient: 10, closedDeal: 50, totalPoints: 66 }
+                        { 
+                            name: 'Chukwudi', 
+                            position: 'Contract Staff', 
+                            joined: '2 weeks ago', 
+                            companyMeetings: 1, 
+                            wellBehaved: 4, 
+                            consistentMarketing: 7, 
+                            broughtClient: 100, 
+                            closedDeal: 1000, 
+                            multipleDeals: 5000,
+                            totalPoints: 6112 
+                        },
+                        { 
+                            name: 'Cynthia', 
+                            position: 'Marketing Lead', 
+                            joined: '1 month ago', 
+                            companyMeetings: 3, 
+                            wellBehaved: 5, 
+                            consistentMarketing: 10, 
+                            broughtClient: 200, 
+                            closedDeal: 500, 
+                            multipleDeals: 2500,
+                            totalPoints: 3218 
+                        },
+                        { 
+                            name: 'Godwin', 
+                            position: 'Sales Rep', 
+                            joined: '3 weeks ago', 
+                            companyMeetings: 2, 
+                            wellBehaved: 3, 
+                            consistentMarketing: 5, 
+                            broughtClient: 150, 
+                            closedDeal: 300, 
+                            multipleDeals: 1000,
+                            totalPoints: 1460 
+                        },
+                        { 
+                            name: 'Samuel', 
+                            position: 'Team Lead', 
+                            joined: '1 week ago', 
+                            companyMeetings: 4, 
+                            wellBehaved: 5, 
+                            consistentMarketing: 8, 
+                            broughtClient: 50, 
+                            closedDeal: 200, 
+                            multipleDeals: 500,
+                            totalPoints: 767 
+                        },
+                        { 
+                            name: 'Obina', 
+                            position: 'Junior Staff', 
+                            joined: '2 days ago', 
+                            companyMeetings: 1, 
+                            wellBehaved: 2, 
+                            consistentMarketing: 3, 
+                            broughtClient: 10, 
+                            closedDeal: 50, 
+                            multipleDeals: 100,
+                            totalPoints: 166 
+                        }
                     ];
                     displayTopStaff();
                 }
             } catch (error) {
                 console.error('Error loading top staff:', error);
-                // Fallback data
+                // Fallback data with multipleDeals
                 topStaff = [
-                    { name: 'Chukwudi', position: 'Contract Staff', joined: '2 weeks ago', companyMeetings: 1, wellBehaved: 4, consistentMarketing: 7, broughtClient: 100, closedDeal: 1000, totalPoints: 1112 },
-                    { name: 'Cynthia', position: 'Marketing Lead', joined: '1 month ago', companyMeetings: 3, wellBehaved: 5, consistentMarketing: 10, broughtClient: 200, closedDeal: 500, totalPoints: 718 },
-                    { name: 'Godwin', position: 'Sales Rep', joined: '3 weeks ago', companyMeetings: 2, wellBehaved: 3, consistentMarketing: 5, broughtClient: 150, closedDeal: 300, totalPoints: 460 },
-                    { name: 'Samuel', position: 'Team Lead', joined: '1 week ago', companyMeetings: 4, wellBehaved: 5, consistentMarketing: 8, broughtClient: 50, closedDeal: 200, totalPoints: 267 },
-                    { name: 'Obina', position: 'Junior Staff', joined: '2 days ago', companyMeetings: 1, wellBehaved: 2, consistentMarketing: 3, broughtClient: 10, closedDeal: 50, totalPoints: 66 }
+                    { 
+                        name: 'Chukwudi', 
+                        position: 'Contract Staff', 
+                        joined: '2 weeks ago', 
+                        companyMeetings: 1, 
+                        wellBehaved: 4, 
+                        consistentMarketing: 7, 
+                        broughtClient: 100, 
+                        closedDeal: 1000, 
+                        multipleDeals: 5000,
+                        totalPoints: 6112 
+                    },
+                    { 
+                        name: 'Cynthia', 
+                        position: 'Marketing Lead', 
+                        joined: '1 month ago', 
+                        companyMeetings: 3, 
+                        wellBehaved: 5, 
+                        consistentMarketing: 10, 
+                        broughtClient: 200, 
+                        closedDeal: 500, 
+                        multipleDeals: 2500,
+                        totalPoints: 3218 
+                    },
+                    { 
+                        name: 'Godwin', 
+                        position: 'Sales Rep', 
+                        joined: '3 weeks ago', 
+                        companyMeetings: 2, 
+                        wellBehaved: 3, 
+                        consistentMarketing: 5, 
+                        broughtClient: 150, 
+                        closedDeal: 300, 
+                        multipleDeals: 1000,
+                        totalPoints: 1460 
+                    },
+                    { 
+                        name: 'Samuel', 
+                        position: 'Team Lead', 
+                        joined: '1 week ago', 
+                        companyMeetings: 4, 
+                        wellBehaved: 5, 
+                        consistentMarketing: 8, 
+                        broughtClient: 50, 
+                        closedDeal: 200, 
+                        multipleDeals: 500,
+                        totalPoints: 767 
+                    },
+                    { 
+                        name: 'Obina', 
+                        position: 'Junior Staff', 
+                        joined: '2 days ago', 
+                        companyMeetings: 1, 
+                        wellBehaved: 2, 
+                        consistentMarketing: 3, 
+                        broughtClient: 10, 
+                        closedDeal: 50, 
+                        multipleDeals: 100,
+                        totalPoints: 166 
+                    }
                 ];
                 displayTopStaff();
             }
@@ -1077,6 +1191,10 @@
                             <div class="category-item">
                                 <div class="category-name">Closed Deal</div>
                                 <div class="category-points">${staff.closedDeal} pts</div>
+                            </div>
+                            <div class="category-item">
+                                <div class="category-name">Multiple Deals</div>
+                                <div class="category-points">${staff.multipleDeals || 0} pts</div>
                             </div>
                         </div>
                     </div>
@@ -1682,7 +1800,7 @@
         // ==================== INITIAL LOAD ====================
         window.onload = function() {
             loadYouTubeCreators();
-            loadTopStaff(); // Load top staff
+            loadTopStaff();
             loadContracts();
             startBannerSlide();
         };
