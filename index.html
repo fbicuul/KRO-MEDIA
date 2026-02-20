@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K.R.O Media</title>
     <style>
-        /* ALL YOUR EXISTING CSS REMAINS THE SAME */
+        /* ALL YOUR EXISTING CSS REMAINS THE SAME - Keeping everything as is */
         * {
             margin: 0;
             padding: 0;
@@ -377,8 +377,13 @@
         .add-btn { background: linear-gradient(135deg, #ff3b9c, #9d4edd); color: white; box-shadow: 0 0 20px rgba(255, 59, 156, 0.3); }
         .add-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255, 59, 156, 0.6); }
         
-        /* Contracts Grid */
-        .contracts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; margin-bottom: 60px; }
+        /* Contracts Grid - Limited to 12 items */
+        .contracts-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 25px; 
+            margin-bottom: 60px; 
+        }
         
         .contract-card {
             background: var(--card-bg);
@@ -462,7 +467,9 @@
         .featured-card { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 30px; }
         .featured-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .featured-header h3 { font-size: 1.5em; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .see-all { color: #4d9eff; cursor: pointer; font-size: 0.9em; }
+        .see-all { color: #4d9eff; cursor: pointer; font-size: 0.9em; transition: color 0.3s; }
+        .see-all:hover { color: #ff3b9c; text-decoration: underline; }
+        
         .bid-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--glass-border); }
         .bid-item:last-child { border-bottom: none; }
         .bid-info { display: flex; align-items: center; gap: 15px; }
@@ -706,6 +713,123 @@
             -webkit-text-fill-color: transparent;
         }
         
+        /* All Contracts Modal - New List View */
+        .all-contracts-list {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .all-contracts-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .all-contracts-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .all-contracts-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+            border-radius: 10px;
+        }
+        
+        .contract-list-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--glass-border);
+            gap: 15px;
+        }
+        
+        .contract-list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .list-item-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .list-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .list-item-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .list-item-title {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .list-item-details {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .list-item-amount {
+            font-size: 1.1em;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .list-item-status {
+            font-size: 0.85em;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        
+        .list-item-status.in-progress {
+            background: rgba(255, 59, 156, 0.2);
+            color: #ff3b9c;
+            border: 1px solid #ff3b9c;
+        }
+        
+        .list-item-status.completed {
+            background: rgba(164, 255, 124, 0.2);
+            color: #a4ff7c;
+            border: 1px solid #a4ff7c;
+        }
+        
+        .list-item-status.not-started {
+            background: rgba(77, 158, 255, 0.2);
+            color: #4d9eff;
+            border: 1px solid #4d9eff;
+        }
+        
+        .list-item-button {
+            padding: 8px 20px;
+            border: 1px solid #4d9eff;
+            border-radius: 25px;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            font-size: 0.9em;
+        }
+        
+        .list-item-button:hover {
+            background: #4d9eff;
+            box-shadow: 0 0 20px #4d9eff;
+        }
+        
         @media (max-width: 768px) {
             .hero-title { font-size: 3em; }
             .hero-section { flex-direction: column; }
@@ -725,6 +849,8 @@
             .banner-stats { flex-wrap: wrap; gap: 15px; }
             .banner-stats .stat { padding: 8px 15px; }
             .category-grid { grid-template-columns: repeat(2, 1fr); }
+            .contract-list-item { flex-wrap: wrap; }
+            .list-item-details { width: 100%; justify-content: space-between; }
         }
     </style>
 </head>
@@ -834,7 +960,7 @@
         <div id="homePage">
             <div class="section-header">
                 <h2>Active Contracts</h2>
-                <span class="see-all">See All →</span>
+                <span class="see-all" onclick="openAllContractsModal()">See All →</span>
             </div>
             <div class="contracts-grid" id="contractsGrid">
                 <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #666;">Loading contracts...</div>
@@ -1070,6 +1196,21 @@
         </div>
     </div>
 
+    <!-- All Contracts Modal -->
+    <div class="modal" id="allContractsModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2>📋 All Contracts</h2>
+                <span class="close-btn" onclick="closeAllContractsModal()">&times;</span>
+            </div>
+            
+            <div class="all-contracts-list" id="allContractsList">
+                <!-- All contracts will be loaded here in list format -->
+                <div style="text-align: center; padding: 30px; color: #666;">Loading all contracts...</div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ==================== CONFIGURATION ====================
         // Your existing Google Sheets API for contracts
@@ -1081,7 +1222,7 @@
         // Top Staff Google Sheets API URL
         const TOP_STAFF_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         
-        // NEW: Hero Image Google Sheets API URL
+        // Hero Image Google Sheets API URL
         const HERO_IMAGE_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         
         // Your imgbb API key
@@ -1097,6 +1238,7 @@
         let currentBannerIndex = 0;
         let bannerInterval;
         let selectedImageFile = null;
+        const MAX_HOMEPAGE_CONTRACTS = 12; // Maximum contracts to show on homepage
 
         // ==================== LOAD HERO IMAGE ====================
         async function loadHeroImage() {
@@ -1676,7 +1818,7 @@
             updateTopContracts();
         }
 
-        // ==================== DISPLAY CONTRACTS WITH IMAGES ====================
+        // ==================== DISPLAY CONTRACTS WITH IMAGES (Limited to 12) ====================
         function displayContracts() {
             const filtered = filterContracts(contracts);
             const grid = document.getElementById('contractsGrid');
@@ -1686,7 +1828,10 @@
                 return;
             }
             
-            grid.innerHTML = filtered.map(contract => `
+            // Show only first 12 contracts on homepage
+            const displayContracts = filtered.slice(0, MAX_HOMEPAGE_CONTRACTS);
+            
+            grid.innerHTML = displayContracts.map(contract => `
                 <div class="contract-card" data-status="${contract.status}" onclick="viewContract(${contract.id})">
                     <div class="contract-image">
                         <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}">
@@ -1858,7 +2003,9 @@
                 if (filtered.length === 0) {
                     grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #666;">No contracts found</div>';
                 } else {
-                    grid.innerHTML = filtered.map(contract => `
+                    // Show only first 12 filtered contracts
+                    const displayContracts = filtered.slice(0, MAX_HOMEPAGE_CONTRACTS);
+                    grid.innerHTML = displayContracts.map(contract => `
                         <div class="contract-card" data-status="${contract.status}" onclick="viewContract(${contract.id})">
                             <div class="contract-image">
                                 <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}">
@@ -1898,6 +2045,46 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        // ==================== ALL CONTRACTS MODAL FUNCTIONS ====================
+        function openAllContractsModal() {
+            displayAllContracts();
+            document.getElementById('allContractsModal').style.display = 'flex';
+        }
+
+        function closeAllContractsModal() {
+            document.getElementById('allContractsModal').style.display = 'none';
+        }
+
+        function displayAllContracts() {
+            const container = document.getElementById('allContractsList');
+            
+            if (contracts.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 30px; color: #666;">No contracts found</div>';
+                return;
+            }
+            
+            container.innerHTML = contracts.map(contract => `
+                <div class="contract-list-item">
+                    <div class="list-item-image">
+                        <img src="${contract.image_url || 'https://via.placeholder.com/60x60/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}">
+                    </div>
+                    <div class="list-item-content">
+                        <div class="list-item-title">${contract.title}</div>
+                        <div class="list-item-details">
+                            <span class="list-item-amount">₦${parseFloat(contract.amount).toLocaleString()}</span>
+                            <span class="list-item-status ${contract.status.toLowerCase().replace(' ', '-')}">${contract.status}</span>
+                        </div>
+                    </div>
+                    <button class="list-item-button" onclick="viewContractFromList(${contract.id})">View</button>
+                </div>
+            `).join('');
+        }
+
+        function viewContractFromList(id) {
+            closeAllContractsModal();
+            viewContract(id);
         }
 
         // ==================== PAGE NAVIGATION ====================
@@ -1951,13 +2138,13 @@
             loadYouTubeCreators();
             loadTopStaff();
             loadContracts();
-            loadHeroImage(); // Load hero image from Google Sheet
+            loadHeroImage();
             startBannerSlide();
         };
 
         // Close modals when clicking outside
         window.onclick = function(event) {
-            const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal'];
+            const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal', 'allContractsModal'];
             modals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (event.target === modal) {
