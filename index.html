@@ -1512,6 +1512,7 @@
             document.getElementById(`package${quantity}`).classList.add('selected');
         }
 
+        // Replace your existing processPurchase function with this:
         async function processPurchase() {
             const email = document.getElementById('purchaseEmail').value;
             if (!email) {
@@ -1519,24 +1520,24 @@
                 return;
             }
             
-            // In production, this would redirect to a payment gateway
-            alert(`🛒 Proceeding to payment for ${selectedPinPackage} pins...\n\nThis would connect to Stripe/PayPal in production.`);
+            // Get amount based on selected package
+            let amount = '$10';
+            if (selectedPinPackage === 25) amount = '$20';
+            if (selectedPinPackage === 50) amount = '$35';
             
-            // After successful payment, call purchase API
             try {
-                const response = await fetch(`${PIN_API_URL}?action=purchasePins&email=${encodeURIComponent(email)}&quantity=${selectedPinPackage}`);
+                const response = await fetch(`${ADMIN_API_URL}?action=createPinRequest&email=${encodeURIComponent(email)}&package=${selectedPinPackage}&amount=${amount}`);
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert(`✅ Purchase successful! ${selectedPinPackage} pins added to your account.`);
-                    userEmail = email;
-                    localStorage.setItem('kro_user_email', email);
-                    await checkPinBalance(email);
+                    alert(`✅ ${result.message}\n\nRequest ID: ${result.requestId}`);
                     closeBuyPinsModal();
+                } else {
+                    alert(`❌ ${result.error}`);
                 }
             } catch (error) {
-                console.error('Error purchasing pins:', error);
-                alert('Error processing purchase. Please try again.');
+                console.error('Error:', error);
+                alert('Error submitting request. Please try again.');
             }
         }
 
