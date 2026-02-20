@@ -1414,6 +1414,8 @@
         // PIN System API URL
         const PIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         
+        // Add this with your other API URLs
+        const ADMIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         const IMGBB_API_KEY = '***REMOVED***';
         
         // ==================== GLOBAL VARIABLES ====================
@@ -1513,7 +1515,7 @@
         }
 
         // Replace your existing processPurchase function with this:
-        async function processPurchase() {
+                async function processPurchase() {
             const email = document.getElementById('purchaseEmail').value;
             if (!email) {
                 alert('Please enter your email');
@@ -1526,7 +1528,8 @@
             if (selectedPinPackage === 50) amount = '$35';
             
             try {
-                const response = await fetch(`${ADMIN_API_URL}?action=createPinRequest&email=${encodeURIComponent(email)}&package=${selectedPinPackage}&amount=${amount}`);
+                // Make sure ADMIN_API_URL is defined at the top of your script
+                const response = await fetch(`${ADMIN_API_URL}?action=createPinRequest&email=${encodeURIComponent(email)}&package=${selectedPinPackage}&amount=${encodeURIComponent(amount)}`);
                 const result = await response.json();
                 
                 if (result.success) {
