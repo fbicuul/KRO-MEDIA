@@ -202,12 +202,38 @@
             background: #4d9eff;
         }
         
-        .requests-table {
+        /* Table Container for Horizontal Scroll */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
             background: rgba(20, 20, 30, 0.6);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 20px;
-            overflow: hidden;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+        
+        /* Custom Scrollbar */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+            border-radius: 10px;
+        }
+        
+        .requests-table {
+            width: 100%;
+            min-width: 800px; /* Forces horizontal scroll on mobile */
+            background: transparent;
+            border: none;
+            border-radius: 0;
         }
         
         table {
@@ -221,11 +247,13 @@
             text-align: left;
             color: #ff3b9c;
             font-weight: 600;
+            white-space: nowrap; /* Prevents header text from wrapping */
         }
         
         td {
             padding: 15px;
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            white-space: nowrap; /* Prevents cell content from wrapping */
         }
         
         tr:last-child td {
@@ -237,6 +265,7 @@
             padding: 5px 15px;
             border-radius: 20px;
             font-size: 0.9em;
+            white-space: nowrap;
         }
         
         .status-pending {
@@ -258,6 +287,7 @@
             cursor: pointer;
             font-weight: 500;
             margin-right: 5px;
+            white-space: nowrap;
         }
         
         .btn-verify {
@@ -390,10 +420,101 @@
             cursor: pointer;
         }
         
+        /* Mobile Responsive */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+            
+            .header-left {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .logout-btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .section-header {
+                flex-direction: column;
                 gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .refresh-btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            /* Table containers become scrollable */
+            .table-container {
+                border-radius: 15px;
+                margin: 10px 0;
+            }
+            
+            /* Add a subtle hint that table is scrollable */
+            .table-container::after {
+                content: '← Scroll →';
+                display: block;
+                text-align: center;
+                color: #4d9eff;
+                font-size: 0.8em;
+                padding: 8px;
+                opacity: 0.7;
+                background: rgba(77, 158, 255, 0.1);
+                border-top: 1px solid rgba(255,255,255,0.05);
+            }
+            
+            /* Hide scroll hint on hover */
+            .table-container:hover::after {
+                opacity: 0.3;
+            }
+            
+            /* Adjust table min-width for better mobile scrolling */
+            .requests-table {
+                min-width: 700px;
+            }
+            
+            /* Make status badges more compact on mobile */
+            .status-badge {
+                padding: 4px 10px;
+                font-size: 0.8em;
+            }
+            
+            .action-btn {
+                padding: 6px 12px;
+                font-size: 0.85em;
+            }
+            
+            /* Adjust modal for mobile */
+            .modal-content,
+            .softphone-content {
+                padding: 25px;
+                width: 95%;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            .requests-table {
+                min-width: 650px; /* Slightly smaller but still scrollable */
+            }
+            
+            th, td {
+                padding: 12px 10px;
+                font-size: 0.9em;
+            }
+            
+            .table-container::after {
+                content: '← Swipe to see more →';
             }
         }
     </style>
@@ -455,25 +576,27 @@
             <button class="refresh-btn" onclick="loadAllData()">↻ Refresh</button>
         </div>
 
-        <div class="requests-table">
-            <table id="pendingTable">
-                <thead>
-                    <tr>
-                        <th>Request ID</th>
-                        <th>Email</th>
-                        <th>Package</th>
-                        <th>Amount</th>
-                        <th>Requested</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="pendingBody">
-                    <tr>
-                        <td colspan="7" style="text-align: center; padding: 30px;">Loading...</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="table-container">
+            <div class="requests-table">
+                <table id="pendingTable">
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Email</th>
+                            <th>Package</th>
+                            <th>Amount</th>
+                            <th>Requested</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 30px;">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Generate PINs Section -->
@@ -481,25 +604,27 @@
             <h2>⚡ Generate PINs for Paid Users</h2>
         </div>
 
-        <div class="requests-table">
-            <table id="paidTable">
-                <thead>
-                    <tr>
-                        <th>Request ID</th>
-                        <th>Email</th>
-                        <th>Package</th>
-                        <th>Amount</th>
-                        <th>Payment Note</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="paidBody">
-                    <tr>
-                        <td colspan="7" style="text-align: center; padding: 30px;">Loading...</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="table-container">
+            <div class="requests-table">
+                <table id="paidTable">
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Email</th>
+                            <th>Package</th>
+                            <th>Amount</th>
+                            <th>Payment Note</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paidBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 30px;">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -622,7 +747,7 @@
             }
         }
 
-        // ==================== FIXED DISPLAY REQUESTS FUNCTION ====================
+        // ==================== DISPLAY REQUESTS FUNCTION ====================
         function displayRequests(allRequests) {
             const pendingBody = document.getElementById('pendingBody');
             const paidBody = document.getElementById('paidBody');
