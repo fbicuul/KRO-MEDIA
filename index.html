@@ -555,7 +555,44 @@
         .contract-card[data-status="Not Started"] .contract-image {
             border-bottom: 4px solid #4d9eff;
         }
+
         
+        /* Bank Selection Buttons */
+        .bank-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .bank-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            border: 1px solid var(--glass-border);
+        }
+
+        .bank-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .bank-btn.us { border-color: #4d9eff; color: #4d9eff; }
+        .bank-btn.us:hover { background: #4d9eff; color: white; }
+        .bank-btn.uk { border-color: #ff3b9c; color: #ff3b9c; }
+        .bank-btn.uk:hover { background: #ff3b9c; color: white; }
+        .bank-btn.eu { border-color: #a4ff7c; color: #a4ff7c; }
+        .bank-btn.eu:hover { background: #a4ff7c; color: #0a0a0f; }
+        .bank-btn.ng { border-color: #9d4edd; color: #9d4edd; }
+        .bank-btn.ng:hover { background: #9d4edd; color: white; }
+        .bank-btn.crypto { border-color: #0ef0f0; color: #0ef0f0; }
+        .bank-btn.crypto:hover { background: #0ef0f0; color: #0a0a0f; }
+                
         .contract-amount { font-size: 2em; font-weight: 700; margin-bottom: 15px; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .contract-title { font-size: 1.3em; font-weight: 600; margin-bottom: 8px; color: white; }
         .contract-company { color: #b0b0b0; font-size: 1em; margin-bottom: 15px; }
