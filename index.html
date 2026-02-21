@@ -38,6 +38,121 @@
         .glow-blue { text-shadow: 0 0 10px #4d9eff, 0 0 20px #4d9eff; }
         .glow-cyan { text-shadow: 0 0 10px #0ef0f0, 0 0 20px #0ef0f0; }
         
+        /* ==================== NEON LOADING SPINNER ==================== */
+        .neon-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 20px;
+        }
+        
+        .neon-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4d9eff;
+            box-shadow: 0 0 20px #4d9eff;
+            animation: neonPulse 1.5s ease-in-out infinite;
+        }
+        
+        .neon-dot:nth-child(2) {
+            animation-delay: 0.2s;
+            background: #0ef0f0;
+            box-shadow: 0 0 20px #0ef0f0;
+        }
+        
+        .neon-dot:nth-child(3) {
+            animation-delay: 0.4s;
+            background: #a4ff7c;
+            box-shadow: 0 0 20px #a4ff7c;
+        }
+        
+        .neon-dot:nth-child(4) {
+            animation-delay: 0.6s;
+            background: #ff3b9c;
+            box-shadow: 0 0 20px #ff3b9c;
+        }
+        
+        .neon-dot:nth-child(5) {
+            animation-delay: 0.8s;
+            background: #9d4edd;
+            box-shadow: 0 0 20px #9d4edd;
+        }
+        
+        @keyframes neonPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.8;
+                box-shadow: 0 0 30px currentColor;
+            }
+        }
+        
+        /* Button Loading State */
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
+        
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        /* Image Loading State */
+        .image-loading {
+            position: relative;
+            background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .image-loading .neon-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Card Loading State */
+        .card-loading {
+            background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            min-height: 300px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
         /* Header */
         .header {
             background: rgba(10, 10, 15, 0.8);
@@ -883,6 +998,26 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
+            position: relative;
+        }
+        
+        .pin-button.loading {
+            color: transparent !important;
+            pointer-events: none;
+        }
+        
+        .pin-button.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
         
         .pin-button:hover {
@@ -1008,6 +1143,15 @@
             color: #b0b0b0;
         }
         
+        /* Loading Container */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            width: 100%;
+        }
+        
         @media (max-width: 768px) {
             .hero-title { font-size: 3em; }
             .hero-section { flex-direction: column; }
@@ -1037,6 +1181,9 @@
             .pin-input-group {
                 flex-direction: column;
             }
+            .email-input-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -1062,6 +1209,17 @@
             <div class="banners-container">
                 <div class="banners-slider" id="bannersSlider">
                     <!-- Banners will be loaded dynamically -->
+                    <div class="banner-slide">
+                        <div class="image-loading" style="height: 400px;">
+                            <div class="neon-loading">
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -1130,7 +1288,15 @@
                 <span class="see-all" onclick="openAllContractsModal()">See All →</span>
             </div>
             <div class="contracts-grid" id="contractsGrid">
-                <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #666;">Loading contracts...</div>
+                <div class="loading-container">
+                    <div class="neon-loading">
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1141,7 +1307,15 @@
                 <span class="see-all">See All →</span>
             </div>
             <div class="progress-list" id="progressList">
-                <div style="text-align: center; padding: 50px; color: #666;">Loading progress...</div>
+                <div class="loading-container">
+                    <div class="neon-loading">
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1152,7 +1326,17 @@
                     <h3>⚡ Top 5 Highest Contracts</h3>
                     <span class="see-all">See All →</span>
                 </div>
-                <div id="topContractsList"></div>
+                <div id="topContractsList">
+                    <div class="loading-container">
+                        <div class="neon-loading">
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="featured-card">
@@ -1160,7 +1344,17 @@
                     <h3>🏆 Top 5 Staff</h3>
                     <span class="see-all">See All →</span>
                 </div>
-                <div id="topStaffList"></div>
+                <div id="topStaffList">
+                    <div class="loading-container">
+                        <div class="neon-loading">
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1300,7 +1494,15 @@
             </div>
             
             <div class="detail-grid" id="detailContent">
-                <!-- Detail content will be loaded here -->
+                <div class="loading-container">
+                    <div class="neon-loading">
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- View Contact Button & PIN Section -->
@@ -1389,7 +1591,17 @@
                 <h2>📋 All Contracts</h2>
                 <span class="close-btn" onclick="closeAllContractsModal()">&times;</span>
             </div>
-            <div class="all-contracts-list" id="allContractsList"></div>
+            <div class="all-contracts-list" id="allContractsList">
+                <div class="loading-container">
+                    <div class="neon-loading">
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1400,7 +1612,17 @@
                 <h2>Staff Profile</h2>
                 <span class="close-btn" onclick="closeStaffDetailModal()">&times;</span>
             </div>
-            <div id="staffDetailContent"></div>
+            <div id="staffDetailContent">
+                <div class="loading-container">
+                    <div class="neon-loading">
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                        <div class="neon-dot"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1436,6 +1658,17 @@
         let selectedPinPackage = 10;
         const MAX_HOMEPAGE_CONTRACTS = 12;
 
+        // ==================== HELPER: SHOW LOADING ON BUTTON ====================
+        function setButtonLoading(button, isLoading) {
+            if (isLoading) {
+                button.classList.add('loading');
+                button.disabled = true;
+            } else {
+                button.classList.remove('loading');
+                button.disabled = false;
+            }
+        }
+
         // ==================== PIN SYSTEM FUNCTIONS ====================
         async function checkPinBalance(email) {
             try {
@@ -1464,6 +1697,9 @@
         }
 
         async function getFreePins(email) {
+            const button = event.target;
+            setButtonLoading(button, true);
+            
             try {
                 const response = await fetch(`${PIN_API_URL}?action=generateFreePins&email=${encodeURIComponent(email)}`);
                 const result = await response.json();
@@ -1480,6 +1716,8 @@
             } catch (error) {
                 console.error('Error getting free pins:', error);
                 alert('Error requesting free pins. Please try again.');
+            } finally {
+                setButtonLoading(button, false);
             }
         }
 
@@ -1488,6 +1726,9 @@
                 alert('Please enter your email first');
                 return false;
             }
+            
+            const button = document.querySelector('#pinSection .pin-button');
+            setButtonLoading(button, true);
             
             try {
                 const response = await fetch(`${PIN_API_URL}?action=validatePin&email=${encodeURIComponent(userEmail)}&pin=${pin}`);
@@ -1505,6 +1746,8 @@
                 console.error('Error validating pin:', error);
                 alert('Error validating pin. Please try again.');
                 return false;
+            } finally {
+                setButtonLoading(button, false);
             }
         }
 
@@ -1514,13 +1757,15 @@
             document.getElementById(`package${quantity}`).classList.add('selected');
         }
 
-        // Replace your existing processPurchase function with this:
-                async function processPurchase() {
+        async function processPurchase() {
             const email = document.getElementById('purchaseEmail').value;
             if (!email) {
                 alert('Please enter your email');
                 return;
             }
+            
+            const button = event.target;
+            setButtonLoading(button, true);
             
             // Get amount based on selected package
             let amount = '$10';
@@ -1528,7 +1773,6 @@
             if (selectedPinPackage === 50) amount = '$35';
             
             try {
-                // Make sure ADMIN_API_URL is defined at the top of your script
                 const response = await fetch(`${ADMIN_API_URL}?action=createPinRequest&email=${encodeURIComponent(email)}&package=${selectedPinPackage}&amount=${encodeURIComponent(amount)}`);
                 const result = await response.json();
                 
@@ -1541,6 +1785,8 @@
             } catch (error) {
                 console.error('Error:', error);
                 alert('Error submitting request. Please try again.');
+            } finally {
+                setButtonLoading(button, false);
             }
         }
 
@@ -1551,10 +1797,15 @@
                 return;
             }
             
+            const button = event.target;
+            setButtonLoading(button, true);
+            
             const result = await checkPinBalance(email);
             if (result) {
                 alert(`📊 You have ${result.pinsRemaining} pins remaining\nTotal purchased: ${result.totalPurchased}\nUsed: ${result.pinsUsed}`);
             }
+            
+            setButtonLoading(button, false);
         }
 
         // ==================== CONTACT MODAL FUNCTIONS ====================
@@ -1628,10 +1879,15 @@
                 return;
             }
             
+            const button = event.target;
+            setButtonLoading(button, true);
+            
             userEmail = email;
             localStorage.setItem('kro_user_email', email);
             await checkPinBalance(email);
             openContactModal(); // Refresh modal
+            
+            setButtonLoading(button, false);
         }
 
         async function requestFreePins() {
@@ -1689,8 +1945,7 @@
             
             const submitBtn = document.getElementById('submitBtn');
             const originalText = submitBtn.textContent;
-            submitBtn.innerHTML = '<span class="spinner"></span> Uploading...';
-            submitBtn.disabled = true;
+            setButtonLoading(submitBtn, true);
             
             document.getElementById('formMessage').innerHTML = '';
             
@@ -1753,8 +2008,7 @@
                     <div class="error-message">❌ Error creating contract. Please try again.</div>
                 `;
             } finally {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
+                setButtonLoading(submitBtn, false);
             }
         }
 
@@ -2184,7 +2438,7 @@
             grid.innerHTML = displayContracts.map(contract => `
                 <div class="contract-card" data-status="${contract.status}" onclick="viewContract(${contract.id})">
                     <div class="contract-image">
-                        <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}">
+                        <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}" loading="lazy">
                     </div>
                     <div class="contract-content">
                         <div class="contract-amount">₦${parseFloat(contract.amount).toLocaleString()}</div>
@@ -2327,7 +2581,7 @@
                     grid.innerHTML = displayContracts.map(contract => `
                         <div class="contract-card" data-status="${contract.status}" onclick="viewContract(${contract.id})">
                             <div class="contract-image">
-                                <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}">
+                                <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}" loading="lazy">
                             </div>
                             <div class="contract-content">
                                 <div class="contract-amount">₦${parseFloat(contract.amount).toLocaleString()}</div>
@@ -2365,7 +2619,7 @@
             container.innerHTML = contracts.map(contract => `
                 <div class="contract-list-item">
                     <div class="list-item-image">
-                        <img src="${contract.image_url || 'https://via.placeholder.com/60x60/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}">
+                        <img src="${contract.image_url || 'https://via.placeholder.com/60x60/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}" loading="lazy">
                     </div>
                     <div class="list-item-content">
                         <div class="list-item-title">${contract.title}</div>
