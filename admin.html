@@ -20,6 +20,114 @@
             min-height: 100vh;
         }
         
+        /* ==================== NEON LOADING SPINNER ==================== */
+        .neon-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 20px;
+        }
+        
+        .neon-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4d9eff;
+            box-shadow: 0 0 20px #4d9eff;
+            animation: neonPulse 1.5s ease-in-out infinite;
+        }
+        
+        .neon-dot:nth-child(2) {
+            animation-delay: 0.2s;
+            background: #0ef0f0;
+            box-shadow: 0 0 20px #0ef0f0;
+        }
+        
+        .neon-dot:nth-child(3) {
+            animation-delay: 0.4s;
+            background: #a4ff7c;
+            box-shadow: 0 0 20px #a4ff7c;
+        }
+        
+        .neon-dot:nth-child(4) {
+            animation-delay: 0.6s;
+            background: #ff3b9c;
+            box-shadow: 0 0 20px #ff3b9c;
+        }
+        
+        .neon-dot:nth-child(5) {
+            animation-delay: 0.8s;
+            background: #9d4edd;
+            box-shadow: 0 0 20px #9d4edd;
+        }
+        
+        @keyframes neonPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.8;
+                box-shadow: 0 0 30px currentColor;
+            }
+        }
+        
+        /* Loading Container */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            width: 100%;
+        }
+        
+        /* Table Loading State */
+        .table-loading {
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Button Loading State */
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
+        
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* Chart Loading State */
+        .chart-loading {
+            position: relative;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(20, 20, 30, 0.3);
+            border-radius: 15px;
+        }
+        
         /* Login Styles */
         .login-container {
             max-width: 400px;
@@ -75,11 +183,31 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.3s;
+            position: relative;
         }
         
         .login-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 20px rgba(255,59,156,0.5);
+        }
+        
+        .login-btn.loading {
+            color: transparent !important;
+            pointer-events: none;
+        }
+        
+        .login-btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
         
         /* Dashboard Styles */
@@ -124,6 +252,7 @@
             align-items: center;
             gap: 5px;
             transition: all 0.3s;
+            position: relative;
         }
         
         .phone-btn:hover {
@@ -138,6 +267,7 @@
             border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
         }
         
         .logout-btn:hover {
@@ -272,10 +402,30 @@
             color: white;
             border-radius: 20px;
             cursor: pointer;
+            position: relative;
         }
         
         .refresh-btn:hover {
             background: #4d9eff;
+        }
+        
+        .refresh-btn.loading {
+            color: transparent !important;
+            pointer-events: none;
+        }
+        
+        .refresh-btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
         
         /* Table Container for Horizontal Scroll */
@@ -364,6 +514,26 @@
             font-weight: 500;
             margin-right: 5px;
             white-space: nowrap;
+            position: relative;
+        }
+        
+        .action-btn.loading {
+            color: transparent !important;
+            pointer-events: none;
+        }
+        
+        .action-btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
         
         .btn-verify {
@@ -432,6 +602,26 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
+            position: relative;
+        }
+        
+        .softphone-content button.loading {
+            color: transparent !important;
+            pointer-events: none;
+        }
+        
+        .softphone-content button.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
         
         .close-softphone {
@@ -494,6 +684,26 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
+            position: relative;
+        }
+        
+        .modal-content button.loading {
+            color: transparent !important;
+            pointer-events: none;
+        }
+        
+        .modal-content button.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
         
         /* Mobile Responsive */
@@ -623,7 +833,7 @@
             <label>Password</label>
             <input type="password" id="password" placeholder="••••••••">
         </div>
-        <button class="login-btn" onclick="adminLogin()">Login to Dashboard</button>
+        <button class="login-btn" onclick="adminLogin()" id="loginBtn">Login to Dashboard</button>
     </div>
 
     <!-- Dashboard -->
@@ -666,39 +876,75 @@
         <div class="analytics-section">
             <div class="section-header">
                 <h2>📊 Analytics Dashboard</h2>
-                <button class="refresh-btn" onclick="loadAllData()">↻ Refresh Charts</button>
+                <button class="refresh-btn" onclick="loadAllData()" id="refreshChartsBtn">↻ Refresh Charts</button>
             </div>
             
             <div class="analytics-grid">
                 <!-- Chart 1: Requests Over Time -->
                 <div class="chart-card">
                     <h3>📈 Requests Over Time <span>Last 7 Days</span></h3>
-                    <div class="chart-container">
-                        <canvas id="requestsLineChart"></canvas>
+                    <div class="chart-container" id="requestsChartContainer">
+                        <div class="chart-loading">
+                            <div class="neon-loading">
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                            </div>
+                        </div>
+                        <canvas id="requestsLineChart" style="display: none;"></canvas>
                     </div>
                 </div>
                 
                 <!-- Chart 2: Package Distribution -->
                 <div class="chart-card">
                     <h3>🥧 Package Distribution <span>By Type</span></h3>
-                    <div class="chart-container">
-                        <canvas id="packagePieChart"></canvas>
+                    <div class="chart-container" id="packageChartContainer">
+                        <div class="chart-loading">
+                            <div class="neon-loading">
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                            </div>
+                        </div>
+                        <canvas id="packagePieChart" style="display: none;"></canvas>
                     </div>
                 </div>
                 
                 <!-- Chart 3: Revenue Trend -->
                 <div class="chart-card">
                     <h3>💰 Revenue Trend <span>Daily</span></h3>
-                    <div class="chart-container">
-                        <canvas id="revenueBarChart"></canvas>
+                    <div class="chart-container" id="revenueChartContainer">
+                        <div class="chart-loading">
+                            <div class="neon-loading">
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                            </div>
+                        </div>
+                        <canvas id="revenueBarChart" style="display: none;"></canvas>
                     </div>
                 </div>
                 
                 <!-- Chart 4: Status Distribution -->
                 <div class="chart-card">
                     <h3>🔄 Request Status <span>Pending vs Paid</span></h3>
-                    <div class="chart-container">
-                        <canvas id="statusDoughnutChart"></canvas>
+                    <div class="chart-container" id="statusChartContainer">
+                        <div class="chart-loading">
+                            <div class="neon-loading">
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                            </div>
+                        </div>
+                        <canvas id="statusDoughnutChart" style="display: none;"></canvas>
                     </div>
                 </div>
             </div>
@@ -727,7 +973,7 @@
         <!-- Pending Requests -->
         <div class="section-header">
             <h2>⏳ Pending Payment Requests</h2>
-            <button class="refresh-btn" onclick="loadAllData()">↻ Refresh</button>
+            <button class="refresh-btn" onclick="loadAllData()" id="refreshPendingBtn">↻ Refresh</button>
         </div>
 
         <div class="table-container">
@@ -746,7 +992,15 @@
                     </thead>
                     <tbody id="pendingBody">
                         <tr>
-                            <td colspan="7" style="text-align: center; padding: 30px;">Loading...</td>
+                            <td colspan="7" style="text-align: center; padding: 30px;">
+                                <div class="neon-loading">
+                                    <div class="neon-dot"></div>
+                                    <div class="neon-dot"></div>
+                                    <div class="neon-dot"></div>
+                                    <div class="neon-dot"></div>
+                                    <div class="neon-dot"></div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -774,7 +1028,15 @@
                     </thead>
                     <tbody id="paidBody">
                         <tr>
-                            <td colspan="7" style="text-align: center; padding: 30px;">Loading...</td>
+                            <td colspan="7" style="text-align: center; padding: 30px;">
+                                <div class="neon-loading">
+                                    <div class="neon-dot"></div>
+                                    <div class="neon-dot"></div>
+                                    <div class="neon-dot"></div>
+                                    <div class="neon-dot"></div>
+                                    <div class="neon-dot"></div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -794,7 +1056,7 @@
                 <option value="telegram">Telegram</option>
                 <option value="zoom">Zoom</option>
             </select>
-            <button onclick="makeCall()">Start Call</button>
+            <button onclick="makeCall()" id="makeCallBtn">Start Call</button>
         </div>
     </div>
 
@@ -805,7 +1067,7 @@
             <p>Enter the payment remark/reference from the user:</p>
             <input type="text" id="paymentRemark" placeholder="e.g., user@email.com">
             <input type="hidden" id="verifyRequestId">
-            <button onclick="submitVerification()">Mark as Paid</button>
+            <button onclick="submitVerification()" id="verifyBtn">Mark as Paid</button>
             <button onclick="closeModal()" style="background: transparent; border: 1px solid #666;">Cancel</button>
         </div>
     </div>
@@ -819,7 +1081,7 @@
             <p id="generatePackage" style="color: #ff3b9c;"></p>
             <input type="hidden" id="generateEmailInput">
             <input type="hidden" id="generatePackageInput">
-            <button onclick="submitGeneration()">Generate & Send PINs</button>
+            <button onclick="submitGeneration()" id="generateBtn">Generate & Send PINs</button>
             <button onclick="closeGenerateModal()" style="background: transparent; border: 1px solid #666;">Cancel</button>
         </div>
     </div>
@@ -831,6 +1093,34 @@
         
         // Chart instances
         let requestsLineChart, packagePieChart, revenueBarChart, statusDoughnutChart;
+
+        // ==================== HELPER: SET BUTTON LOADING ====================
+        function setButtonLoading(button, isLoading) {
+            if (isLoading) {
+                button.classList.add('loading');
+                button.disabled = true;
+            } else {
+                button.classList.remove('loading');
+                button.disabled = false;
+            }
+        }
+
+        // ==================== SHOW/HIDE CHART LOADING ====================
+        function showChartLoading(chartId) {
+            const container = document.getElementById(chartId + 'Container');
+            const canvas = document.getElementById(chartId);
+            const loadingDiv = container.querySelector('.chart-loading');
+            if (loadingDiv) loadingDiv.style.display = 'flex';
+            if (canvas) canvas.style.display = 'none';
+        }
+
+        function hideChartLoading(chartId) {
+            const container = document.getElementById(chartId + 'Container');
+            const canvas = document.getElementById(chartId);
+            const loadingDiv = container.querySelector('.chart-loading');
+            if (loadingDiv) loadingDiv.style.display = 'none';
+            if (canvas) canvas.style.display = 'block';
+        }
 
         // ==================== CHECK SESSION ON LOAD ====================
         window.onload = function() {
@@ -844,14 +1134,61 @@
 
         // ==================== LOAD ALL DATA ====================
         async function loadAllData() {
+            // Show loading on refresh buttons
+            const refreshChartsBtn = document.getElementById('refreshChartsBtn');
+            const refreshPendingBtn = document.getElementById('refreshPendingBtn');
+            setButtonLoading(refreshChartsBtn, true);
+            setButtonLoading(refreshPendingBtn, true);
+            
+            // Show loading in tables
+            document.getElementById('pendingBody').innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 30px;">
+                        <div class="neon-loading">
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            document.getElementById('paidBody').innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 30px;">
+                        <div class="neon-loading">
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                            <div class="neon-dot"></div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            
+            // Show loading on charts
+            showChartLoading('requestsLineChart');
+            showChartLoading('packagePieChart');
+            showChartLoading('revenueBarChart');
+            showChartLoading('statusDoughnutChart');
+            
             await loadDashboardStats();
             await loadPendingRequests();
+            
+            // Hide loading on refresh buttons
+            setButtonLoading(refreshChartsBtn, false);
+            setButtonLoading(refreshPendingBtn, false);
         }
 
         // ==================== LOGIN ====================
         async function adminLogin() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            
+            setButtonLoading(loginBtn, true);
 
             try {
                 const response = await fetch(`${ADMIN_API_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
@@ -868,6 +1205,8 @@
                 }
             } catch (error) {
                 alert('Error connecting to server');
+            } finally {
+                setButtonLoading(loginBtn, false);
             }
         }
 
@@ -905,6 +1244,8 @@
                 }
             } catch (error) {
                 console.error('Error loading requests:', error);
+                document.getElementById('pendingBody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">Error loading data</td></tr>';
+                document.getElementById('paidBody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">Error loading data</td></tr>';
             }
         }
 
@@ -924,6 +1265,12 @@
             createPackagePieChart(packageData);
             createRevenueBarChart(revenueData, last7Days);
             createStatusDoughnutChart(statusData);
+            
+            // Hide loading for all charts
+            hideChartLoading('requestsLineChart');
+            hideChartLoading('packagePieChart');
+            hideChartLoading('revenueBarChart');
+            hideChartLoading('statusDoughnutChart');
         }
 
         function getLast7Days() {
@@ -940,9 +1287,11 @@
             const daily = new Array(7).fill(0);
             requests.forEach(req => {
                 if (req.requestedAt) {
-                    const reqDate = new Date(req.requestedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                    const index = days.indexOf(reqDate);
-                    if (index !== -1) daily[index]++;
+                    try {
+                        const reqDate = new Date(req.requestedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        const index = days.indexOf(reqDate);
+                        if (index !== -1) daily[index]++;
+                    } catch (e) {}
                 }
             });
             return daily;
@@ -961,12 +1310,14 @@
             const revenue = new Array(7).fill(0);
             requests.forEach(req => {
                 if (req.status === 'paid' && req.requestedAt) {
-                    const reqDate = new Date(req.requestedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                    const index = days.indexOf(reqDate);
-                    if (index !== -1) {
-                        const amount = parseFloat(req.amount?.replace('$', '') || 0);
-                        revenue[index] += amount;
-                    }
+                    try {
+                        const reqDate = new Date(req.requestedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        const index = days.indexOf(reqDate);
+                        if (index !== -1) {
+                            const amount = parseFloat(req.amount?.replace('$', '') || 0);
+                            revenue[index] += amount;
+                        }
+                    } catch (e) {}
                 }
             });
             return revenue;
@@ -979,7 +1330,7 @@
         }
 
         function updateMiniStats(stats) {
-            const avgDaily = Math.round(stats.totalRequests / 30) || 0; // Approx monthly avg
+            const avgDaily = Math.round(stats.totalRequests / 30) || 0;
             const conversionRate = stats.totalRequests > 0 
                 ? Math.round((stats.paid / stats.totalRequests) * 100) 
                 : 0;
@@ -990,7 +1341,10 @@
             document.getElementById('avgDailyRequests').textContent = avgDaily;
             document.getElementById('conversionRate').textContent = conversionRate + '%';
             document.getElementById('avgRevenue').textContent = '$' + avgRev;
-            document.getElementById('topPackage').textContent = '10'; // Default, could calculate dynamically
+            
+            // Calculate most popular package (simplified)
+            // You could enhance this with actual data
+            document.getElementById('topPackage').textContent = '10';
         }
 
         // ==================== CHART CREATION FUNCTIONS ====================
@@ -1154,16 +1508,10 @@
 
             // Ensure allRequests is an array
             const requests = Array.isArray(allRequests) ? allRequests : [];
-            
-            console.log('All requests received:', requests); // Debug log
-            console.log('Number of requests:', requests.length);
 
             // Filter requests by status
             const pendingRows = requests.filter(r => r && r.status === 'pending');
             const paidRows = requests.filter(r => r && r.status === 'paid');
-
-            console.log('Pending count:', pendingRows.length);
-            console.log('Paid count:', paidRows.length);
 
             // Pending Table
             if (pendingRows.length === 0) {
@@ -1224,9 +1572,13 @@
         async function submitVerification() {
             const requestId = document.getElementById('verifyRequestId').value;
             const paymentRemark = document.getElementById('paymentRemark').value;
+            const verifyBtn = document.getElementById('verifyBtn');
+            
+            setButtonLoading(verifyBtn, true);
 
             if (!paymentRemark) {
                 alert('Please enter the payment remark');
+                setButtonLoading(verifyBtn, false);
                 return;
             }
 
@@ -1243,6 +1595,8 @@
                 }
             } catch (error) {
                 alert('Error connecting to server');
+            } finally {
+                setButtonLoading(verifyBtn, false);
             }
         }
 
@@ -1258,6 +1612,9 @@
         async function submitGeneration() {
             const email = document.getElementById('generateEmailInput').value;
             const pinPackage = document.getElementById('generatePackageInput').value;
+            const generateBtn = document.getElementById('generateBtn');
+            
+            setButtonLoading(generateBtn, true);
 
             try {
                 const response = await fetch(`${ADMIN_API_URL}?action=generatePins&email=${encodeURIComponent(email)}&package=${pinPackage}`);
@@ -1272,6 +1629,8 @@
                 }
             } catch (error) {
                 alert('Error connecting to server');
+            } finally {
+                setButtonLoading(generateBtn, false);
             }
         }
 
@@ -1284,12 +1643,16 @@
             document.getElementById('softphoneModal').style.display = 'none';
         }
 
-        function makeCall() {
+        async function makeCall() {
             const phoneNumber = document.getElementById('phoneNumber').value;
             const platform = document.getElementById('callPlatform').value;
+            const callBtn = document.getElementById('makeCallBtn');
+            
+            setButtonLoading(callBtn, true);
 
             if (!phoneNumber) {
                 alert('Please enter a phone number');
+                setButtonLoading(callBtn, false);
                 return;
             }
 
@@ -1311,6 +1674,7 @@
 
             window.open(url, '_blank');
             closeSoftphone();
+            setButtonLoading(callBtn, false);
         }
 
         // ==================== MODAL CONTROLS ====================
