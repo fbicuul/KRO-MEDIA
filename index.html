@@ -196,7 +196,7 @@
         .header {
             background: rgba(10, 10, 15, 0.8);
             backdrop-filter: blur(10px);
-            padding: 20px 40px;
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -209,18 +209,53 @@
         }
         
         .logo {
-            font-size: 1em;
+            font-size: 1.2em;
             font-weight: 800;
             background: linear-gradient(135deg, #ffffff, #e3c0ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
-        .nav-buttons { display: flex; gap: 15px; }
-        .nav-btn { padding: 10px 25px; border: none; background: transparent; cursor: pointer; border-radius: 30px; color: #ffffff; font-size: 1em; font-weight: 500; position: relative; overflow: hidden; transition: all 0.3s; }
-        .nav-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
-        .nav-btn:hover::before { left: 100%; }
-        .nav-btn.active { background: linear-gradient(135deg, #ff3b9c, #9d4edd); box-shadow: 0 0 20px #ff3b9c; }
+        /* Desktop Navigation */
+        .nav-buttons { 
+            display: flex; 
+            gap: 15px; 
+            align-items: center;
+        }
+        
+        .nav-btn { 
+            padding: 10px 25px; 
+            border: none; 
+            background: transparent; 
+            cursor: pointer; 
+            border-radius: 30px; 
+            color: #ffffff; 
+            font-size: 1em; 
+            font-weight: 500; 
+            position: relative; 
+            overflow: hidden; 
+            transition: all 0.3s; 
+        }
+        
+        .nav-btn::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: -100%; 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); 
+            transition: left 0.5s; 
+        }
+        
+        .nav-btn:hover::before { 
+            left: 100%; 
+        }
+        
+        .nav-btn.active { 
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd); 
+            box-shadow: 0 0 20px #ff3b9c; 
+        }
         
         .free-pin-btn {
             background: linear-gradient(135deg, #a4ff7c, #4d9eff);
@@ -230,9 +265,9 @@
             border-radius: 30px;
             font-weight: 600;
             cursor: pointer;
-            margin-left: 15px;
             transition: all 0.3s;
             box-shadow: 0 0 20px rgba(164, 255, 124, 0.3);
+            white-space: nowrap;
         }
         
         .free-pin-btn:hover {
@@ -240,7 +275,108 @@
             box-shadow: 0 0 30px rgba(164, 255, 124, 0.6);
         }
         
-        .container { max-width: 1400px; margin: 0 auto; padding: 100px 40px 40px; position: relative; }
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 101;
+        }
+        
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-toggle.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+            background: linear-gradient(135deg, #a4ff7c, #4d9eff);
+        }
+        
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+            background: linear-gradient(135deg, #a4ff7c, #4d9eff);
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 99;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .mobile-menu.active {
+            transform: translateY(0);
+        }
+        
+        .mobile-nav-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .mobile-nav-btn {
+            padding: 15px 25px;
+            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            border-radius: 15px;
+            color: #ffffff;
+            font-size: 1.1em;
+            font-weight: 500;
+            text-align: left;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s;
+        }
+        
+        .mobile-nav-btn.active {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+            border: none;
+            box-shadow: 0 0 20px #ff3b9c;
+        }
+        
+        .mobile-free-pin-btn {
+            background: linear-gradient(135deg, #a4ff7c, #4d9eff);
+            border: none;
+            color: #0a0a0f;
+            padding: 15px 25px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            box-shadow: 0 0 20px rgba(164, 255, 124, 0.3);
+        }
+        
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 100px 40px 40px; 
+            position: relative; 
+        }
         
         /* YouTube Banners */
         .youtube-section { margin: 10px 0 80px 0; }
@@ -1210,6 +1346,26 @@
         }
         
         @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .nav-buttons {
+                display: none;
+            }
+            
+            .free-pin-btn {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
             .hero-title { font-size: 3em; }
             .hero-section { flex-direction: column; }
             .hero-image-container { display: none; }
@@ -1241,11 +1397,6 @@
             .email-input-group {
                 flex-direction: column;
             }
-            .free-pin-btn {
-                padding: 8px 15px;
-                font-size: 0.9em;
-                margin-left: 10px;
-            }
         }
     </style>
 </head>
@@ -1256,11 +1407,29 @@
     <!-- Header -->
     <div class="header" id="mainHeader">
         <div class="logo">K.R.O Media</div>
+        
+        <!-- Desktop Navigation -->
         <div class="nav-buttons">
             <button class="nav-btn active" onclick="showPage('home')">HOME</button>
             <button class="nav-btn" onclick="showPage('progress')">PROGRESS</button>
+            <button class="free-pin-btn" onclick="openFreePinModal()">🎁 Get Free Pins</button>
         </div>
-        <button class="free-pin-btn" onclick="openFreePinModal()">🎁 Get Free Pins</button>
+
+        <!-- Mobile Menu Toggle -->
+        <div class="menu-toggle" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-nav-buttons">
+            <button class="mobile-nav-btn active" onclick="showMobilePage('home')">🏠 HOME</button>
+            <button class="mobile-nav-btn" onclick="showMobilePage('progress')">📊 PROGRESS</button>
+            <button class="mobile-free-pin-btn" onclick="openFreePinModal(); toggleMobileMenu();">🎁 Get Free Pins</button>
+        </div>
     </div>
 
     <!-- Main Container -->
@@ -1739,6 +1908,38 @@
             }, duration);
         }
 
+        // ==================== MOBILE MENU FUNCTIONS ====================
+        function toggleMobileMenu() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            menuToggle.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            
+            // Prevent scrolling when menu is open
+            if (mobileMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function showMobilePage(page) {
+            // Close mobile menu
+            toggleMobileMenu();
+            
+            // Call the original showPage function
+            showPage(page);
+            
+            // Update active states for mobile buttons
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.classList.remove('active'));
+            if (page === 'home') {
+                document.querySelector('.mobile-nav-btn').classList.add('active');
+            } else {
+                document.querySelectorAll('.mobile-nav-btn')[1].classList.add('active');
+            }
+        }
+
         // ==================== HELPER: SHOW LOADING ON BUTTON ====================
         function setButtonLoading(button, isLoading) {
             if (isLoading) {
@@ -1752,6 +1953,12 @@
 
         // ==================== FREE PIN MODAL FUNCTIONS ====================
         function openFreePinModal() {
+            // Close mobile menu if open
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenu.classList.contains('active')) {
+                toggleMobileMenu();
+            }
+            
             // Close any open modals first
             const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal', 'allContractsModal', 'contactModal', 'buyPinsModal'];
             modals.forEach(modalId => {
@@ -2872,8 +3079,14 @@
         // ==================== PAGE NAVIGATION ====================
         function showPage(page) {
             currentPage = page;
+            
+            // Update desktop nav buttons
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            if (event && event.target) event.target.classList.add('active');
+            if (page === 'home') {
+                document.querySelectorAll('.nav-btn')[0].classList.add('active');
+            } else {
+                document.querySelectorAll('.nav-btn')[1].classList.add('active');
+            }
             
             const homePage = document.getElementById('homePage');
             const progressPage = document.getElementById('progressPage');
