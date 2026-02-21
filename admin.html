@@ -20,6 +20,45 @@
             min-height: 100vh;
         }
         
+        /* ==================== TOAST NOTIFICATIONS ==================== */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .toast {
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 15px 25px;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 0 30px rgba(255, 59, 156, 0.3);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            max-width: 350px;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            border-left: 4px solid #a4ff7c;
+        }
+        
+        .toast.error {
+            border-left: 4px solid #ff3b9c;
+        }
+        
+        .toast.info {
+            border-left: 4px solid #4d9eff;
+        }
+        
         /* ==================== NEON LOADING SPINNER ==================== */
         .neon-loading {
             display: flex;
@@ -829,6 +868,9 @@
     </style>
 </head>
 <body>
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- Login Page -->
     <div class="login-container" id="loginPage">
         <h1>🔐 K.R.O Admin</h1>
@@ -1093,14 +1135,32 @@
         </div>
     </div>
 
-    
     <script>
         // ==================== CONFIG ====================
+        // IMPORTANT: Replace this with your actual deployed Google Apps Script URL
         const ADMIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         let adminUser = localStorage.getItem('kro_admin_user') || '';
         
         // Chart instances
         let requestsLineChart, packagePieChart, revenueBarChart, statusDoughnutChart;
+
+        // ==================== TOAST NOTIFICATION SYSTEM ====================
+        function showToast(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Remove after duration
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
 
         // ==================== HELPER: SET BUTTON LOADING ====================
         function setButtonLoading(button, isLoading) {
@@ -1115,10 +1175,15 @@
 
         // ==================== SHOW/HIDE CHART LOADING ====================
         function hideAllChartLoadings() {
-            document.getElementById('requestsLineChartLoading').style.display = 'none';
-            document.getElementById('packagePieChartLoading').style.display = 'none';
-            document.getElementById('revenueBarChartLoading').style.display = 'none';
-            document.getElementById('statusDoughnutChartLoading').style.display = 'none';
+            const loading1 = document.getElementById('requestsLineChartLoading');
+            const loading2 = document.getElementById('packagePieChartLoading');
+            const loading3 = document.getElementById('revenueBarChartLoading');
+            const loading4 = document.getElementById('statusDoughnutChartLoading');
+            
+            if (loading1) loading1.style.display = 'none';
+            if (loading2) loading2.style.display = 'none';
+            if (loading3) loading3.style.display = 'none';
+            if (loading4) loading4.style.display = 'none';
         }
 
         // ==================== CHECK SESSION ON LOAD ====================
@@ -1136,49 +1201,63 @@
             // Show loading on refresh buttons
             const refreshChartsBtn = document.getElementById('refreshChartsBtn');
             const refreshPendingBtn = document.getElementById('refreshPendingBtn');
-            setButtonLoading(refreshChartsBtn, true);
-            setButtonLoading(refreshPendingBtn, true);
+            
+            if (refreshChartsBtn) setButtonLoading(refreshChartsBtn, true);
+            if (refreshPendingBtn) setButtonLoading(refreshPendingBtn, true);
             
             // Show loading in tables
-            document.getElementById('pendingBody').innerHTML = `
-                <tr>
-                    <td colspan="7" style="text-align: center; padding: 30px;">
-                        <div class="neon-loading">
-                            <div class="neon-dot"></div>
-                            <div class="neon-dot"></div>
-                            <div class="neon-dot"></div>
-                            <div class="neon-dot"></div>
-                            <div class="neon-dot"></div>
-                        </div>
-                    </td>
-                </tr>
-            `;
-            document.getElementById('paidBody').innerHTML = `
-                <tr>
-                    <td colspan="7" style="text-align: center; padding: 30px;">
-                        <div class="neon-loading">
-                            <div class="neon-dot"></div>
-                            <div class="neon-dot"></div>
-                            <div class="neon-dot"></div>
-                            <div class="neon-dot"></div>
-                            <div class="neon-dot"></div>
-                        </div>
-                    </td>
-                </tr>
-            `;
+            const pendingBody = document.getElementById('pendingBody');
+            const paidBody = document.getElementById('paidBody');
+            
+            if (pendingBody) {
+                pendingBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 30px;">
+                            <div class="neon-loading">
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            if (paidBody) {
+                paidBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 30px;">
+                            <div class="neon-loading">
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
             
             // Show loading on charts
-            document.getElementById('requestsLineChartLoading').style.display = 'flex';
-            document.getElementById('packagePieChartLoading').style.display = 'flex';
-            document.getElementById('revenueBarChartLoading').style.display = 'flex';
-            document.getElementById('statusDoughnutChartLoading').style.display = 'flex';
+            const loading1 = document.getElementById('requestsLineChartLoading');
+            const loading2 = document.getElementById('packagePieChartLoading');
+            const loading3 = document.getElementById('revenueBarChartLoading');
+            const loading4 = document.getElementById('statusDoughnutChartLoading');
+            
+            if (loading1) loading1.style.display = 'flex';
+            if (loading2) loading2.style.display = 'flex';
+            if (loading3) loading3.style.display = 'flex';
+            if (loading4) loading4.style.display = 'flex';
             
             await loadDashboardStats();
             await loadPendingRequests();
             
             // Hide loading on refresh buttons
-            setButtonLoading(refreshChartsBtn, false);
-            setButtonLoading(refreshPendingBtn, false);
+            if (refreshChartsBtn) setButtonLoading(refreshChartsBtn, false);
+            if (refreshPendingBtn) setButtonLoading(refreshPendingBtn, false);
         }
 
         // ==================== LOGIN ====================
@@ -1187,10 +1266,20 @@
             const password = document.getElementById('password').value;
             const loginBtn = document.getElementById('loginBtn');
             
+            if (!username || !password) {
+                showToast('Please enter username and password', 'error');
+                return;
+            }
+            
             setButtonLoading(loginBtn, true);
 
             try {
                 const response = await fetch(`${ADMIN_API_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
                 const result = await response.json();
 
                 if (result.success) {
@@ -1198,12 +1287,14 @@
                     localStorage.setItem('kro_admin_user', username);
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('dashboard').style.display = 'block';
+                    showToast('Login successful!', 'success');
                     loadAllData();
                 } else {
-                    alert('❌ Invalid credentials');
+                    showToast('❌ Invalid credentials', 'error');
                 }
             } catch (error) {
-                alert('Error connecting to server');
+                console.error('Login error:', error);
+                showToast('Error connecting to server', 'error');
             } finally {
                 setButtonLoading(loginBtn, false);
             }
@@ -1213,19 +1304,30 @@
         async function loadDashboardStats() {
             try {
                 const response = await fetch(`${ADMIN_API_URL}?action=getDashboardStats`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
                 const result = await response.json();
 
                 if (result.success) {
-                    document.getElementById('totalRequests').textContent = result.stats.totalRequests;
-                    document.getElementById('pendingCount').textContent = result.stats.pending;
-                    document.getElementById('paidCount').textContent = result.stats.paid;
-                    document.getElementById('totalRevenue').textContent = '$' + result.stats.totalRevenue;
+                    const totalRequests = document.getElementById('totalRequests');
+                    const pendingCount = document.getElementById('pendingCount');
+                    const paidCount = document.getElementById('paidCount');
+                    const totalRevenue = document.getElementById('totalRevenue');
+                    
+                    if (totalRequests) totalRequests.textContent = result.stats.totalRequests || 0;
+                    if (pendingCount) pendingCount.textContent = result.stats.pending || 0;
+                    if (paidCount) paidCount.textContent = result.stats.paid || 0;
+                    if (totalRevenue) totalRevenue.textContent = '$' + (result.stats.totalRevenue || 0);
                     
                     // Update mini stats
                     updateMiniStats(result.stats);
                 }
             } catch (error) {
                 console.error('Error loading stats:', error);
+                showToast('Error loading dashboard stats', 'error');
             }
         }
 
@@ -1233,21 +1335,24 @@
         async function loadPendingRequests() {
             try {
                 const response = await fetch(`${ADMIN_API_URL}?action=getPendingRequests`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
                 const result = await response.json();
 
                 if (result.success) {
-                    displayRequests(result.pending);
-                    updateCharts(result.pending);
+                    displayRequests(result.pending || []);
+                    updateCharts(result.pending || []);
                 } else {
                     console.error('API Error:', result.error);
-                    document.getElementById('pendingBody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">Error loading data</td></tr>';
-                    document.getElementById('paidBody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">Error loading data</td></tr>';
+                    showToast('Error loading requests', 'error');
                     hideAllChartLoadings();
                 }
             } catch (error) {
                 console.error('Error loading requests:', error);
-                document.getElementById('pendingBody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">Error loading data</td></tr>';
-                document.getElementById('paidBody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">Error loading data</td></tr>';
+                showToast('Error loading requests', 'error');
                 hideAllChartLoadings();
             }
         }
@@ -1314,7 +1419,8 @@
                         const reqDate = new Date(req.requestedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                         const index = days.indexOf(reqDate);
                         if (index !== -1) {
-                            const amount = parseFloat(req.amount?.replace('$', '') || 0);
+                            const amountStr = req.amount?.toString().replace('$', '') || '0';
+                            const amount = parseFloat(amountStr) || 0;
                             revenue[index] += amount;
                         }
                     } catch (e) {}
@@ -1338,17 +1444,23 @@
                 ? Math.round(stats.totalRevenue / stats.paid) 
                 : 0;
             
-            document.getElementById('avgDailyRequests').textContent = avgDaily;
-            document.getElementById('conversionRate').textContent = conversionRate + '%';
-            document.getElementById('avgRevenue').textContent = '$' + avgRev;
+            const avgDailyEl = document.getElementById('avgDailyRequests');
+            const conversionRateEl = document.getElementById('conversionRate');
+            const avgRevenueEl = document.getElementById('avgRevenue');
+            const topPackageEl = document.getElementById('topPackage');
+            
+            if (avgDailyEl) avgDailyEl.textContent = avgDaily;
+            if (conversionRateEl) conversionRateEl.textContent = conversionRate + '%';
+            if (avgRevenueEl) avgRevenueEl.textContent = '$' + avgRev;
             
             // Calculate most popular package (simplified)
-            document.getElementById('topPackage').textContent = '10';
+            if (topPackageEl) topPackageEl.textContent = '10';
         }
 
         // ==================== CHART CREATION FUNCTIONS ====================
         function createRequestsLineChart(data, labels) {
-            const ctx = document.getElementById('requestsLineChart').getContext('2d');
+            const ctx = document.getElementById('requestsLineChart')?.getContext('2d');
+            if (!ctx) return;
             
             // Destroy existing chart if it exists
             if (requestsLineChart) requestsLineChart.destroy();
@@ -1394,7 +1506,8 @@
         }
 
         function createPackagePieChart(data) {
-            const ctx = document.getElementById('packagePieChart').getContext('2d');
+            const ctx = document.getElementById('packagePieChart')?.getContext('2d');
+            if (!ctx) return;
             
             if (packagePieChart) packagePieChart.destroy();
             
@@ -1403,7 +1516,7 @@
                 data: {
                     labels: ['10 Pins', '25 Pins', '50 Pins'],
                     datasets: [{
-                        data: [data['10'], data['25'], data['50']],
+                        data: [data['10'] || 0, data['25'] || 0, data['50'] || 0],
                         backgroundColor: [
                             '#ff3b9c',
                             '#9d4edd',
@@ -1426,7 +1539,8 @@
         }
 
         function createRevenueBarChart(data, labels) {
-            const ctx = document.getElementById('revenueBarChart').getContext('2d');
+            const ctx = document.getElementById('revenueBarChart')?.getContext('2d');
+            if (!ctx) return;
             
             if (revenueBarChart) revenueBarChart.destroy();
             
@@ -1469,7 +1583,8 @@
         }
 
         function createStatusDoughnutChart(data) {
-            const ctx = document.getElementById('statusDoughnutChart').getContext('2d');
+            const ctx = document.getElementById('statusDoughnutChart')?.getContext('2d');
+            if (!ctx) return;
             
             if (statusDoughnutChart) statusDoughnutChart.destroy();
             
@@ -1478,7 +1593,7 @@
                 data: {
                     labels: ['Pending', 'Paid'],
                     datasets: [{
-                        data: [data.pending, data.paid],
+                        data: [data.pending || 0, data.paid || 0],
                         backgroundColor: [
                             '#ff3b9c',
                             '#a4ff7c'
@@ -1513,6 +1628,8 @@
             const paidRows = requests.filter(r => r && r.status === 'paid');
 
             // Pending Table
+            if (!pendingBody) return;
+            
             if (pendingRows.length === 0) {
                 pendingBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">No pending requests</td></tr>';
             } else {
@@ -1543,6 +1660,8 @@
             }
 
             // Paid Table (ready to generate pins)
+            if (!paidBody) return;
+            
             if (paidRows.length === 0) {
                 paidBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">No verified payments</td></tr>';
             } else {
@@ -1576,24 +1695,42 @@
             setButtonLoading(verifyBtn, true);
 
             if (!paymentRemark) {
-                alert('Please enter the payment remark');
+                showToast('Please enter the payment remark', 'error');
+                setButtonLoading(verifyBtn, false);
+                return;
+            }
+
+            if (!adminUser) {
+                showToast('Admin session expired. Please login again.', 'error');
+                logout();
                 setButtonLoading(verifyBtn, false);
                 return;
             }
 
             try {
-                const response = await fetch(`${ADMIN_API_URL}?action=markAsPaid&requestId=${requestId}&admin=${encodeURIComponent(adminUser)}&paymentRemark=${encodeURIComponent(paymentRemark)}`);
+                const response = await fetch(
+                    `${ADMIN_API_URL}?action=markAsPaid` +
+                    `&requestId=${encodeURIComponent(requestId)}` +
+                    `&admin=${encodeURIComponent(adminUser)}` +
+                    `&paymentRemark=${encodeURIComponent(paymentRemark)}`
+                );
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
                 const result = await response.json();
 
                 if (result.success) {
-                    alert('✅ Payment verified! Ready to generate pins.');
+                    showToast('✅ Payment verified! Ready to generate pins.', 'success');
                     closeModal();
                     loadAllData();
                 } else {
-                    alert('❌ Error: ' + result.error);
+                    showToast('❌ Error: ' + (result.error || 'Unknown error'), 'error');
                 }
             } catch (error) {
-                alert('Error connecting to server');
+                console.error('Verification error:', error);
+                showToast('Error connecting to server', 'error');
             } finally {
                 setButtonLoading(verifyBtn, false);
             }
@@ -1601,10 +1738,10 @@
 
         // ==================== GENERATE PINS ====================
         function openGenerateModal(email, pinPackage) {
-            document.getElementById('generateEmail').textContent = email;
-            document.getElementById('generatePackage').textContent = `${pinPackage} pins package`;
-            document.getElementById('generateEmailInput').value = email;
-            document.getElementById('generatePackageInput').value = pinPackage;
+            document.getElementById('generateEmail').textContent = email || 'Unknown';
+            document.getElementById('generatePackage').textContent = `${pinPackage || '10'} pins package`;
+            document.getElementById('generateEmailInput').value = email || '';
+            document.getElementById('generatePackageInput').value = pinPackage || '10';
             document.getElementById('generateModal').style.display = 'flex';
         }
 
@@ -1613,21 +1750,32 @@
             const pinPackage = document.getElementById('generatePackageInput').value;
             const generateBtn = document.getElementById('generateBtn');
             
+            if (!email) {
+                showToast('Email is required', 'error');
+                return;
+            }
+            
             setButtonLoading(generateBtn, true);
 
             try {
                 const response = await fetch(`${ADMIN_API_URL}?action=generatePins&email=${encodeURIComponent(email)}&package=${pinPackage}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
                 const result = await response.json();
 
                 if (result.success) {
-                    alert(`✅ ${result.message}`);
+                    showToast(`✅ ${result.message || 'Pins generated successfully!'}`, 'success');
                     closeGenerateModal();
                     loadAllData();
                 } else {
-                    alert('❌ Error: ' + result.error);
+                    showToast('❌ Error: ' + (result.error || 'Unknown error'), 'error');
                 }
             } catch (error) {
-                alert('Error connecting to server');
+                console.error('Generation error:', error);
+                showToast('Error connecting to server', 'error');
             } finally {
                 setButtonLoading(generateBtn, false);
             }
@@ -1650,7 +1798,7 @@
             setButtonLoading(callBtn, true);
 
             if (!phoneNumber) {
-                alert('Please enter a phone number');
+                showToast('Please enter a phone number', 'error');
                 setButtonLoading(callBtn, false);
                 return;
             }
@@ -1698,6 +1846,10 @@
             if (packagePieChart) packagePieChart.destroy();
             if (revenueBarChart) revenueBarChart.destroy();
             if (statusDoughnutChart) statusDoughnutChart.destroy();
+            
+            // Clear form fields
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
         }
 
         // Close modals when clicking outside

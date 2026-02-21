@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K.R.O Media</title>
+    <title>K.R.O Media - Contract Management</title>
     <style>
         /* ==================== COMPLETE NEON MORPHIC CSS ==================== */
         * {
@@ -151,6 +151,45 @@
         @keyframes shimmer {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
+        }
+        
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .toast {
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 15px 25px;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 0 30px rgba(255, 59, 156, 0.3);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            max-width: 350px;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            border-left: 4px solid #a4ff7c;
+        }
+        
+        .toast.error {
+            border-left: 4px solid #ff3b9c;
+        }
+        
+        .toast.info {
+            border-left: 4px solid #4d9eff;
         }
         
         /* Header */
@@ -555,44 +594,7 @@
         .contract-card[data-status="Not Started"] .contract-image {
             border-bottom: 4px solid #4d9eff;
         }
-
         
-        /* Bank Selection Buttons */
-        .bank-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
-            justify-content: center;
-        }
-
-        .bank-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            background: rgba(255,255,255,0.05);
-            color: white;
-            border: 1px solid var(--glass-border);
-        }
-
-        .bank-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .bank-btn.us { border-color: #4d9eff; color: #4d9eff; }
-        .bank-btn.us:hover { background: #4d9eff; color: white; }
-        .bank-btn.uk { border-color: #ff3b9c; color: #ff3b9c; }
-        .bank-btn.uk:hover { background: #ff3b9c; color: white; }
-        .bank-btn.eu { border-color: #a4ff7c; color: #a4ff7c; }
-        .bank-btn.eu:hover { background: #a4ff7c; color: #0a0a0f; }
-        .bank-btn.ng { border-color: #9d4edd; color: #9d4edd; }
-        .bank-btn.ng:hover { background: #9d4edd; color: white; }
-        .bank-btn.crypto { border-color: #0ef0f0; color: #0ef0f0; }
-        .bank-btn.crypto:hover { background: #0ef0f0; color: #0a0a0f; }
-                
         .contract-amount { font-size: 2em; font-weight: 700; margin-bottom: 15px; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .contract-title { font-size: 1.3em; font-weight: 600; margin-bottom: 8px; color: white; }
         .contract-company { color: #b0b0b0; font-size: 1em; margin-bottom: 15px; }
@@ -1225,6 +1227,9 @@
     </style>
 </head>
 <body>
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- Header -->
     <div class="header" id="mainHeader">
         <div class="logo">K.R.O Media</div>
@@ -1665,18 +1670,14 @@
 
     <script>
         // ==================== CONFIGURATION ====================
+        // IMPORTANT: Replace these URLs with your actual deployed Google Apps Script URLs
         const GOOGLE_SHEETS_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         const YOUTUBE_CREATORS_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         const TOP_STAFF_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         const HERO_IMAGE_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
-        
-        // PIN System API URL
         const PIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
-        
-        // Add this with your other API URLs
         const ADMIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         const IMGBB_API_KEY = '***REMOVED***';
-        
         
         // ==================== GLOBAL VARIABLES ====================
         let contracts = [];
@@ -1696,6 +1697,24 @@
         let selectedPinPackage = 10;
         const MAX_HOMEPAGE_CONTRACTS = 12;
 
+        // ==================== TOAST NOTIFICATION SYSTEM ====================
+        function showToast(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Remove after duration
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
         // ==================== HELPER: SHOW LOADING ON BUTTON ====================
         function setButtonLoading(button, isLoading) {
             if (isLoading) {
@@ -1711,49 +1730,72 @@
         async function checkPinBalance(email) {
             try {
                 const response = await fetch(`${PIN_API_URL}?action=checkBalance&email=${encodeURIComponent(email)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
                 const result = await response.json();
                 
                 if (result.success) {
-                    userPinsRemaining = result.pinsRemaining;
+                    userPinsRemaining = result.pinsRemaining || 0;
                     updatePinsBadge();
                     return result;
+                } else {
+                    userPinsRemaining = 0;
+                    updatePinsBadge();
+                    return null;
                 }
             } catch (error) {
                 console.error('Error checking pin balance:', error);
+                userPinsRemaining = 0;
+                updatePinsBadge();
+                return null;
             }
-            return null;
         }
 
         function updatePinsBadge() {
             const badge = document.getElementById('pinsRemainingBadge');
-            if (userPinsRemaining > 0) {
-                badge.textContent = `${userPinsRemaining} pins left`;
-                badge.style.display = 'inline-block';
-            } else {
-                badge.style.display = 'none';
+            if (badge) {
+                if (userPinsRemaining > 0) {
+                    badge.textContent = `${userPinsRemaining} pins left`;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
             }
         }
 
         async function getFreePins(email) {
+            if (!email) {
+                showToast('Please enter your email', 'error');
+                return;
+            }
+            
             const button = event.target;
             setButtonLoading(button, true);
             
             try {
                 const response = await fetch(`${PIN_API_URL}?action=generateFreePins&email=${encodeURIComponent(email)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert(`✅ ${result.message}`);
+                    showToast('✅ 5 free pins sent to your email!', 'success');
                     userEmail = email;
                     localStorage.setItem('kro_user_email', email);
                     await checkPinBalance(email);
                     closeContactModal();
                 } else {
-                    alert(`❌ ${result.error}`);
+                    showToast(`❌ ${result.error || 'Failed to get free pins'}`, 'error');
                 }
             } catch (error) {
                 console.error('Error getting free pins:', error);
-                alert('Error requesting free pins. Please try again.');
+                showToast('Error requesting free pins. Please try again.', 'error');
             } finally {
                 setButtonLoading(button, false);
             }
@@ -1761,44 +1803,56 @@
 
         async function validatePin(pin) {
             if (!userEmail) {
-                alert('Please enter your email first');
+                showToast('Please enter your email first', 'error');
+                return false;
+            }
+            
+            if (!pin || pin.length !== 6) {
+                showToast('Please enter a valid 6-digit PIN', 'error');
                 return false;
             }
             
             const button = document.querySelector('#pinSection .pin-button');
-            setButtonLoading(button, true);
+            if (button) setButtonLoading(button, true);
             
             try {
                 const response = await fetch(`${PIN_API_URL}?action=validatePin&email=${encodeURIComponent(userEmail)}&pin=${pin}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
                 const result = await response.json();
                 
                 if (result.success) {
-                    userPinsRemaining = result.pinsRemaining;
+                    userPinsRemaining = result.pinsRemaining || 0;
                     updatePinsBadge();
+                    showToast('✅ PIN validated successfully!', 'success');
                     return true;
                 } else {
-                    alert(`❌ ${result.error}`);
+                    showToast(result.error || 'Invalid PIN', 'error');
                     return false;
                 }
             } catch (error) {
                 console.error('Error validating pin:', error);
-                alert('Error validating pin. Please try again.');
+                showToast('Error validating pin. Please try again.', 'error');
                 return false;
             } finally {
-                setButtonLoading(button, false);
+                if (button) setButtonLoading(button, false);
             }
         }
 
         function selectPinPackage(quantity) {
             selectedPinPackage = quantity;
             document.querySelectorAll('.pricing-card').forEach(card => card.classList.remove('selected'));
-            document.getElementById(`package${quantity}`).classList.add('selected');
+            const packageElement = document.getElementById(`package${quantity}`);
+            if (packageElement) packageElement.classList.add('selected');
         }
 
         async function processPurchase() {
             const email = document.getElementById('purchaseEmail').value;
             if (!email) {
-                alert('Please enter your email');
+                showToast('Please enter your email', 'error');
                 return;
             }
             
@@ -1812,17 +1866,22 @@
             
             try {
                 const response = await fetch(`${ADMIN_API_URL}?action=createPinRequest&email=${encodeURIComponent(email)}&package=${selectedPinPackage}&amount=${encodeURIComponent(amount)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert(`✅ ${result.message}\n\nRequest ID: ${result.requestId}`);
+                    showToast(`✅ ${result.message}`, 'success');
                     closeBuyPinsModal();
                 } else {
-                    alert(`❌ ${result.error}`);
+                    showToast(`❌ ${result.error || 'Purchase failed'}`, 'error');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error submitting request. Please try again.');
+                showToast('Error submitting request. Please try again.', 'error');
             } finally {
                 setButtonLoading(button, false);
             }
@@ -1831,7 +1890,7 @@
         async function checkBalance() {
             const email = document.getElementById('purchaseEmail').value;
             if (!email) {
-                alert('Please enter your email');
+                showToast('Please enter your email', 'error');
                 return;
             }
             
@@ -1840,7 +1899,9 @@
             
             const result = await checkPinBalance(email);
             if (result) {
-                alert(`📊 You have ${result.pinsRemaining} pins remaining\nTotal purchased: ${result.totalPurchased}\nUsed: ${result.pinsUsed}`);
+                showToast(`📊 You have ${result.pinsRemaining} pins remaining`, 'info');
+            } else {
+                showToast('Email not found or error checking balance', 'error');
             }
             
             setButtonLoading(button, false);
@@ -1852,6 +1913,14 @@
             const content = document.getElementById('contactContent');
             const pinSection = document.getElementById('pinSection');
             const emailSection = document.getElementById('emailSection');
+            
+            if (!currentPhoneNumber) {
+                currentPhoneNumber = '+234 123 456 7890';
+            }
+            
+            if (!currentContactName) {
+                currentContactName = 'Client';
+            }
             
             // Show locked phone number
             content.innerHTML = `
@@ -1872,7 +1941,7 @@
                         <input type="text" class="pin-input" id="pinInput" placeholder="Enter 6-digit PIN" maxlength="6">
                         <button class="pin-button" onclick="unlockPhoneNumber()">Unlock</button>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
                         <span class="pins-remaining">${userPinsRemaining} pins remaining</span>
                         <button class="pin-button secondary" onclick="openBuyPinsModal()">Buy More Pins</button>
                     </div>
@@ -1913,7 +1982,7 @@
         async function loginWithEmail() {
             const email = document.getElementById('loginEmail').value;
             if (!email) {
-                alert('Please enter your email');
+                showToast('Please enter your email', 'error');
                 return;
             }
             
@@ -1928,24 +1997,20 @@
             setButtonLoading(button, false);
         }
 
-        async function requestFreePins() {
+        function requestFreePins() {
             const email = document.getElementById('freePinEmail').value;
             if (!email) {
-                alert('Please enter your email');
+                showToast('Please enter your email', 'error');
                 return;
             }
             
-            await getFreePins(email);
+            getFreePins(email);
         }
 
         async function unlockPhoneNumber() {
             const pin = document.getElementById('pinInput').value;
-            if (!pin || pin.length !== 6) {
-                alert('Please enter a valid 6-digit PIN');
-                return;
-            }
-            
             const isValid = await validatePin(pin);
+            
             if (isValid) {
                 // Show unlocked phone number with call button
                 document.getElementById('contactContent').innerHTML = `
@@ -1962,6 +2027,7 @@
                     </div>
                 `;
                 document.getElementById('pinSection').innerHTML = '';
+                document.getElementById('emailSection').style.display = 'none';
             }
         }
 
@@ -1971,13 +2037,15 @@
 
         function openBuyPinsModal() {
             document.getElementById('buyPinsModal').style.display = 'flex';
+            // Reset selection
+            selectPinPackage(10);
         }
 
         function closeBuyPinsModal() {
             document.getElementById('buyPinsModal').style.display = 'none';
         }
 
-        // ==================== EXISTING FUNCTIONS ====================
+        // ==================== CONTRACT FUNCTIONS ====================
         async function saveNewContract(event) {
             event.preventDefault();
             
@@ -1995,7 +2063,9 @@
                         <div class="success-message">📤 Uploading image...</div>
                     `;
                     imageUrl = await uploadToImgbb(selectedImageFile);
-                    if (!imageUrl) throw new Error('Image upload failed');
+                    if (!imageUrl) {
+                        showToast('Image upload failed, but contract will be saved without image', 'warning');
+                    }
                 }
                 
                 const newContract = {
@@ -2009,7 +2079,7 @@
                     submissionDate: document.getElementById('submissionDate').value,
                     submittedBy: document.getElementById('submittedBy').value,
                     phoneNumber: document.getElementById('phoneNumber').value,
-                    image_url: imageUrl,
+                    image_url: imageUrl || '',
                     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${document.getElementById('submittedBy').value}`
                 };
                 
@@ -2017,6 +2087,7 @@
                     <div class="success-message">💾 Saving contract...</div>
                 `;
                 
+                // Using no-cors mode - we won't get a response but the data still sends
                 await fetch(GOOGLE_SHEETS_API_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -2035,6 +2106,8 @@
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('submissionDate').value = today;
                 
+                showToast('Contract created successfully!', 'success');
+                
                 setTimeout(() => {
                     loadContracts();
                     closeAddModal();
@@ -2045,6 +2118,7 @@
                 document.getElementById('formMessage').innerHTML = `
                     <div class="error-message">❌ Error creating contract. Please try again.</div>
                 `;
+                showToast('Error creating contract', 'error');
             } finally {
                 setButtonLoading(submitBtn, false);
             }
@@ -2057,41 +2131,41 @@
             if (!contract) return;
             
             currentPhoneNumber = contract.phoneNumber || '+234 123 456 7890';
-            currentContactName = contract.submittedBy;
+            currentContactName = contract.submittedBy || 'Client';
             currentContractId = id;
             
-            document.getElementById('detailTitle').textContent = contract.title;
-            document.getElementById('submittedByName').textContent = contract.submittedBy;
+            document.getElementById('detailTitle').textContent = contract.title || 'Contract Details';
+            document.getElementById('submittedByName').textContent = contract.submittedBy || 'Unknown';
             
             document.getElementById('detailContent').innerHTML = `
                 <div class="detail-image">
-                    <img src="${contract.image_url || 'https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}">
+                    <img src="${contract.image_url || 'https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title || 'Contract'}" onerror="this.src='https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=Image+Not+Found'">
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Description</div>
-                    <div class="detail-value">${contract.description}</div>
+                    <div class="detail-value">${contract.description || 'No description'}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Duration</div>
-                    <div class="detail-value">${contract.duration}</div>
+                    <div class="detail-value">${contract.duration || 'N/A'}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Worker ID</div>
-                    <div class="detail-value">${contract.workerId}</div>
+                    <div class="detail-value">${contract.workerId || 'N/A'}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Status</div>
                     <div class="detail-value">
-                        <span class="status-badge ${contract.status.toLowerCase().replace(' ', '-')}">${contract.status}</span>
+                        <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
                     </div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Amount</div>
-                    <div class="detail-value">₦${parseFloat(contract.amount).toLocaleString()}</div>
+                    <div class="detail-value">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Submission Date</div>
-                    <div class="detail-value">${new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+                    <div class="detail-value">${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'N/A'}</div>
                 </div>
             `;
             
@@ -2109,7 +2183,9 @@
                 const result = await response.json();
                 if (result.success && result.image_url) {
                     const heroImage = document.querySelector('#heroImage img');
-                    heroImage.src = result.image_url;
+                    if (heroImage) {
+                        heroImage.src = result.image_url;
+                    }
                 }
             } catch (error) {
                 console.error('Error loading hero image:', error);
@@ -2122,7 +2198,7 @@
                 const response = await fetch(TOP_STAFF_API_URL);
                 const result = await response.json();
                 if (result.success) {
-                    topStaff = result.data;
+                    topStaff = result.data || [];
                     displayTopStaff();
                 } else {
                     console.error('Failed to load top staff:', result.error);
@@ -2147,6 +2223,8 @@
 
         function displayTopStaff() {
             const list = document.getElementById('topStaffList');
+            if (!list) return;
+            
             if (!topStaff || topStaff.length === 0) {
                 list.innerHTML = '<div class="bid-item">No staff found</div>';
                 return;
@@ -2159,7 +2237,7 @@
                 <div class="bid-item">
                     <div class="bid-info">
                         <div class="bid-avatar">${staffEmojis[index] || '👤'}</div>
-                        <div class="bid-name">${staff.name}</div>
+                        <div class="bid-name">${staff.name || 'Unknown'}</div>
                     </div>
                     <button class="bid-button" onclick="viewStaffDetail(${index})">View</button>
                 </div>
@@ -2178,19 +2256,19 @@
                     <div class="staff-header">
                         <div class="staff-avatar-large">${emoji}</div>
                         <div class="staff-title">
-                            <h3>${staff.name}</h3>
-                            <p>${staff.position} • Joined ${staff.joined}</p>
+                            <h3>${staff.name || 'Unknown'}</h3>
+                            <p>${staff.position || 'Staff'} • Joined ${staff.joined || 'Recently'}</p>
                         </div>
                     </div>
                     
                     <div class="staff-detail-row">
                         <span class="staff-detail-label">Position</span>
-                        <span class="staff-detail-value">${staff.position}</span>
+                        <span class="staff-detail-value">${staff.position || 'N/A'}</span>
                     </div>
                     
                     <div class="staff-detail-row">
                         <span class="staff-detail-label">Joined</span>
-                        <span class="staff-detail-value">${staff.joined}</span>
+                        <span class="staff-detail-value">${staff.joined || 'N/A'}</span>
                     </div>
                     
                     <div class="category-section">
@@ -2198,23 +2276,23 @@
                         <div class="category-grid">
                             <div class="category-item">
                                 <div class="category-name">Company Meetings</div>
-                                <div class="category-points">${staff.companyMeetings} pts</div>
+                                <div class="category-points">${staff.companyMeetings || 0} pts</div>
                             </div>
                             <div class="category-item">
                                 <div class="category-name">Well Behaved</div>
-                                <div class="category-points">${staff.wellBehaved} pts</div>
+                                <div class="category-points">${staff.wellBehaved || 0} pts</div>
                             </div>
                             <div class="category-item">
                                 <div class="category-name">Consistent Marketing</div>
-                                <div class="category-points">${staff.consistentMarketing} pts</div>
+                                <div class="category-points">${staff.consistentMarketing || 0} pts</div>
                             </div>
                             <div class="category-item">
                                 <div class="category-name">Brought Client</div>
-                                <div class="category-points">${staff.broughtClient} pts</div>
+                                <div class="category-points">${staff.broughtClient || 0} pts</div>
                             </div>
                             <div class="category-item">
                                 <div class="category-name">Closed Deal</div>
-                                <div class="category-points">${staff.closedDeal} pts</div>
+                                <div class="category-points">${staff.closedDeal || 0} pts</div>
                             </div>
                             <div class="category-item">
                                 <div class="category-name">Multiple Deals</div>
@@ -2225,7 +2303,7 @@
                     
                     <div class="total-points">
                         <div class="total-points-label">Total Points</div>
-                        <div class="total-points-value">${staff.totalPoints.toLocaleString()}</div>
+                        <div class="total-points-value">${(staff.totalPoints || 0).toLocaleString()}</div>
                     </div>
                 </div>
             `;
@@ -2240,49 +2318,17 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    youtubeCreators = result.data;
-                    loadBanners();
+                    youtubeCreators = result.data || [];
                 } else {
                     console.error('Failed to load YouTube creators:', result.error);
-                    youtubeCreators = [
-                        {
-                            name: 'Tech with Sarah',
-                            channel: '@techsarah',
-                            subscribers: '15.2K',
-                            avatar: '👩‍💻',
-                            avatar_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=150&auto=format',
-                            link: 'https://youtube.com/@techsarah',
-                            description: 'Tech reviews & tutorials',
-                            image_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format'
-                        },
-                        {
-                            name: 'Mike Gaming',
-                            channel: '@mikegaming',
-                            subscribers: '28.7K',
-                            avatar: '🎮',
-                            avatar_url: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&auto=format',
-                            link: 'https://youtube.com/@mikegaming',
-                            description: 'Daily gaming content & live streams',
-                            image_url: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1400&auto=format'
-                        }
-                    ];
-                    loadBanners();
+                    youtubeCreators = [];
                 }
             } catch (error) {
                 console.error('Error loading YouTube creators:', error);
-                youtubeCreators = [
-                    {
-                        name: 'Tech with Sarah',
-                        subscribers: '15.2K',
-                        avatar: '👩‍💻',
-                        avatar_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=150&auto=format',
-                        link: 'https://youtube.com/@techsarah',
-                        description: 'Tech reviews & tutorials',
-                        image_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format'
-                    }
-                ];
-                loadBanners();
+                youtubeCreators = [];
             }
+            
+            loadBanners();
         }
 
         function loadBanners() {
@@ -2294,8 +2340,8 @@
                     <div class="banner-slide">
                         <div class="youtube-banner" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format')">
                             <div class="banner-content">
-                                <h3>No Creators Found</h3>
-                                <p>Add creators to your Google Sheet to see them here</p>
+                                <h3>K.R.O Media</h3>
+                                <p>Check back soon for featured creators</p>
                             </div>
                             <div class="banner-avatar">
                                 <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=150&auto=format" alt="Avatar">
@@ -2308,9 +2354,9 @@
             
             slider.innerHTML = youtubeCreators.map((creator, index) => `
                 <div class="banner-slide">
-                    <div class="youtube-banner" onclick="window.open('${creator.link}', '_blank')" style="background-image: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%), url('${creator.image_url || 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format'}')">
+                    <div class="youtube-banner" onclick="window.open('${creator.link || '#'}', '_blank')" style="background-image: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%), url('${creator.image_url || 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format'}')">
                         <div class="banner-content">
-                            <h3>${creator.name}</h3>
+                            <h3>${creator.name || 'Creator'}</h3>
                             <p>${creator.description || 'YouTube Creator'}</p>
                             ${creator.subscribers ? `
                             <div class="banner-stats">
@@ -2320,10 +2366,10 @@
                                 </div>
                             </div>
                             ` : ''}
-                            <button class="banner-button" onclick="event.stopPropagation(); window.open('${creator.link}', '_blank')">Watch Now →</button>
+                            <button class="banner-button" onclick="event.stopPropagation(); window.open('${creator.link || '#'}', '_blank')">Watch Now →</button>
                         </div>
                         <div class="banner-avatar">
-                            <img src="${creator.avatar_url || 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=150&auto=format'}" alt="${creator.name}">
+                            <img src="${creator.avatar_url || 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=150&auto=format'}" alt="${creator.name || 'Creator'}">
                         </div>
                     </div>
                 </div>
@@ -2335,6 +2381,7 @@
             
             currentBannerIndex = 0;
             updateBannerPosition();
+            startBannerSlide();
         }
 
         function startBannerSlide() {
@@ -2356,7 +2403,9 @@
 
         function updateBannerPosition() {
             const slider = document.getElementById('bannersSlider');
-            slider.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
+            if (slider) {
+                slider.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
+            }
             
             document.querySelectorAll('.slider-dot').forEach((dot, index) => {
                 if (index === currentBannerIndex) {
@@ -2371,6 +2420,10 @@
         function handleImageSelect(event) {
             const file = event.target.files[0];
             if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('Image must be less than 5MB', 'error');
+                    return;
+                }
                 selectedImageFile = file;
                 previewImage(file);
             }
@@ -2392,10 +2445,14 @@
             
             const file = event.dataTransfer.files[0];
             if (file && file.type.startsWith('image/')) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('Image must be less than 5MB', 'error');
+                    return;
+                }
                 selectedImageFile = file;
                 previewImage(file);
             } else {
-                alert('Please drop an image file');
+                showToast('Please drop an image file', 'error');
             }
         }
 
@@ -2404,8 +2461,10 @@
             reader.onload = function(e) {
                 const preview = document.getElementById('imagePreview');
                 const img = preview.querySelector('img');
-                img.src = e.target.result;
-                preview.style.display = 'block';
+                if (img) {
+                    img.src = e.target.result;
+                    preview.style.display = 'block';
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -2440,8 +2499,8 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    contracts = result.data;
-                    contracts.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
+                    contracts = result.data || [];
+                    contracts.sort((a, b) => new Date(b.submissionDate || 0) - new Date(a.submissionDate || 0));
                     saveToStorage();
                     updateDisplay();
                 } else {
@@ -2466,6 +2525,8 @@
             const filtered = filterContracts(contracts);
             const grid = document.getElementById('contractsGrid');
             
+            if (!grid) return;
+            
             if (filtered.length === 0) {
                 grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #666;">No contracts found</div>';
                 return;
@@ -2474,17 +2535,17 @@
             const displayContracts = filtered.slice(0, MAX_HOMEPAGE_CONTRACTS);
             
             grid.innerHTML = displayContracts.map(contract => `
-                <div class="contract-card" data-status="${contract.status}" onclick="viewContract(${contract.id})">
+                <div class="contract-card" data-status="${contract.status || 'Not Started'}" onclick="viewContract(${contract.id})">
                     <div class="contract-image">
-                        <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}" loading="lazy">
+                        <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title || 'Contract'}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'">
                     </div>
                     <div class="contract-content">
-                        <div class="contract-amount">₦${parseFloat(contract.amount).toLocaleString()}</div>
-                        <div class="contract-title">${contract.title}</div>
-                        <div class="contract-company">at ${contract.company}</div>
+                        <div class="contract-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
+                        <div class="contract-title">${contract.title || 'Untitled'}</div>
+                        <div class="contract-company">at ${contract.company || 'Unknown'}</div>
                         <div class="contract-meta">
-                            <span class="status-badge ${contract.status.toLowerCase().replace(' ', '-')}">${contract.status}</span>
-                            <span class="contract-date">📅 ${new Date(contract.submissionDate).toLocaleDateString()}</span>
+                            <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
+                            <span class="contract-date">📅 ${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString() : 'No date'}</span>
                         </div>
                     </div>
                 </div>
@@ -2495,6 +2556,8 @@
             const filtered = filterContracts(contracts);
             const list = document.getElementById('progressList');
             
+            if (!list) return;
+            
             if (filtered.length === 0) {
                 list.innerHTML = '<div style="text-align: center; padding: 50px; color: #666;">No contracts found</div>';
                 return;
@@ -2502,12 +2565,12 @@
             
             list.innerHTML = filtered.map(contract => `
                 <div class="progress-item" onclick="viewContract(${contract.id})">
-                    <div class="progress-status ${contract.status.toLowerCase().replace(' ', '-')}"></div>
+                    <div class="progress-status ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}"></div>
                     <div class="progress-content">
                         <div class="progress-title">
-                            <span>${contract.status.toUpperCase()}</span> — ${contract.title}
+                            <span>${(contract.status || 'NOT STARTED').toUpperCase()}</span> — ${contract.title || 'Untitled'}
                         </div>
-                        <div class="progress-date">Posted on ${new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+                        <div class="progress-date">Posted on ${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Unknown date'}</div>
                     </div>
                 </div>
             `).join('');
@@ -2518,22 +2581,31 @@
             const completed = contracts.filter(c => c.status === 'Completed').length;
             const total = contracts.reduce((sum, c) => sum + parseFloat(c.amount || 0), 0);
             
-            document.getElementById('activeUsers').textContent = activeUsers || '1,609';
-            document.getElementById('completedContracts').textContent = completed || '247';
-            document.getElementById('totalSupport').textContent = `₦${(total / 1000).toFixed(1)}K`;
+            const activeUsersEl = document.getElementById('activeUsers');
+            const completedContractsEl = document.getElementById('completedContracts');
+            const totalSupportEl = document.getElementById('totalSupport');
+            
+            if (activeUsersEl) activeUsersEl.textContent = activeUsers || '1,609';
+            if (completedContractsEl) completedContractsEl.textContent = completed || '247';
+            if (totalSupportEl) totalSupportEl.textContent = `₦${(total / 1000).toFixed(1)}K`;
             
             if (contracts.length > 0) {
-                const highest = [...contracts].sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount))[0];
-                document.getElementById('todayHighest').innerHTML = `₦${parseFloat(highest.amount).toLocaleString()} by ${highest.company}`;
+                const highest = [...contracts].sort((a, b) => parseFloat(b.amount || 0) - parseFloat(a.amount || 0))[0];
+                const todayHighestEl = document.getElementById('todayHighest');
+                if (todayHighestEl) {
+                    todayHighestEl.innerHTML = `₦${highest.amount ? parseFloat(highest.amount).toLocaleString() : '0'} by ${highest.company || 'Unknown'}`;
+                }
             }
         }
 
         function updateTopContracts() {
             const topContracts = [...contracts]
-                .sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount))
+                .sort((a, b) => parseFloat(b.amount || 0) - parseFloat(a.amount || 0))
                 .slice(0, 5);
             
             const container = document.getElementById('topContractsList');
+            
+            if (!container) return;
             
             if (topContracts.length === 0) {
                 container.innerHTML = '<div class="bid-item">No contracts found</div>';
@@ -2545,8 +2617,8 @@
                     <div class="bid-info">
                         <div class="bid-avatar">${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '💰'}</div>
                         <div>
-                            <div class="bid-name">${contract.title}</div>
-                            <div class="bid-amount">₦${parseFloat(contract.amount).toLocaleString()}</div>
+                            <div class="bid-name">${contract.title || 'Untitled'}</div>
+                            <div class="bid-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
                         </div>
                     </div>
                     <button class="bid-button" onclick="viewContract(${contract.id})">View</button>
@@ -2562,9 +2634,13 @@
         function loadFromStorage() {
             const saved = localStorage.getItem('kro_contracts');
             if (saved) {
-                contracts = JSON.parse(saved);
-                contracts.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
-                updateDisplay();
+                try {
+                    contracts = JSON.parse(saved);
+                    contracts.sort((a, b) => new Date(b.submissionDate || 0) - new Date(a.submissionDate || 0));
+                    updateDisplay();
+                } catch (e) {
+                    console.error('Error loading from storage:', e);
+                }
             }
         }
 
@@ -2578,7 +2654,8 @@
             currentFilter = status;
             document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
             const filterId = status === 'all' ? 'filterAll' : `filter${status.replace(' ', '')}`;
-            document.getElementById(filterId).classList.add('selected');
+            const filterEl = document.getElementById(filterId);
+            if (filterEl) filterEl.classList.add('selected');
         }
 
         function applyFilter() {
@@ -2590,7 +2667,8 @@
         function clearFilter() {
             currentFilter = 'all';
             document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
-            document.getElementById('filterAll').classList.add('selected');
+            const filterAll = document.getElementById('filterAll');
+            if (filterAll) filterAll.classList.add('selected');
             displayContracts();
             displayProgress();
         }
@@ -2605,29 +2683,31 @@
             }
             
             const filtered = contracts.filter(c => 
-                c.title.toLowerCase().includes(searchTerm) || 
-                c.company.toLowerCase().includes(searchTerm) ||
-                c.description.toLowerCase().includes(searchTerm)
+                (c.title || '').toLowerCase().includes(searchTerm) || 
+                (c.company || '').toLowerCase().includes(searchTerm) ||
+                (c.description || '').toLowerCase().includes(searchTerm)
             );
             
             if (currentPage === 'home') {
                 const grid = document.getElementById('contractsGrid');
+                if (!grid) return;
+                
                 if (filtered.length === 0) {
                     grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #666;">No contracts found</div>';
                 } else {
                     const displayContracts = filtered.slice(0, MAX_HOMEPAGE_CONTRACTS);
                     grid.innerHTML = displayContracts.map(contract => `
-                        <div class="contract-card" data-status="${contract.status}" onclick="viewContract(${contract.id})">
+                        <div class="contract-card" data-status="${contract.status || 'Not Started'}" onclick="viewContract(${contract.id})">
                             <div class="contract-image">
-                                <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}" loading="lazy">
+                                <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title || 'Contract'}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'">
                             </div>
                             <div class="contract-content">
-                                <div class="contract-amount">₦${parseFloat(contract.amount).toLocaleString()}</div>
-                                <div class="contract-title">${contract.title}</div>
-                                <div class="contract-company">at ${contract.company}</div>
+                                <div class="contract-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
+                                <div class="contract-title">${contract.title || 'Untitled'}</div>
+                                <div class="contract-company">at ${contract.company || 'Unknown'}</div>
                                 <div class="contract-meta">
-                                    <span class="status-badge ${contract.status.toLowerCase().replace(' ', '-')}">${contract.status}</span>
-                                    <span class="contract-date">📅 ${new Date(contract.submissionDate).toLocaleDateString()}</span>
+                                    <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
+                                    <span class="contract-date">📅 ${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString() : 'No date'}</span>
                                 </div>
                             </div>
                         </div>
@@ -2649,6 +2729,8 @@
         function displayAllContracts() {
             const container = document.getElementById('allContractsList');
             
+            if (!container) return;
+            
             if (contracts.length === 0) {
                 container.innerHTML = '<div style="text-align: center; padding: 30px; color: #666;">No contracts found</div>';
                 return;
@@ -2657,13 +2739,13 @@
             container.innerHTML = contracts.map(contract => `
                 <div class="contract-list-item">
                     <div class="list-item-image">
-                        <img src="${contract.image_url || 'https://via.placeholder.com/60x60/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title}" loading="lazy">
+                        <img src="${contract.image_url || 'https://via.placeholder.com/60x60/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title || 'Contract'}" loading="lazy" onerror="this.src='https://via.placeholder.com/60x60/1a1a1a/ff3b9c?text=No+Image'">
                     </div>
                     <div class="list-item-content">
-                        <div class="list-item-title">${contract.title}</div>
+                        <div class="list-item-title">${contract.title || 'Untitled'}</div>
                         <div class="list-item-details">
-                            <span class="list-item-amount">₦${parseFloat(contract.amount).toLocaleString()}</span>
-                            <span class="list-item-status ${contract.status.toLowerCase().replace(' ', '-')}">${contract.status}</span>
+                            <span class="list-item-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</span>
+                            <span class="list-item-status ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
                         </div>
                     </div>
                     <button class="list-item-button" onclick="viewContractFromList(${contract.id})">View</button>
@@ -2680,14 +2762,17 @@
         function showPage(page) {
             currentPage = page;
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) event.target.classList.add('active');
+            
+            const homePage = document.getElementById('homePage');
+            const progressPage = document.getElementById('progressPage');
             
             if (page === 'home') {
-                document.getElementById('homePage').style.display = 'block';
-                document.getElementById('progressPage').style.display = 'none';
+                if (homePage) homePage.style.display = 'block';
+                if (progressPage) progressPage.style.display = 'none';
             } else {
-                document.getElementById('homePage').style.display = 'none';
-                document.getElementById('progressPage').style.display = 'block';
+                if (homePage) homePage.style.display = 'none';
+                if (progressPage) progressPage.style.display = 'block';
             }
         }
 
@@ -2728,11 +2813,15 @@
             loadTopStaff();
             loadContracts();
             loadHeroImage();
-            startBannerSlide();
             
             if (userEmail) {
                 checkPinBalance(userEmail);
             }
+            
+            // Set default date in add modal if open
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('submissionDate');
+            if (dateInput) dateInput.value = today;
         };
 
         // Close modals when clicking outside
