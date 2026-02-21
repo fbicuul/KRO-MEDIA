@@ -119,13 +119,18 @@
         
         /* Chart Loading State */
         .chart-loading {
-            position: relative;
-            height: 300px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(20, 20, 30, 0.3);
+            background: rgba(20, 20, 30, 0.8);
+            backdrop-filter: blur(5px);
             border-radius: 15px;
+            z-index: 10;
         }
         
         /* Login Styles */
@@ -293,6 +298,8 @@
             border-radius: 25px;
             padding: 25px;
             box-shadow: 0 0 30px rgba(255,59,156,0.1);
+            position: relative;
+            min-height: 350px;
         }
         
         .chart-card h3 {
@@ -883,8 +890,8 @@
                 <!-- Chart 1: Requests Over Time -->
                 <div class="chart-card">
                     <h3>📈 Requests Over Time <span>Last 7 Days</span></h3>
-                    <div class="chart-container" id="requestsChartContainer">
-                        <div class="chart-loading">
+                    <div class="chart-container">
+                        <div class="chart-loading" id="requestsLineChartLoading">
                             <div class="neon-loading">
                                 <div class="neon-dot"></div>
                                 <div class="neon-dot"></div>
@@ -893,15 +900,15 @@
                                 <div class="neon-dot"></div>
                             </div>
                         </div>
-                        <canvas id="requestsLineChart" style="display: none;"></canvas>
+                        <canvas id="requestsLineChart"></canvas>
                     </div>
                 </div>
                 
                 <!-- Chart 2: Package Distribution -->
                 <div class="chart-card">
                     <h3>🥧 Package Distribution <span>By Type</span></h3>
-                    <div class="chart-container" id="packageChartContainer">
-                        <div class="chart-loading">
+                    <div class="chart-container">
+                        <div class="chart-loading" id="packagePieChartLoading">
                             <div class="neon-loading">
                                 <div class="neon-dot"></div>
                                 <div class="neon-dot"></div>
@@ -910,15 +917,15 @@
                                 <div class="neon-dot"></div>
                             </div>
                         </div>
-                        <canvas id="packagePieChart" style="display: none;"></canvas>
+                        <canvas id="packagePieChart"></canvas>
                     </div>
                 </div>
                 
                 <!-- Chart 3: Revenue Trend -->
                 <div class="chart-card">
                     <h3>💰 Revenue Trend <span>Daily</span></h3>
-                    <div class="chart-container" id="revenueChartContainer">
-                        <div class="chart-loading">
+                    <div class="chart-container">
+                        <div class="chart-loading" id="revenueBarChartLoading">
                             <div class="neon-loading">
                                 <div class="neon-dot"></div>
                                 <div class="neon-dot"></div>
@@ -927,15 +934,15 @@
                                 <div class="neon-dot"></div>
                             </div>
                         </div>
-                        <canvas id="revenueBarChart" style="display: none;"></canvas>
+                        <canvas id="revenueBarChart"></canvas>
                     </div>
                 </div>
                 
                 <!-- Chart 4: Status Distribution -->
                 <div class="chart-card">
                     <h3>🔄 Request Status <span>Pending vs Paid</span></h3>
-                    <div class="chart-container" id="statusChartContainer">
-                        <div class="chart-loading">
+                    <div class="chart-container">
+                        <div class="chart-loading" id="statusDoughnutChartLoading">
                             <div class="neon-loading">
                                 <div class="neon-dot"></div>
                                 <div class="neon-dot"></div>
@@ -944,7 +951,7 @@
                                 <div class="neon-dot"></div>
                             </div>
                         </div>
-                        <canvas id="statusDoughnutChart" style="display: none;"></canvas>
+                        <canvas id="statusDoughnutChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -1106,20 +1113,11 @@
         }
 
         // ==================== SHOW/HIDE CHART LOADING ====================
-        function showChartLoading(chartId) {
-            const container = document.getElementById(chartId + 'Container');
-            const canvas = document.getElementById(chartId);
-            const loadingDiv = container.querySelector('.chart-loading');
-            if (loadingDiv) loadingDiv.style.display = 'flex';
-            if (canvas) canvas.style.display = 'none';
-        }
-
-        function hideChartLoading(chartId) {
-            const container = document.getElementById(chartId + 'Container');
-            const canvas = document.getElementById(chartId);
-            const loadingDiv = container.querySelector('.chart-loading');
-            if (loadingDiv) loadingDiv.style.display = 'none';
-            if (canvas) canvas.style.display = 'block';
+        function hideAllChartLoadings() {
+            document.getElementById('requestsLineChartLoading').style.display = 'none';
+            document.getElementById('packagePieChartLoading').style.display = 'none';
+            document.getElementById('revenueBarChartLoading').style.display = 'none';
+            document.getElementById('statusDoughnutChartLoading').style.display = 'none';
         }
 
         // ==================== CHECK SESSION ON LOAD ====================
@@ -1169,10 +1167,10 @@
             `;
             
             // Show loading on charts
-            showChartLoading('requestsLineChart');
-            showChartLoading('packagePieChart');
-            showChartLoading('revenueBarChart');
-            showChartLoading('statusDoughnutChart');
+            document.getElementById('requestsLineChartLoading').style.display = 'flex';
+            document.getElementById('packagePieChartLoading').style.display = 'flex';
+            document.getElementById('revenueBarChartLoading').style.display = 'flex';
+            document.getElementById('statusDoughnutChartLoading').style.display = 'flex';
             
             await loadDashboardStats();
             await loadPendingRequests();
@@ -1241,11 +1239,15 @@
                     updateCharts(result.pending);
                 } else {
                     console.error('API Error:', result.error);
+                    document.getElementById('pendingBody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">Error loading data</td></tr>';
+                    document.getElementById('paidBody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">Error loading data</td></tr>';
+                    hideAllChartLoadings();
                 }
             } catch (error) {
                 console.error('Error loading requests:', error);
                 document.getElementById('pendingBody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">Error loading data</td></tr>';
                 document.getElementById('paidBody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">Error loading data</td></tr>';
+                hideAllChartLoadings();
             }
         }
 
@@ -1267,10 +1269,7 @@
             createStatusDoughnutChart(statusData);
             
             // Hide loading for all charts
-            hideChartLoading('requestsLineChart');
-            hideChartLoading('packagePieChart');
-            hideChartLoading('revenueBarChart');
-            hideChartLoading('statusDoughnutChart');
+            hideAllChartLoadings();
         }
 
         function getLast7Days() {
@@ -1343,7 +1342,6 @@
             document.getElementById('avgRevenue').textContent = '$' + avgRev;
             
             // Calculate most popular package (simplified)
-            // You could enhance this with actual data
             document.getElementById('topPackage').textContent = '10';
         }
 
