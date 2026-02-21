@@ -474,6 +474,45 @@
             animation: spin 0.8s linear infinite;
         }
         
+        /* Tab Navigation */
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+        }
+        
+        .tab-btn {
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px;
+            color: #b0b0b0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn:hover {
+            border-color: #ff3b9c;
+            color: white;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+            color: white;
+            border: none;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
         /* Table Container for Horizontal Scroll */
         .table-container {
             width: 100%;
@@ -483,6 +522,7 @@
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 20px;
             -webkit-overflow-scrolling: touch;
+            margin-bottom: 30px;
         }
         
         /* Custom Scrollbar */
@@ -552,6 +592,18 @@
             border: 1px solid #a4ff7c;
         }
         
+        .status-active {
+            background: rgba(77,158,255,0.2);
+            color: #4d9eff;
+            border: 1px solid #4d9eff;
+        }
+        
+        .status-used {
+            background: rgba(255,59,156,0.2);
+            color: #ff3b9c;
+            border: 1px solid #ff3b9c;
+        }
+        
         .action-btn {
             padding: 8px 15px;
             border: none;
@@ -592,7 +644,12 @@
             color: #0a0a0f;
         }
         
-        .btn-verify:hover, .btn-generate:hover {
+        .btn-view {
+            background: #9d4edd;
+            color: white;
+        }
+        
+        .btn-verify:hover, .btn-generate:hover, .btn-view:hover {
             transform: scale(1.05);
             box-shadow: 0 0 15px currentColor;
         }
@@ -792,6 +849,16 @@
             .refresh-btn {
                 width: 100%;
                 text-align: center;
+            }
+            
+            .tab-container {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                flex: 1;
+                text-align: center;
+                padding: 10px;
             }
             
             /* Table containers become scrollable */
@@ -1013,82 +1080,131 @@
                     <div class="stat-mini-label">Avg Revenue/Request</div>
                 </div>
                 <div class="stat-mini-card">
-                    <div class="stat-mini-value" id="topPackage">10</div>
-                    <div class="stat-mini-label">Most Popular Package</div>
+                    <div class="stat-mini-value" id="totalUsers">0</div>
+                    <div class="stat-mini-label">Total Users</div>
                 </div>
             </div>
         </div>
 
-        <!-- Pending Requests -->
-        <div class="section-header">
-            <h2>⏳ Pending Payment Requests</h2>
-            <button class="refresh-btn" onclick="loadAllData()" id="refreshPendingBtn">↻ Refresh</button>
+        <!-- Tab Navigation -->
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="switchTab('requests')">📋 Payment Requests</button>
+            <button class="tab-btn" onclick="switchTab('users')">👥 User Management</button>
         </div>
 
-        <div class="table-container">
-            <div class="requests-table">
-                <table id="pendingTable">
-                    <thead>
-                        <tr>
-                            <th>Request ID</th>
-                            <th>Email</th>
-                            <th>Package</th>
-                            <th>Amount</th>
-                            <th>Requested</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pendingBody">
-                        <tr>
-                            <td colspan="7" style="text-align: center; padding: 30px;">
-                                <div class="neon-loading">
-                                    <div class="neon-dot"></div>
-                                    <div class="neon-dot"></div>
-                                    <div class="neon-dot"></div>
-                                    <div class="neon-dot"></div>
-                                    <div class="neon-dot"></div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- Payment Requests Tab -->
+        <div id="requestsTab" class="tab-content active">
+            <!-- Pending Requests -->
+            <div class="section-header">
+                <h2>⏳ Pending Payment Requests</h2>
+                <button class="refresh-btn" onclick="loadAllData()" id="refreshPendingBtn">↻ Refresh</button>
+            </div>
+
+            <div class="table-container">
+                <div class="requests-table">
+                    <table id="pendingTable">
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Email</th>
+                                <th>Package</th>
+                                <th>Amount</th>
+                                <th>Requested</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pendingBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 30px;">
+                                    <div class="neon-loading">
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Generate PINs Section -->
+            <div class="section-header" style="margin-top: 40px;">
+                <h2>⚡ Generate PINs for Paid Users</h2>
+            </div>
+
+            <div class="table-container">
+                <div class="requests-table">
+                    <table id="paidTable">
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Email</th>
+                                <th>Package</th>
+                                <th>Amount</th>
+                                <th>Payment Note</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paidBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 30px;">
+                                    <div class="neon-loading">
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <!-- Generate PINs Section -->
-        <div class="section-header" style="margin-top: 40px;">
-            <h2>⚡ Generate PINs for Paid Users</h2>
-        </div>
+        <!-- User Management Tab -->
+        <div id="usersTab" class="tab-content">
+            <div class="section-header">
+                <h2>👥 All Users & PIN Statistics</h2>
+                <button class="refresh-btn" onclick="loadAllUsers()" id="refreshUsersBtn">↻ Refresh Users</button>
+            </div>
 
-        <div class="table-container">
-            <div class="requests-table">
-                <table id="paidTable">
-                    <thead>
-                        <tr>
-                            <th>Request ID</th>
-                            <th>Email</th>
-                            <th>Package</th>
-                            <th>Amount</th>
-                            <th>Payment Note</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="paidBody">
-                        <tr>
-                            <td colspan="7" style="text-align: center; padding: 30px;">
-                                <div class="neon-loading">
-                                    <div class="neon-dot"></div>
-                                    <div class="neon-dot"></div>
-                                    <div class="neon-dot"></div>
-                                    <div class="neon-dot"></div>
-                                    <div class="neon-dot"></div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="table-container">
+                <div class="requests-table">
+                    <table id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Registered</th>
+                                <th>Total Pins</th>
+                                <th>Pins Remaining</th>
+                                <th>Pins Used</th>
+                                <th>Active Pins</th>
+                                <th>Last Activity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersBody">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 30px;">
+                                    <div class="neon-loading">
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -1137,8 +1253,9 @@
 
     <script>
         // ==================== CONFIG ====================
-        // IMPORTANT: Replace this with your actual deployed Google Apps Script URL
+        // IMPORTANT: Replace these with your actual deployed Google Apps Script URLs
         const ADMIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
+        const PIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         let adminUser = localStorage.getItem('kro_admin_user') || '';
         
         // Chart instances
@@ -1186,6 +1303,21 @@
             if (loading4) loading4.style.display = 'none';
         }
 
+        // ==================== TAB SWITCHING ====================
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            if (tab === 'requests') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('requestsTab').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('usersTab').classList.add('active');
+                loadAllUsers();
+            }
+        }
+
         // ==================== CHECK SESSION ON LOAD ====================
         window.onload = function() {
             if (adminUser) {
@@ -1193,6 +1325,7 @@
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 loadAllData();
+                loadAllUsers();
             }
         };
 
@@ -1260,6 +1393,91 @@
             if (refreshPendingBtn) setButtonLoading(refreshPendingBtn, false);
         }
 
+        // ==================== LOAD ALL USERS ====================
+        async function loadAllUsers() {
+            const usersBody = document.getElementById('usersBody');
+            const refreshUsersBtn = document.getElementById('refreshUsersBtn');
+            
+            if (refreshUsersBtn) setButtonLoading(refreshUsersBtn, true);
+            
+            if (usersBody) {
+                usersBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 30px;">
+                            <div class="neon-loading">
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            try {
+                const response = await fetch(`${PIN_API_URL}?action=getAllUsers`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success && result.users) {
+                    displayUsers(result.users);
+                    
+                    // Update total users stat
+                    const totalUsersEl = document.getElementById('totalUsers');
+                    if (totalUsersEl) totalUsersEl.textContent = result.users.length;
+                } else {
+                    if (usersBody) {
+                        usersBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 30px;">No users found</td></tr>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+                showToast('Error loading user data', 'error');
+                if (usersBody) {
+                    usersBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 30px;">Error loading users</td></tr>';
+                }
+            } finally {
+                if (refreshUsersBtn) setButtonLoading(refreshUsersBtn, false);
+            }
+        }
+
+        function displayUsers(users) {
+            const usersBody = document.getElementById('usersBody');
+            if (!usersBody) return;
+            
+            if (!users || users.length === 0) {
+                usersBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 30px;">No users found</td></tr>';
+                return;
+            }
+            
+            usersBody.innerHTML = users.map(user => {
+                const createdDate = user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Unknown';
+                const lastActivity = user.lastPinRequest ? new Date(user.lastPinRequest).toLocaleDateString() : 'Never';
+                const status = user.pinsRemaining > 0 ? 
+                    '<span class="status-badge status-active">Active</span>' : 
+                    '<span class="status-badge status-used">No Pins</span>';
+                
+                return `
+                    <tr>
+                        <td><strong>${user.email}</strong></td>
+                        <td>${createdDate}</td>
+                        <td>${user.totalPinsPurchased || 5}</td>
+                        <td style="color: #a4ff7c; font-weight: bold;">${user.pinsRemaining}</td>
+                        <td style="color: #ff3b9c;">${user.pinsUsed}</td>
+                        <td style="color: #4d9eff;">${user.activePins || 0}</td>
+                        <td>${lastActivity}</td>
+                        <td>${status}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
         // ==================== LOGIN ====================
         async function adminLogin() {
             const username = document.getElementById('username').value;
@@ -1289,6 +1507,7 @@
                     document.getElementById('dashboard').style.display = 'block';
                     showToast('Login successful!', 'success');
                     loadAllData();
+                    loadAllUsers();
                 } else {
                     showToast('❌ Invalid credentials', 'error');
                 }
@@ -1447,14 +1666,10 @@
             const avgDailyEl = document.getElementById('avgDailyRequests');
             const conversionRateEl = document.getElementById('conversionRate');
             const avgRevenueEl = document.getElementById('avgRevenue');
-            const topPackageEl = document.getElementById('topPackage');
             
             if (avgDailyEl) avgDailyEl.textContent = avgDaily;
             if (conversionRateEl) conversionRateEl.textContent = conversionRate + '%';
             if (avgRevenueEl) avgRevenueEl.textContent = '$' + avgRev;
-            
-            // Calculate most popular package (simplified)
-            if (topPackageEl) topPackageEl.textContent = '10';
         }
 
         // ==================== CHART CREATION FUNCTIONS ====================
@@ -1462,7 +1677,6 @@
             const ctx = document.getElementById('requestsLineChart')?.getContext('2d');
             if (!ctx) return;
             
-            // Destroy existing chart if it exists
             if (requestsLineChart) requestsLineChart.destroy();
             
             requestsLineChart = new Chart(ctx, {
@@ -1620,10 +1834,8 @@
             const pendingBody = document.getElementById('pendingBody');
             const paidBody = document.getElementById('paidBody');
 
-            // Ensure allRequests is an array
             const requests = Array.isArray(allRequests) ? allRequests : [];
 
-            // Filter requests by status
             const pendingRows = requests.filter(r => r && r.status === 'pending');
             const paidRows = requests.filter(r => r && r.status === 'paid');
 
@@ -1634,7 +1846,6 @@
                 pendingBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">No pending requests</td></tr>';
             } else {
                 pendingBody.innerHTML = pendingRows.map(req => {
-                    // Format date safely
                     let formattedDate = 'Invalid Date';
                     try {
                         if (req.requestedAt) {
@@ -1659,7 +1870,7 @@
                 `}).join('');
             }
 
-            // Paid Table (ready to generate pins)
+            // Paid Table
             if (!paidBody) return;
             
             if (paidRows.length === 0) {
@@ -1770,6 +1981,7 @@
                     showToast(`✅ ${result.message || 'Pins generated successfully!'}`, 'success');
                     closeGenerateModal();
                     loadAllData();
+                    loadAllUsers();
                 } else {
                     showToast('❌ Error: ' + (result.error || 'Unknown error'), 'error');
                 }

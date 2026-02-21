@@ -222,6 +222,24 @@
         .nav-btn:hover::before { left: 100%; }
         .nav-btn.active { background: linear-gradient(135deg, #ff3b9c, #9d4edd); box-shadow: 0 0 20px #ff3b9c; }
         
+        .free-pin-btn {
+            background: linear-gradient(135deg, #a4ff7c, #4d9eff);
+            border: none;
+            color: #0a0a0f;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(164, 255, 124, 0.3);
+        }
+        
+        .free-pin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(164, 255, 124, 0.6);
+        }
+        
         .container { max-width: 1400px; margin: 0 auto; padding: 100px 40px 40px; position: relative; }
         
         /* YouTube Banners */
@@ -1223,6 +1241,11 @@
             .email-input-group {
                 flex-direction: column;
             }
+            .free-pin-btn {
+                padding: 8px 15px;
+                font-size: 0.9em;
+                margin-left: 10px;
+            }
         }
     </style>
 </head>
@@ -1237,6 +1260,7 @@
             <button class="nav-btn active" onclick="showPage('home')">HOME</button>
             <button class="nav-btn" onclick="showPage('progress')">PROGRESS</button>
         </div>
+        <button class="free-pin-btn" onclick="openFreePinModal()">🎁 Get Free Pins</button>
     </div>
 
     <!-- Main Container -->
@@ -1723,6 +1747,93 @@
             } else {
                 button.classList.remove('loading');
                 button.disabled = false;
+            }
+        }
+
+        // ==================== FREE PIN MODAL FUNCTIONS ====================
+        function openFreePinModal() {
+            // Close any open modals first
+            const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal', 'allContractsModal', 'contactModal', 'buyPinsModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (modal) modal.style.display = 'none';
+            });
+            
+            // Create and show free pin modal
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.id = 'freePinModal';
+            modal.style.display = 'flex';
+            
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 450px;">
+                    <div class="modal-header">
+                        <h2>🎁 Get 5 Free Pins</h2>
+                        <span class="close-btn" onclick="closeFreePinModal()">&times;</span>
+                    </div>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div style="font-size: 4em; margin-bottom: 20px;">🔑</div>
+                        <p style="color: #a4ff7c; font-size: 1.2em; margin-bottom: 15px;">New users get 5 free pins!</p>
+                        <p style="color: #b0b0b0; margin-bottom: 25px;">Enter your email to receive 5 PINs instantly. Each PIN unlocks one phone number.</p>
+                    </div>
+                    <div class="email-section" style="background: rgba(164,255,124,0.05); border: 1px solid #a4ff7c;">
+                        <div class="email-input-group">
+                            <input type="email" id="freePinModalEmail" placeholder="your@email.com" class="pin-input" style="border-color: #a4ff7c;">
+                            <button class="pin-button" onclick="requestFreePinsFromModal()" style="background: linear-gradient(135deg, #a4ff7c, #4d9eff); color: #0a0a0f; font-weight: bold;">Get Free Pins</button>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <p style="color: #666; font-size: 0.9em;">Already have an account? <a href="#" onclick="switchToPinLogin()" style="color: #ff3b9c;">Use PIN</a></p>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function closeFreePinModal() {
+            const modal = document.getElementById('freePinModal');
+            if (modal) modal.remove();
+        }
+
+        function switchToPinLogin() {
+            closeFreePinModal();
+            openContactModal();
+        }
+
+        async function requestFreePinsFromModal() {
+            const email = document.getElementById('freePinModalEmail').value;
+            if (!email) {
+                showToast('Please enter your email', 'error');
+                return;
+            }
+            
+            const button = event.target;
+            setButtonLoading(button, true);
+            
+            try {
+                const response = await fetch(`${PIN_API_URL}?action=generateFreePins&email=${encodeURIComponent(email)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast('✅ 5 free pins sent to your email!', 'success');
+                    userEmail = email;
+                    localStorage.setItem('kro_user_email', email);
+                    await checkPinBalance(email);
+                    closeFreePinModal();
+                } else {
+                    showToast(`❌ ${result.error || 'Failed to get free pins'}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error getting free pins:', error);
+                showToast('Error requesting free pins. Please try again.', 'error');
+            } finally {
+                setButtonLoading(button, false);
             }
         }
 
@@ -2826,11 +2937,15 @@
 
         // Close modals when clicking outside
         window.onclick = function(event) {
-            const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal', 'allContractsModal', 'contactModal', 'buyPinsModal'];
+            const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal', 'allContractsModal', 'contactModal', 'buyPinsModal', 'freePinModal'];
             modals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (event.target === modal) {
-                    modal.style.display = 'none';
+                    if (modalId === 'freePinModal') {
+                        closeFreePinModal();
+                    } else {
+                        modal.style.display = 'none';
+                    }
                 }
             });
         };
