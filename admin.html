@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K.R.O Admin Dashboard</title>
+    <!-- Chart.js for beautiful charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -142,6 +144,80 @@
             background: #ff3b9c;
         }
         
+        /* Analytics Section */
+        .analytics-section {
+            margin-bottom: 40px;
+        }
+        
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .chart-card {
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(255,59,156,0.1);
+        }
+        
+        .chart-card h3 {
+            color: #a4ff7c;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chart-card h3 span {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            color: white;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .stats-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-mini-card {
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-mini-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-mini-label {
+            color: #b0b0b0;
+            font-size: 0.85em;
+        }
+        
+        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -210,7 +286,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 20px;
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            -webkit-overflow-scrolling: touch;
         }
         
         /* Custom Scrollbar */
@@ -230,7 +306,7 @@
         
         .requests-table {
             width: 100%;
-            min-width: 800px; /* Forces horizontal scroll on mobile */
+            min-width: 800px;
             background: transparent;
             border: none;
             border-radius: 0;
@@ -247,13 +323,13 @@
             text-align: left;
             color: #ff3b9c;
             font-weight: 600;
-            white-space: nowrap; /* Prevents header text from wrapping */
+            white-space: nowrap;
         }
         
         td {
             padding: 15px;
             border-bottom: 1px solid rgba(255,255,255,0.05);
-            white-space: nowrap; /* Prevents cell content from wrapping */
+            white-space: nowrap;
         }
         
         tr:last-child td {
@@ -443,6 +519,14 @@
                 gap: 15px;
             }
             
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-mini-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
             .section-header {
                 flex-direction: column;
                 gap: 10px;
@@ -500,12 +584,16 @@
                 padding: 25px;
                 width: 95%;
             }
+            
+            .chart-container {
+                height: 250px;
+            }
         }
 
         /* Extra small devices */
         @media (max-width: 480px) {
             .requests-table {
-                min-width: 650px; /* Slightly smaller but still scrollable */
+                min-width: 650px;
             }
             
             th, td {
@@ -515,6 +603,10 @@
             
             .table-container::after {
                 content: '← Swipe to see more →';
+            }
+            
+            .stats-mini-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -567,6 +659,68 @@
                 <h3>Revenue</h3>
                 <div class="stat-number" id="totalRevenue">$0</div>
                 <div class="stat-label">total</div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="analytics-section">
+            <div class="section-header">
+                <h2>📊 Analytics Dashboard</h2>
+                <button class="refresh-btn" onclick="loadAllData()">↻ Refresh Charts</button>
+            </div>
+            
+            <div class="analytics-grid">
+                <!-- Chart 1: Requests Over Time -->
+                <div class="chart-card">
+                    <h3>📈 Requests Over Time <span>Last 7 Days</span></h3>
+                    <div class="chart-container">
+                        <canvas id="requestsLineChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Chart 2: Package Distribution -->
+                <div class="chart-card">
+                    <h3>🥧 Package Distribution <span>By Type</span></h3>
+                    <div class="chart-container">
+                        <canvas id="packagePieChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Chart 3: Revenue Trend -->
+                <div class="chart-card">
+                    <h3>💰 Revenue Trend <span>Daily</span></h3>
+                    <div class="chart-container">
+                        <canvas id="revenueBarChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Chart 4: Status Distribution -->
+                <div class="chart-card">
+                    <h3>🔄 Request Status <span>Pending vs Paid</span></h3>
+                    <div class="chart-container">
+                        <canvas id="statusDoughnutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mini Stats -->
+            <div class="stats-mini-grid">
+                <div class="stat-mini-card">
+                    <div class="stat-mini-value" id="avgDailyRequests">0</div>
+                    <div class="stat-mini-label">Avg Daily Requests</div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="stat-mini-value" id="conversionRate">0%</div>
+                    <div class="stat-mini-label">Conversion Rate</div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="stat-mini-value" id="avgRevenue">$0</div>
+                    <div class="stat-mini-label">Avg Revenue/Request</div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="stat-mini-value" id="topPackage">10</div>
+                    <div class="stat-mini-label">Most Popular Package</div>
+                </div>
             </div>
         </div>
 
@@ -674,6 +828,9 @@
         // ==================== CONFIG ====================
         const ADMIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
         let adminUser = localStorage.getItem('kro_admin_user') || '';
+        
+        // Chart instances
+        let requestsLineChart, packagePieChart, revenueBarChart, statusDoughnutChart;
 
         // ==================== CHECK SESSION ON LOAD ====================
         window.onload = function() {
@@ -725,6 +882,9 @@
                     document.getElementById('pendingCount').textContent = result.stats.pending;
                     document.getElementById('paidCount').textContent = result.stats.paid;
                     document.getElementById('totalRevenue').textContent = '$' + result.stats.totalRevenue;
+                    
+                    // Update mini stats
+                    updateMiniStats(result.stats);
                 }
             } catch (error) {
                 console.error('Error loading stats:', error);
@@ -739,12 +899,252 @@
 
                 if (result.success) {
                     displayRequests(result.pending);
+                    updateCharts(result.pending);
                 } else {
                     console.error('API Error:', result.error);
                 }
             } catch (error) {
                 console.error('Error loading requests:', error);
             }
+        }
+
+        // ==================== UPDATE CHARTS ====================
+        function updateCharts(requests) {
+            const requestsArray = Array.isArray(requests) ? requests : [];
+            
+            // Prepare data for charts
+            const last7Days = getLast7Days();
+            const dailyRequests = getDailyRequests(requestsArray, last7Days);
+            const packageData = getPackageDistribution(requestsArray);
+            const revenueData = getRevenueByDay(requestsArray, last7Days);
+            const statusData = getStatusDistribution(requestsArray);
+
+            // Create/Update charts
+            createRequestsLineChart(dailyRequests, last7Days);
+            createPackagePieChart(packageData);
+            createRevenueBarChart(revenueData, last7Days);
+            createStatusDoughnutChart(statusData);
+        }
+
+        function getLast7Days() {
+            const days = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                days.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+            }
+            return days;
+        }
+
+        function getDailyRequests(requests, days) {
+            const daily = new Array(7).fill(0);
+            requests.forEach(req => {
+                if (req.requestedAt) {
+                    const reqDate = new Date(req.requestedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    const index = days.indexOf(reqDate);
+                    if (index !== -1) daily[index]++;
+                }
+            });
+            return daily;
+        }
+
+        function getPackageDistribution(requests) {
+            const packages = { '10': 0, '25': 0, '50': 0 };
+            requests.forEach(req => {
+                const pkg = req.package?.toString() || '10';
+                if (packages[pkg] !== undefined) packages[pkg]++;
+            });
+            return packages;
+        }
+
+        function getRevenueByDay(requests, days) {
+            const revenue = new Array(7).fill(0);
+            requests.forEach(req => {
+                if (req.status === 'paid' && req.requestedAt) {
+                    const reqDate = new Date(req.requestedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    const index = days.indexOf(reqDate);
+                    if (index !== -1) {
+                        const amount = parseFloat(req.amount?.replace('$', '') || 0);
+                        revenue[index] += amount;
+                    }
+                }
+            });
+            return revenue;
+        }
+
+        function getStatusDistribution(requests) {
+            const pending = requests.filter(r => r.status === 'pending').length;
+            const paid = requests.filter(r => r.status === 'paid').length;
+            return { pending, paid };
+        }
+
+        function updateMiniStats(stats) {
+            const avgDaily = Math.round(stats.totalRequests / 30) || 0; // Approx monthly avg
+            const conversionRate = stats.totalRequests > 0 
+                ? Math.round((stats.paid / stats.totalRequests) * 100) 
+                : 0;
+            const avgRev = stats.paid > 0 
+                ? Math.round(stats.totalRevenue / stats.paid) 
+                : 0;
+            
+            document.getElementById('avgDailyRequests').textContent = avgDaily;
+            document.getElementById('conversionRate').textContent = conversionRate + '%';
+            document.getElementById('avgRevenue').textContent = '$' + avgRev;
+            document.getElementById('topPackage').textContent = '10'; // Default, could calculate dynamically
+        }
+
+        // ==================== CHART CREATION FUNCTIONS ====================
+        function createRequestsLineChart(data, labels) {
+            const ctx = document.getElementById('requestsLineChart').getContext('2d');
+            
+            // Destroy existing chart if it exists
+            if (requestsLineChart) requestsLineChart.destroy();
+            
+            requestsLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Number of Requests',
+                        data: data,
+                        borderColor: '#ff3b9c',
+                        backgroundColor: 'rgba(255, 59, 156, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#a4ff7c',
+                        pointBorderColor: '#ff3b9c',
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#b0b0b0' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#b0b0b0' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#b0b0b0' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createPackagePieChart(data) {
+            const ctx = document.getElementById('packagePieChart').getContext('2d');
+            
+            if (packagePieChart) packagePieChart.destroy();
+            
+            packagePieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['10 Pins', '25 Pins', '50 Pins'],
+                    datasets: [{
+                        data: [data['10'], data['25'], data['50']],
+                        backgroundColor: [
+                            '#ff3b9c',
+                            '#9d4edd',
+                            '#4d9eff'
+                        ],
+                        borderColor: '#0a0a0f',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#b0b0b0' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createRevenueBarChart(data, labels) {
+            const ctx = document.getElementById('revenueBarChart').getContext('2d');
+            
+            if (revenueBarChart) revenueBarChart.destroy();
+            
+            revenueBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Revenue ($)',
+                        data: data,
+                        backgroundColor: 'rgba(77, 158, 255, 0.8)',
+                        borderColor: '#4d9eff',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#b0b0b0' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { 
+                                color: '#b0b0b0',
+                                callback: function(value) { return '$' + value; }
+                            }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#b0b0b0' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createStatusDoughnutChart(data) {
+            const ctx = document.getElementById('statusDoughnutChart').getContext('2d');
+            
+            if (statusDoughnutChart) statusDoughnutChart.destroy();
+            
+            statusDoughnutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pending', 'Paid'],
+                    datasets: [{
+                        data: [data.pending, data.paid],
+                        backgroundColor: [
+                            '#ff3b9c',
+                            '#a4ff7c'
+                        ],
+                        borderColor: '#0a0a0f',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#b0b0b0' }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
         }
 
         // ==================== DISPLAY REQUESTS FUNCTION ====================
@@ -929,6 +1329,12 @@
             adminUser = '';
             document.getElementById('loginPage').style.display = 'block';
             document.getElementById('dashboard').style.display = 'none';
+            
+            // Destroy charts
+            if (requestsLineChart) requestsLineChart.destroy();
+            if (packagePieChart) packagePieChart.destroy();
+            if (revenueBarChart) revenueBarChart.destroy();
+            if (statusDoughnutChart) statusDoughnutChart.destroy();
         }
 
         // Close modals when clicking outside
