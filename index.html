@@ -1161,12 +1161,13 @@
         
         .pin-input-group {
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            gap: 15px;
             margin: 15px 0;
         }
         
         .pin-input {
-            flex: 1;
+            width: 100%;
             padding: 12px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--glass-border);
@@ -1192,6 +1193,7 @@
             font-weight: 600;
             transition: all 0.3s;
             position: relative;
+            width: 100%;
         }
         
         .pin-button.loading {
@@ -2128,9 +2130,9 @@
             }
         }
 
-        async function validatePin(pin) {
-            if (!userEmail) {
-                showToast('Please enter your email first', 'error');
+        async function validatePin(email, pin) {
+            if (!email) {
+                showToast('Please enter your email', 'error');
                 return false;
             }
             
@@ -2143,7 +2145,7 @@
             if (button) setButtonLoading(button, true);
             
             try {
-                const response = await fetch(`${PIN_API_URL}?action=validatePin&email=${encodeURIComponent(userEmail)}&pin=${pin}`);
+                const response = await fetch(`${PIN_API_URL}?action=validatePin&email=${encodeURIComponent(email)}&pin=${pin}`);
                 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -2152,6 +2154,8 @@
                 const result = await response.json();
                 
                 if (result.success) {
+                    userEmail = email;
+                    localStorage.setItem('kro_user_email', email);
                     userPinsRemaining = result.pinsRemaining || 0;
                     updatePinsBadge();
                     showToast('✅ PIN validated successfully!', 'success');
@@ -2256,87 +2260,33 @@
                     <h3>${currentContactName}</h3>
                     <div style="margin: 20px 0;">
                         <div class="phone-locked">🔒 ${currentPhoneNumber.replace(/\d(?=\d{4})/g, '*')}</div>
-                        <p style="color: #b0b0b0; margin-top: 10px;">Enter PIN to unlock phone number</p>
+                        <p style="color: #b0b0b0; margin-top: 10px;">Enter your email and PIN to unlock phone number</p>
                     </div>
                 </div>
             `;
             
-            if (userEmail) {
-                // Show PIN input
-                pinSection.innerHTML = `
-                    <div class="pin-input-group">
-                        <input type="text" class="pin-input" id="pinInput" placeholder="Enter 6-digit PIN" maxlength="6">
-                        <button class="pin-button" onclick="unlockPhoneNumber()">Unlock</button>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                        <span class="pins-remaining">${userPinsRemaining} pins remaining</span>
-                        <button class="pin-button secondary" onclick="openBuyPinsModal()">Buy More Pins</button>
-                    </div>
-                `;
-                emailSection.style.display = 'none';
-            } else {
-                // Show email input for free pins
-                pinSection.innerHTML = '';
-                emailSection.style.display = 'block';
-                emailSection.innerHTML = `
-                    <div class="email-section">
-                        <p>New users get <strong>5 free pins</strong> to unlock phone numbers!</p>
-                        <div class="email-input-group">
-                            <input type="email" id="freePinEmail" placeholder="your@email.com" class="pin-input">
-                            <button class="pin-button" onclick="requestFreePins()">Get Free Pins</button>
-                        </div>
-                        <p style="color: #b0b0b0; font-size: 0.9em; margin-top: 10px;">
-                            Already have pins? 
-                            <a href="#" onclick="showPinLogin()" style="color: #ff3b9c;">Enter PIN</a>
-                        </p>
-                    </div>
-                `;
-            }
+            // Show email and PIN input
+            pinSection.innerHTML = `
+                <div class="pin-input-group">
+                    <input type="email" id="contactEmail" class="pin-input" placeholder="Enter your email" value="${userEmail || ''}">
+                    <input type="text" class="pin-input" id="pinInput" placeholder="Enter 6-digit PIN" maxlength="6">
+                    <button class="pin-button" onclick="unlockPhoneNumber()">Unlock Phone Number</button>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <span class="pins-remaining">${userPinsRemaining} pins remaining</span>
+                    <button class="pin-button secondary" onclick="openBuyPinsModal()">Buy More Pins</button>
+                </div>
+            `;
+            emailSection.style.display = 'none';
             
             modal.style.display = 'flex';
         }
 
-        function showPinLogin() {
-            document.getElementById('emailSection').style.display = 'none';
-            document.getElementById('pinSection').innerHTML = `
-                <div class="email-input-group" style="margin-top: 20px;">
-                    <input type="email" id="loginEmail" placeholder="your@email.com" class="pin-input">
-                    <button class="pin-button" onclick="loginWithEmail()">Continue</button>
-                </div>
-            `;
-        }
-
-        async function loginWithEmail() {
-            const email = document.getElementById('loginEmail').value;
-            if (!email) {
-                showToast('Please enter your email', 'error');
-                return;
-            }
-            
-            const button = event.target;
-            setButtonLoading(button, true);
-            
-            userEmail = email;
-            localStorage.setItem('kro_user_email', email);
-            await checkPinBalance(email);
-            openContactModal(); // Refresh modal
-            
-            setButtonLoading(button, false);
-        }
-
-        function requestFreePins() {
-            const email = document.getElementById('freePinEmail').value;
-            if (!email) {
-                showToast('Please enter your email', 'error');
-                return;
-            }
-            
-            getFreePins(email);
-        }
-
         async function unlockPhoneNumber() {
+            const email = document.getElementById('contactEmail').value;
             const pin = document.getElementById('pinInput').value;
-            const isValid = await validatePin(pin);
+            
+            const isValid = await validatePin(email, pin);
             
             if (isValid) {
                 // Show unlocked phone number with call button
