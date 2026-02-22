@@ -216,6 +216,66 @@
             -webkit-text-fill-color: transparent;
         }
         
+        /* Language Selector */
+        .language-selector {
+            position: relative;
+            margin-left: 15px;
+        }
+        
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        
+        .lang-btn:hover {
+            border-color: #ff3b9c;
+            background: rgba(255, 59, 156, 0.1);
+        }
+        
+        .lang-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 10px;
+            min-width: 150px;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .lang-dropdown.show {
+            display: block;
+        }
+        
+        .lang-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+            color: white;
+        }
+        
+        .lang-option:hover {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+        }
+        
+        .lang-option.active {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+        }
+        
         /* Desktop Navigation */
         .nav-buttons { 
             display: flex; 
@@ -369,6 +429,32 @@
             width: 100%;
             text-align: left;
             box-shadow: 0 0 20px rgba(164, 255, 124, 0.3);
+        }
+        
+        .mobile-lang-selector {
+            margin-top: 15px;
+        }
+        
+        .mobile-lang-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .mobile-lang-option {
+            flex: 1;
+            min-width: 70px;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .mobile-lang-option.active {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
         }
         
         .container { 
@@ -677,15 +763,64 @@
         .stat-number { font-size: 2em; font-weight: 700; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .stat-label { color: #b0b0b0; font-size: 0.9em; }
         
-        .action-bar { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; margin-bottom: 40px; display: flex; gap: 15px; align-items: center; }
-        .search-box { flex: 1; display: flex; align-items: center; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); border-radius: 15px; padding: 0 20px; }
+        .action-bar { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; margin-bottom: 40px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .search-box { flex: 2; display: flex; align-items: center; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); border-radius: 15px; padding: 0 20px; min-width: 250px; }
         .search-box input { flex: 1; padding: 15px 0; border: none; background: transparent; outline: none; color: white; font-size: 1em; }
         .search-box input::placeholder { color: #666; }
-        .filter-btn, .add-btn { padding: 15px 30px; border: none; border-radius: 15px; cursor: pointer; font-weight: 600; font-size: 1em; transition: all 0.3s; }
+        .filter-btn, .category-btn, .add-btn { padding: 15px 30px; border: none; border-radius: 15px; cursor: pointer; font-weight: 600; font-size: 1em; transition: all 0.3s; white-space: nowrap; }
         .filter-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); color: white; }
         .filter-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: #ff3b9c; }
+        .category-btn { background: linear-gradient(135deg, #4d9eff, #0ef0f0); color: #0a0a0f; box-shadow: 0 0 20px rgba(77, 158, 255, 0.3); }
+        .category-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(77, 158, 255, 0.6); }
         .add-btn { background: linear-gradient(135deg, #ff3b9c, #9d4edd); color: white; box-shadow: 0 0 20px rgba(255, 59, 156, 0.3); }
         .add-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255, 59, 156, 0.6); }
+        
+        /* Active Filters Bar */
+        .active-filters {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .filter-tag {
+            background: rgba(77, 158, 255, 0.2);
+            border: 1px solid #4d9eff;
+            color: #4d9eff;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-tag .remove-filter {
+            cursor: pointer;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+        
+        .filter-tag .remove-filter:hover {
+            color: #ff3b9c;
+        }
+        
+        .clear-all-filters {
+            color: #ff3b9c;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: auto;
+        }
+        
+        .clear-all-filters:hover {
+            text-decoration: underline;
+        }
         
         /* Contracts Grid */
         .contracts-grid { 
@@ -751,7 +886,10 @@
         
         .contract-amount { font-size: 2em; font-weight: 700; margin-bottom: 15px; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .contract-title { font-size: 1.3em; font-weight: 600; margin-bottom: 8px; color: white; }
-        .contract-company { color: #b0b0b0; font-size: 1em; margin-bottom: 15px; }
+        .contract-company { color: #b0b0b0; font-size: 1em; margin-bottom: 5px; }
+        .contract-location { display: flex; align-items: center; gap: 8px; color: #a4ff7c; font-size: 0.95em; margin-bottom: 5px; }
+        .contract-location i { color: #ff3b9c; }
+        .contract-country { background: rgba(255, 59, 156, 0.1); padding: 3px 10px; border-radius: 15px; display: inline-block; margin-bottom: 10px; }
         .contract-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
         
         .status-badge { display: inline-block; padding: 6px 15px; border-radius: 30px; font-size: 0.9em; font-weight: 500; }
@@ -759,7 +897,7 @@
         .status-badge.completed { background: rgba(164, 255, 124, 0.2); color: #a4ff7c; border: 1px solid #a4ff7c; }
         .status-badge.not-started { background: rgba(77, 158, 255, 0.2); color: #4d9eff; border: 1px solid #4d9eff; }
         
-        .contract-date { color: #666; font-size: 0.9em; }
+        .contract-date { color: #666; font-size: 0.9em; display: flex; align-items: center; gap: 5px; }
         
         .progress-list { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 25px; overflow: hidden; }
         .progress-item { display: flex; align-items: center; padding: 20px 25px; border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: all 0.3s; }
@@ -771,6 +909,7 @@
         .progress-content { flex: 1; }
         .progress-title { font-weight: 600; margin-bottom: 5px; color: white; }
         .progress-title span { color: #ff3b9c; margin-right: 10px; }
+        .progress-location { color: #a4ff7c; font-size: 0.9em; margin-bottom: 5px; }
         .progress-date { color: #666; font-size: 0.9em; }
         
         .featured-section { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 60px 0; }
@@ -804,6 +943,87 @@
         .modal-header h2 { font-size: 1.8em; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .close-btn { font-size: 1.5em; cursor: pointer; color: #666; transition: color 0.3s; }
         .close-btn:hover { color: #ff3b9c; }
+        
+        /* Category Filter Modal */
+        .category-filters {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-group {
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .filter-group h3 {
+            color: #ff3b9c;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filter-select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: #ff3b9c;
+        }
+        
+        .filter-select option {
+            background: #1a1a1a;
+            color: white;
+        }
+        
+        .filter-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .filter-actions button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .apply-filters {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+            color: white;
+        }
+        
+        .reset-filters {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: white;
+        }
+        
+        .apply-filters:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 59, 156, 0.5);
+        }
+        
+        .reset-filters:hover {
+            border-color: #ff3b9c;
+            color: #ff3b9c;
+        }
         
         /* Form Styles */
         .form-group { margin-bottom: 20px; }
@@ -1352,7 +1572,7 @@
                 padding: 15px 20px;
             }
             
-            .nav-buttons {
+            .nav-buttons, .language-selector {
                 display: none;
             }
             
@@ -1368,6 +1588,19 @@
                 display: block;
             }
             
+            .action-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .filter-btn, .category-btn, .add-btn {
+                width: 100%;
+            }
+            
             .hero-title { font-size: 3em; }
             .hero-section { flex-direction: column; }
             .hero-image-container { display: none; }
@@ -1377,8 +1610,6 @@
             .banner-content { max-width: 100%; }
             .banner-content h3 { font-size: 2.5em; }
             .banner-avatar { margin-left: 0; margin-top: 30px; }
-            .action-bar { flex-direction: column; }
-            .search-box input { padding: 15px 40px; }
             .stats-row { gap: 25px; }
             .hero-buttons { display: none; }
             .form-row { grid-template-columns: 1fr; }
@@ -1418,6 +1649,25 @@
             <button class="nav-btn active" onclick="showPage('home')">HOME</button>
             <button class="nav-btn" onclick="showPage('progress')">PROGRESS</button>
             <button class="free-pin-btn" onclick="openFreePinModal()">🎁 Get Free Pins</button>
+            
+            <!-- Language Selector -->
+            <div class="language-selector">
+                <button class="lang-btn" onclick="toggleLanguageDropdown()">
+                    🌐 <span id="selectedLang">English</span> ▼
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option active" onclick="changeLanguage('en')">🇬🇧 English</div>
+                    <div class="lang-option" onclick="changeLanguage('es')">🇪🇸 Español</div>
+                    <div class="lang-option" onclick="changeLanguage('fr')">🇫🇷 Français</div>
+                    <div class="lang-option" onclick="changeLanguage('de')">🇩🇪 Deutsch</div>
+                    <div class="lang-option" onclick="changeLanguage('pt')">🇵🇹 Português</div>
+                    <div class="lang-option" onclick="changeLanguage('zh')">🇨🇳 中文</div>
+                    <div class="lang-option" onclick="changeLanguage('ar')">🇸🇦 العربية</div>
+                    <div class="lang-option" onclick="changeLanguage('hi')">🇮🇳 हिन्दी</div>
+                    <div class="lang-option" onclick="changeLanguage('ja')">🇯🇵 日本語</div>
+                    <div class="lang-option" onclick="changeLanguage('ru')">🇷🇺 Русский</div>
+                </div>
+            </div>
         </div>
 
         <!-- Mobile Menu Toggle -->
@@ -1434,6 +1684,22 @@
             <button class="mobile-nav-btn active" onclick="showMobilePage('home')">🏠 HOME</button>
             <button class="mobile-nav-btn" onclick="showMobilePage('progress')">📊 PROGRESS</button>
             <button class="mobile-free-pin-btn" onclick="openFreePinModal(); toggleMobileMenu();">🎁 Get Free Pins</button>
+            
+            <!-- Mobile Language Selector -->
+            <div class="mobile-lang-selector">
+                <div class="mobile-lang-options">
+                    <div class="mobile-lang-option active" onclick="changeLanguage('en'); toggleMobileMenu();">🇬🇧 English</div>
+                    <div class="mobile-lang-option" onclick="changeLanguage('es'); toggleMobileMenu();">🇪🇸 Español</div>
+                    <div class="mobile-lang-option" onclick="changeLanguage('fr'); toggleMobileMenu();">🇫🇷 Français</div>
+                    <div class="mobile-lang-option" onclick="changeLanguage('de'); toggleMobileMenu();">🇩🇪 Deutsch</div>
+                    <div class="mobile-lang-option" onclick="changeLanguage('pt'); toggleMobileMenu();">🇵🇹 Português</div>
+                    <div class="mobile-lang-option" onclick="changeLanguage('zh'); toggleMobileMenu();">🇨🇳 中文</div>
+                    <div class="mobile-lang-option" onclick="changeLanguage('ar'); toggleMobileMenu();">🇸🇦 العربية</div>
+                    <div class="mobile-lang-option" onclick="changeLanguage('hi'); toggleMobileMenu();">🇮🇳 हिन्दी</div>
+                    <div class="mobile-lang-option" onclick="changeLanguage('ja'); toggleMobileMenu();">🇯🇵 日本語</div>
+                    <div class="mobile-lang-option" onclick="changeLanguage('ru'); toggleMobileMenu();">🇷🇺 Русский</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1442,8 +1708,8 @@
         <!-- YouTube Banners Section -->
         <div class="youtube-section">
             <div class="section-header">
-                <h2>🎥 K.R.O MOVIES</h2>
-                <a href="https://youtube.com/@kromedia_ng?si=oxZZO61Ro0ezW9qN" target="_blank" rel="noopener noreferrer"><span class="see-all">See All →</span></a>
+                <h2 data-i18n="youtube_title">🎥 K.R.O MOVIES</h2>
+                <a href="https://youtube.com/@kromedia_ng?si=oxZZO61Ro0ezW9qN" target="_blank" rel="noopener noreferrer"><span class="see-all" data-i18n="see_all">See All →</span></a>
             </div>
             
             <div class="banners-container">
@@ -1472,31 +1738,31 @@
         <div class="hero-section">
             <div class="hero-content">
                 <h1 class="hero-title">
-                    <span class="neon">GET K.R.O</span>
-                    <span class="creators">CONTRACTS</span>
+                    <span class="neon" data-i18n="hero_get">GET K.R.O</span>
+                    <span class="creators" data-i18n="hero_contracts">CONTRACTS</span>
                 </h1>
-                <p class="hero-description">
+                <p class="hero-description" data-i18n="hero_description">
                     K.R.O Contracts brings together colleagues to support each other. Create, track, and resolve support contracts in a secure, transparent environment.
                 </p>
                 
                 <div class="stats-row" id="statsRow">
                     <div class="stat-item">
                         <div class="stat-number" id="activeUsers">0</div>
-                        <div class="stat-label">Active Users</div>
+                        <div class="stat-label" data-i18n="active_users">Active Users</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-number" id="completedContracts">0</div>
-                        <div class="stat-label">Completed Contracts</div>
+                        <div class="stat-label" data-i18n="completed_contracts">Completed Contracts</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-number" id="totalSupport">₦0</div>
-                        <div class="stat-label">Total Support</div>
+                        <div class="stat-label" data-i18n="total_support">Total Support</div>
                     </div>
                 </div>
 
                 <div class="hero-buttons">
-                    <button class="btn-primary" onclick="openAddModal()">CREATE CONTRACT</button>
-                    <button class="btn-secondary" onclick="showPage('progress')">VIEW PROGRESS</button>
+                    <button class="btn-primary" onclick="openAddModal()" data-i18n="create_contract">CREATE CONTRACT</button>
+                    <button class="btn-secondary" onclick="showPage('progress')" data-i18n="view_progress">VIEW PROGRESS</button>
                 </div>
             </div>
             
@@ -1513,19 +1779,34 @@
         <!-- Action Bar -->
         <div class="action-bar">
             <div class="search-box">
-                <input type="text" placeholder="Search contracts..." id="searchInput" onkeyup="searchContracts()">
+                <input type="text" placeholder="Search contracts..." id="searchInput" onkeyup="searchContracts()" data-i18n-placeholder="search_placeholder">
             </div>
-            <div>
-                <button class="filter-btn" onclick="openFilterModal()">FILTER</button>
-                <button class="add-btn" onclick="openAddModal()">+ CREATE</button>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="filter-btn" onclick="openFilterModal()" data-i18n="filter">FILTER</button>
+                <button class="category-btn" onclick="openCategoryModal()" data-i18n="categories">CATEGORIES</button>
+                <button class="add-btn" onclick="openAddModal()" data-i18n="create">+ CREATE</button>
             </div>
+        </div>
+
+        <!-- Active Filters Bar (hidden by default) -->
+        <div class="active-filters" id="activeFiltersBar" style="display: none;">
+            <span data-i18n="active_filters">Active Filters:</span>
+            <div id="countryFilterTag" class="filter-tag" style="display: none;">
+                <span id="selectedCountryDisplay"></span>
+                <span class="remove-filter" onclick="removeFilter('country')">×</span>
+            </div>
+            <div id="cityFilterTag" class="filter-tag" style="display: none;">
+                <span id="selectedCityDisplay"></span>
+                <span class="remove-filter" onclick="removeFilter('city')">×</span>
+            </div>
+            <div class="clear-all-filters" onclick="clearAllFilters()" data-i18n="clear_all">Clear All</div>
         </div>
 
         <!-- Home Page -->
         <div id="homePage">
             <div class="section-header">
-                <h2>Active Contracts</h2>
-                <span class="see-all" onclick="openAllContractsModal()">See All →</span>
+                <h2 data-i18n="active_contracts">Active Contracts</h2>
+                <span class="see-all" onclick="openAllContractsModal()" data-i18n="see_all_contracts">See All →</span>
             </div>
             <div class="contracts-grid" id="contractsGrid">
                 <div class="loading-container">
@@ -1543,8 +1824,8 @@
         <!-- Progress Page -->
         <div id="progressPage" style="display: none;">
             <div class="section-header">
-                <h2>Progress Report</h2>
-                <span class="see-all">See All →</span>
+                <h2 data-i18n="progress_report">Progress Report</h2>
+                <span class="see-all" data-i18n="see_all">See All →</span>
             </div>
             <div class="progress-list" id="progressList">
                 <div class="loading-container">
@@ -1563,8 +1844,8 @@
         <div class="featured-section">
             <div class="featured-card">
                 <div class="featured-header">
-                    <h3>⚡ Top 5 Highest Contracts</h3>
-                    <span class="see-all">See All →</span>
+                    <h3 data-i18n="top_contracts">⚡ Top 5 Highest Contracts</h3>
+                    <span class="see-all" data-i18n="see_all">See All →</span>
                 </div>
                 <div id="topContractsList">
                     <div class="loading-container">
@@ -1581,8 +1862,8 @@
 
             <div class="featured-card">
                 <div class="featured-header">
-                    <h3>🏆 Top 5 Staff</h3>
-                    <span class="see-all">See All →</span>
+                    <h3 data-i18n="top_staff">🏆 Top 5 Staff</h3>
+                    <span class="see-all" data-i18n="see_all">See All →</span>
                 </div>
                 <div id="topStaffList">
                     <div class="loading-container">
@@ -1601,41 +1882,89 @@
         <!-- Timer Section -->
         <div class="timer-section">
             <div class="timer-info">
-                <h3 class="glow-pink">Today's Highest Support</h3>
+                <h3 class="glow-pink" data-i18n="today_highest">Today's Highest Support</h3>
                 <p id="todayHighest">₦20,000.00 by K.R.O Service Company</p>
             </div>
             <div class="timer">
-                <div class="timer-unit"><div class="timer-value">21</div><div class="timer-label">Day</div></div>
-                <div class="timer-unit"><div class="timer-value">02</div><div class="timer-label">Month</div></div>
-                <div class="timer-unit"><div class="timer-value">26</div><div class="timer-label">Year</div></div>
-                <div class="timer-unit"><div class="timer-value">0:0</div><div class="timer-label">H:M</div></div>
+                <div class="timer-unit"><div class="timer-value">21</div><div class="timer-label" data-i18n="day">Day</div></div>
+                <div class="timer-unit"><div class="timer-value">02</div><div class="timer-label" data-i18n="month">Month</div></div>
+                <div class="timer-unit"><div class="timer-value">26</div><div class="timer-label" data-i18n="year">Year</div></div>
+                <div class="timer-unit"><div class="timer-value">0:0</div><div class="timer-label" data-i18n="hour_min">H:M</div></div>
             </div>
         </div>
     </div>
 
-    <!-- Filter Modal -->
+    <!-- Filter Modal (Status) -->
     <div class="modal" id="filterModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Filter by Status</h2>
+                <h2 data-i18n="filter_by_status">Filter by Status</h2>
                 <span class="close-btn" onclick="closeFilterModal()">&times;</span>
             </div>
-            <div class="filter-option" onclick="selectFilter('all')" id="filterAll">📋 All Contracts</div>
-            <div class="filter-option" onclick="selectFilter('In Progress')" id="filterInProgress">⏳ In Progress</div>
-            <div class="filter-option" onclick="selectFilter('Completed')" id="filterCompleted">✅ Completed</div>
-            <div class="filter-option" onclick="selectFilter('Not Started')" id="filterNotStarted">⚠️ Not Started</div>
+            <div class="filter-option" onclick="selectFilter('all')" id="filterAll" data-i18n="all_contracts">📋 All Contracts</div>
+            <div class="filter-option" onclick="selectFilter('In Progress')" id="filterInProgress" data-i18n="in_progress">⏳ In Progress</div>
+            <div class="filter-option" onclick="selectFilter('Completed')" id="filterCompleted" data-i18n="completed">✅ Completed</div>
+            <div class="filter-option" onclick="selectFilter('Not Started')" id="filterNotStarted" data-i18n="not_started">⚠️ Not Started</div>
             <div class="filter-actions">
-                <button onclick="clearFilter()" class="btn-secondary">Clear all</button>
-                <button onclick="applyFilter()" class="btn-primary" style="padding: 12px 25px;">Done</button>
+                <button onclick="clearFilter()" class="btn-secondary" data-i18n="clear_all">Clear all</button>
+                <button onclick="applyFilter()" class="btn-primary" style="padding: 12px 25px;" data-i18n="done">Done</button>
             </div>
         </div>
     </div>
 
-    <!-- ADD CONTRACT MODAL -->
+    <!-- Category Filter Modal (New) -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 data-i18n="browse_by_location">🌍 Browse by Location</h2>
+                <span class="close-btn" onclick="closeCategoryModal()">&times;</span>
+            </div>
+            
+            <div class="category-filters">
+                <div class="filter-group">
+                    <h3><span>📍</span> <span data-i18n="select_country">Select Country</span></h3>
+                    <select class="filter-select" id="countryFilter">
+                        <option value="" data-i18n="all_countries">All Countries</option>
+                        <option value="USA">🇺🇸 United States</option>
+                        <option value="UK">🇬🇧 United Kingdom</option>
+                        <option value="Canada">🇨🇦 Canada</option>
+                        <option value="Australia">🇦🇺 Australia</option>
+                        <option value="Germany">🇩🇪 Germany</option>
+                        <option value="France">🇫🇷 France</option>
+                        <option value="Spain">🇪🇸 Spain</option>
+                        <option value="Italy">🇮🇹 Italy</option>
+                        <option value="Japan">🇯🇵 Japan</option>
+                        <option value="China">🇨🇳 China</option>
+                        <option value="India">🇮🇳 India</option>
+                        <option value="Brazil">🇧🇷 Brazil</option>
+                        <option value="Nigeria">🇳🇬 Nigeria</option>
+                        <option value="South Africa">🇿🇦 South Africa</option>
+                        <option value="Kenya">🇰🇪 Kenya</option>
+                        <option value="Ghana">🇬🇭 Ghana</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <h3><span>🏙️</span> <span data-i18n="select_city_state">Select City/State</span></h3>
+                    <select class="filter-select" id="cityFilter">
+                        <option value="" data-i18n="all_cities">All Cities/States</option>
+                    </select>
+                    <p style="color: #b0b0b0; font-size: 0.85em; margin-top: 8px;" data-i18n="city_note">* Cities will update based on selected country</p>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button class="reset-filters" onclick="resetCategoryFilters()" data-i18n="reset">Reset</button>
+                <button class="apply-filters" onclick="applyCategoryFilters()" data-i18n="apply_filters">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD CONTRACT MODAL (Updated with Country/City) -->
     <div class="modal" id="addModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Create New Contract</h2>
+                <h2 data-i18n="create_new_contract">Create New Contract</h2>
                 <span class="close-btn" onclick="closeAddModal()">&times;</span>
             </div>
             
@@ -1643,73 +1972,104 @@
             
             <form id="addContractForm" onsubmit="saveNewContract(event)">
                 <div class="form-group">
-                    <label>Title</label>
+                    <label data-i18n="title">Title</label>
                     <input type="text" id="title" placeholder="e.g., Cleaning Lady Needed" required>
                 </div>
                 
                 <div class="form-group">
-                    <label>Company</label>
+                    <label data-i18n="company">Company</label>
                     <input type="text" id="company" placeholder="e.g., K.R.O Services" required>
                 </div>
                 
+                <!-- New Location Fields -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="country">Country</label>
+                        <select id="country" required>
+                            <option value="">Select Country</option>
+                            <option value="USA">🇺🇸 United States</option>
+                            <option value="UK">🇬🇧 United Kingdom</option>
+                            <option value="Canada">🇨🇦 Canada</option>
+                            <option value="Australia">🇦🇺 Australia</option>
+                            <option value="Germany">🇩🇪 Germany</option>
+                            <option value="France">🇫🇷 France</option>
+                            <option value="Spain">🇪🇸 Spain</option>
+                            <option value="Italy">🇮🇹 Italy</option>
+                            <option value="Japan">🇯🇵 Japan</option>
+                            <option value="China">🇨🇳 China</option>
+                            <option value="India">🇮🇳 India</option>
+                            <option value="Brazil">🇧🇷 Brazil</option>
+                            <option value="Nigeria">🇳🇬 Nigeria</option>
+                            <option value="South Africa">🇿🇦 South Africa</option>
+                            <option value="Kenya">🇰🇪 Kenya</option>
+                            <option value="Ghana">🇬🇭 Ghana</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-i18n="city_state">City/State</label>
+                        <input type="text" id="city" placeholder="e.g., Lagos, New York, London" required>
+                    </div>
+                </div>
+                
                 <div class="form-group">
-                    <label>Description</label>
+                    <label data-i18n="description">Description</label>
                     <textarea id="description" placeholder="Describe the contract details..." required></textarea>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Duration</label>
+                        <label data-i18n="duration">Duration</label>
                         <input type="text" id="duration" placeholder="e.g., 2 Days Contract" required>
                     </div>
                     
                     <div class="form-group">
-                        <label>Worker ID</label>
+                        <label data-i18n="worker_id">Worker ID</label>
                         <input type="text" id="workerId" placeholder="e.g., wrk-012" required>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Amount (₦)</label>
+                        <label data-i18n="amount">Amount (₦)</label>
                         <input type="number" id="amount" placeholder="20000" required>
                     </div>
                     
                     <div class="form-group">
-                        <label>Status</label>
+                        <label data-i18n="status">Status</label>
                         <select id="status" required>
-                            <option value="Not Started">Not Started</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Completed">Completed</option>
+                            <option value="Not Started" data-i18n="not_started">Not Started</option>
+                            <option value="In Progress" data-i18n="in_progress">In Progress</option>
+                            <option value="Completed" data-i18n="completed">Completed</option>
                         </select>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Submission Date</label>
+                        <label data-i18n="submission_date">Submission Date</label>
                         <input type="date" id="submissionDate" required>
                     </div>
                     
                     <div class="form-group">
-                        <label>Submitted By</label>
+                        <label data-i18n="submitted_by">Submitted By</label>
                         <input type="text" id="submittedBy" placeholder="Your name" required>
                     </div>
                 </div>
                 
                 <!-- Phone Number Field -->
                 <div class="form-group">
-                    <label>Phone Number <span class="pin-badge">Hidden until unlocked</span></label>
+                    <label data-i18n="phone_number">Phone Number <span class="pin-badge">Hidden until unlocked</span></label>
                     <input type="tel" id="phoneNumber" placeholder="e.g., +234 123 456 7890" required>
                 </div>
                 
                 <!-- Image Upload Section -->
                 <div class="form-group">
-                    <label>Contract Image</label>
+                    <label data-i18n="contract_image">Contract Image</label>
                     <div class="image-upload-container" id="imageUploadContainer" onclick="document.getElementById('imageInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
                         <div class="upload-icon">📸</div>
-                        <div class="upload-text">Click or drag image to upload</div>
-                        <div class="upload-hint">Supports: JPG, PNG, GIF (Max 5MB)</div>
+                        <div class="upload-text" data-i18n="click_or_drag">Click or drag image to upload</div>
+                        <div class="upload-hint" data-i18n="image_hint">Supports: JPG, PNG, GIF (Max 5MB)</div>
                         <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelect(event)">
                     </div>
                     <div class="image-preview" id="imagePreview">
@@ -1718,14 +2078,14 @@
                 </div>
                 
                 <div class="form-actions">
-                    <button type="button" class="btn-cancel" onclick="closeAddModal()">Cancel</button>
-                    <button type="submit" class="btn-submit" id="submitBtn">Create Contract</button>
+                    <button type="button" class="btn-cancel" onclick="closeAddModal()" data-i18n="cancel">Cancel</button>
+                    <button type="submit" class="btn-submit" id="submitBtn" data-i18n="create_contract">Create Contract</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Contract Detail Modal -->
+    <!-- Contract Detail Modal (Updated to show location) -->
     <div class="modal" id="detailModal">
         <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
@@ -1748,14 +2108,14 @@
             <!-- View Contact Button & PIN Section -->
             <div style="margin: 20px 0; display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <p>Client's Name: <span id="submittedByName" style="font-weight: 600;"></span></p>
+                    <p data-i18n="clients_name">Client's Name: <span id="submittedByName" style="font-weight: 600;"></span></p>
                     <span class="pin-badge" id="pinsRemainingBadge" style="display: none;"></span>
                 </div>
-                <button class="btn-primary" id="viewContactBtn" onclick="openContactModal()" style="width: auto; padding: 10px 25px;">👤 View Contact</button>
+                <button class="btn-primary" id="viewContactBtn" onclick="openContactModal()" style="width: auto; padding: 10px 25px;" data-i18n="view_contact">👤 View Contact</button>
             </div>
 
             <div style="margin-top: 20px; display: flex; gap: 10px;">
-                <button class="btn-secondary" onclick="closeDetailModal()" style="flex: 1;">Close Contract Detail</button>
+                <button class="btn-secondary" onclick="closeDetailModal()" style="flex: 1;" data-i18n="close_detail">Close Contract Detail</button>
             </div>
         </div>
     </div>
@@ -1764,7 +2124,7 @@
     <div class="modal" id="contactModal">
         <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
-                <h2>Contact Information</h2>
+                <h2 data-i18n="contact_information">Contact Information</h2>
                 <span class="close-btn" onclick="closeContactModal()">&times;</span>
             </div>
             
@@ -1786,7 +2146,7 @@
     <div class="modal" id="buyPinsModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>💎 Purchase Pins</h2>
+                <h2 data-i18n="purchase_pins">💎 Purchase Pins</h2>
                 <span class="close-btn" onclick="closeBuyPinsModal()">&times;</span>
             </div>
             
@@ -1794,33 +2154,33 @@
                 <div class="pricing-card" onclick="selectPinPackage(10)" id="package10">
                     <div class="pricing-quantity">10</div>
                     <div class="pricing-price">$10</div>
-                    <div class="pricing-bonus">+0 bonus</div>
+                    <div class="pricing-bonus" data-i18n="bonus_0">+0 bonus</div>
                 </div>
                 <div class="pricing-card" onclick="selectPinPackage(25)" id="package25">
                     <div class="pricing-quantity">25</div>
                     <div class="pricing-price">$20</div>
-                    <div class="pricing-bonus">+5 bonus</div>
+                    <div class="pricing-bonus" data-i18n="bonus_5">+5 bonus</div>
                 </div>
                 <div class="pricing-card" onclick="selectPinPackage(50)" id="package50">
                     <div class="pricing-quantity">50</div>
                     <div class="pricing-price">$35</div>
-                    <div class="pricing-bonus">+15 bonus</div>
+                    <div class="pricing-bonus" data-i18n="bonus_15">+15 bonus</div>
                 </div>
             </div>
             
             <div class="email-section">
-                <label>Email Address</label>
+                <label data-i18n="email_address">Email Address</label>
                 <div class="email-input-group">
                     <input type="email" id="purchaseEmail" placeholder="your@email.com" class="pin-input">
-                    <button class="pin-button" onclick="processPurchase()">Buy Now</button>
+                    <button class="pin-button" onclick="processPurchase()" data-i18n="buy_now">Buy Now</button>
                 </div>
             </div>
             
             <div class="divider">
-                <span>or</span>
+                <span data-i18n="or">or</span>
             </div>
             
-            <button class="pin-button secondary" style="width: 100%;" onclick="checkBalance()">Check My Balance</button>
+            <button class="pin-button secondary" style="width: 100%;" onclick="checkBalance()" data-i18n="check_balance">Check My Balance</button>
         </div>
     </div>
 
@@ -1828,7 +2188,7 @@
     <div class="modal" id="allContractsModal">
         <div class="modal-content" style="max-width: 800px;">
             <div class="modal-header">
-                <h2>📋 All Contracts</h2>
+                <h2 data-i18n="all_contracts">📋 All Contracts</h2>
                 <span class="close-btn" onclick="closeAllContractsModal()">&times;</span>
             </div>
             <div class="all-contracts-list" id="allContractsList">
@@ -1849,7 +2209,7 @@
     <div class="modal" id="staffDetailModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Staff Profile</h2>
+                <h2 data-i18n="staff_profile">Staff Profile</h2>
                 <span class="close-btn" onclick="closeStaffDetailModal()">&times;</span>
             </div>
             <div id="staffDetailContent">
@@ -1888,6 +2248,8 @@
         let youtubeCreators = [];
         let topStaff = [];
         let currentFilter = 'all';
+        let currentCountryFilter = '';
+        let currentCityFilter = '';
         let currentPage = 'home';
         let selectedContractId = null;
         let currentBannerIndex = 0;
@@ -1900,6 +2262,614 @@
         let userPinsRemaining = 0;
         let selectedPinPackage = 10;
         const MAX_HOMEPAGE_CONTRACTS = 12;
+        
+        // ==================== LANGUAGE SUPPORT ====================
+        let currentLanguage = localStorage.getItem('kro_language') || 'en';
+        
+        const translations = {
+            en: {
+                // Header
+                home: "HOME",
+                progress: "PROGRESS",
+                get_free_pins: "🎁 Get Free Pins",
+                
+                // Hero
+                hero_get: "GET K.R.O",
+                hero_contracts: "CONTRACTS",
+                hero_description: "K.R.O Contracts brings together colleagues to support each other. Create, track, and resolve support contracts in a secure, transparent environment.",
+                
+                // Stats
+                active_users: "Active Users",
+                completed_contracts: "Completed Contracts",
+                total_support: "Total Support",
+                
+                // Buttons
+                create_contract: "CREATE CONTRACT",
+                view_progress: "VIEW PROGRESS",
+                filter: "FILTER",
+                categories: "CATEGORIES",
+                create: "+ CREATE",
+                
+                // Filters
+                active_filters: "Active Filters:",
+                clear_all: "Clear All",
+                filter_by_status: "Filter by Status",
+                all_contracts: "📋 All Contracts",
+                in_progress: "⏳ In Progress",
+                completed: "✅ Completed",
+                not_started: "⚠️ Not Started",
+                done: "Done",
+                
+                // Category Modal
+                browse_by_location: "🌍 Browse by Location",
+                select_country: "Select Country",
+                all_countries: "All Countries",
+                select_city_state: "Select City/State",
+                all_cities: "All Cities/States",
+                city_note: "* Cities will update based on selected country",
+                reset: "Reset",
+                apply_filters: "Apply Filters",
+                
+                // Contract Cards
+                at: "at",
+                posted: "Posted",
+                
+                // Form
+                title: "Title",
+                company: "Company",
+                country: "Country",
+                city_state: "City/State",
+                description: "Description",
+                duration: "Duration",
+                worker_id: "Worker ID",
+                amount: "Amount (₦)",
+                status: "Status",
+                submission_date: "Submission Date",
+                submitted_by: "Submitted By",
+                phone_number: "Phone Number",
+                contract_image: "Contract Image",
+                click_or_drag: "Click or drag image to upload",
+                image_hint: "Supports: JPG, PNG, GIF (Max 5MB)",
+                cancel: "Cancel",
+                
+                // Modal Titles
+                create_new_contract: "Create New Contract",
+                contact_information: "Contact Information",
+                purchase_pins: "💎 Purchase Pins",
+                all_contracts_title: "📋 All Contracts",
+                staff_profile: "Staff Profile",
+                
+                // PIN System
+                clients_name: "Client's Name:",
+                view_contact: "👤 View Contact",
+                close_detail: "Close Contract Detail",
+                enter_pin: "Enter your email and PIN to unlock phone number",
+                unlock: "Unlock Phone Number",
+                pins_remaining: "pins remaining",
+                buy_more: "Buy More Pins",
+                
+                // Purchase
+                bonus_0: "+0 bonus",
+                bonus_5: "+5 bonus",
+                bonus_15: "+15 bonus",
+                email_address: "Email Address",
+                buy_now: "Buy Now",
+                or: "or",
+                check_balance: "Check My Balance",
+                
+                // Search
+                search_placeholder: "Search contracts...",
+                
+                // Sections
+                youtube_title: "🎥 K.R.O MOVIES",
+                see_all: "See All →",
+                active_contracts: "Active Contracts",
+                see_all_contracts: "See All →",
+                progress_report: "Progress Report",
+                top_contracts: "⚡ Top 5 Highest Contracts",
+                top_staff: "🏆 Top 5 Staff",
+                today_highest: "Today's Highest Support",
+                day: "Day",
+                month: "Month",
+                year: "Year",
+                hour_min: "H:M",
+                
+                // Toast Messages
+                please_enter_email: "Please enter your email",
+                free_pins_sent: "✅ 5 free pins sent to your email!",
+                pin_validated: "✅ PIN validated successfully!",
+                invalid_pin: "Invalid PIN",
+                contract_created: "Contract created successfully!",
+                
+                // Languages
+                language_english: "English",
+                language_spanish: "Español",
+                language_french: "Français",
+                language_german: "Deutsch",
+                language_portuguese: "Português",
+                language_chinese: "中文",
+                language_arabic: "العربية",
+                language_hindi: "हिन्दी",
+                language_japanese: "日本語",
+                language_russian: "Русский"
+            },
+            es: {
+                // Header
+                home: "INICIO",
+                progress: "PROGRESO",
+                get_free_pins: "🎁 Obtener Pines Gratis",
+                
+                // Hero
+                hero_get: "OBTÉN K.R.O",
+                hero_contracts: "CONTRATOS",
+                hero_description: "K.R.O Contracts une a colegas para apoyarse mutuamente. Crea, rastrea y resuelve contratos de soporte en un entorno seguro y transparente.",
+                
+                // Stats
+                active_users: "Usuarios Activos",
+                completed_contracts: "Contratos Completados",
+                total_support: "Soporte Total",
+                
+                // Buttons
+                create_contract: "CREAR CONTRATO",
+                view_progress: "VER PROGRESO",
+                filter: "FILTRAR",
+                categories: "CATEGORÍAS",
+                create: "+ CREAR",
+                
+                // Filters
+                active_filters: "Filtros Activos:",
+                clear_all: "Limpiar Todo",
+                filter_by_status: "Filtrar por Estado",
+                all_contracts: "📋 Todos los Contratos",
+                in_progress: "⏳ En Progreso",
+                completed: "✅ Completados",
+                not_started: "⚠️ No Iniciados",
+                done: "Hecho",
+                
+                // Category Modal
+                browse_by_location: "🌍 Explorar por Ubicación",
+                select_country: "Seleccionar País",
+                all_countries: "Todos los Países",
+                select_city_state: "Seleccionar Ciudad/Estado",
+                all_cities: "Todas las Ciudades/Estados",
+                city_note: "* Las ciudades se actualizarán según el país seleccionado",
+                reset: "Reiniciar",
+                apply_filters: "Aplicar Filtros",
+                
+                // Contract Cards
+                at: "en",
+                posted: "Publicado",
+                
+                // Form
+                title: "Título",
+                company: "Empresa",
+                country: "País",
+                city_state: "Ciudad/Estado",
+                description: "Descripción",
+                duration: "Duración",
+                worker_id: "ID del Trabajador",
+                amount: "Monto (₦)",
+                status: "Estado",
+                submission_date: "Fecha de Envío",
+                submitted_by: "Enviado Por",
+                phone_number: "Número de Teléfono",
+                contract_image: "Imagen del Contrato",
+                click_or_drag: "Haz clic o arrastra una imagen",
+                image_hint: "Soporta: JPG, PNG, GIF (Máx 5MB)",
+                cancel: "Cancelar",
+                
+                // Modal Titles
+                create_new_contract: "Crear Nuevo Contrato",
+                contact_information: "Información de Contacto",
+                purchase_pins: "💎 Comprar Pines",
+                all_contracts_title: "📋 Todos los Contratos",
+                staff_profile: "Perfil del Personal",
+                
+                // PIN System
+                clients_name: "Nombre del Cliente:",
+                view_contact: "👤 Ver Contacto",
+                close_detail: "Cerrar Detalle del Contrato",
+                enter_pin: "Ingresa tu email y PIN para desbloquear",
+                unlock: "Desbloquear Teléfono",
+                pins_remaining: "pines restantes",
+                buy_more: "Comprar Más Pines",
+                
+                // Purchase
+                bonus_0: "+0 bonificación",
+                bonus_5: "+5 bonificación",
+                bonus_15: "+15 bonificación",
+                email_address: "Correo Electrónico",
+                buy_now: "Comprar Ahora",
+                or: "o",
+                check_balance: "Ver Mi Saldo",
+                
+                // Search
+                search_placeholder: "Buscar contratos...",
+                
+                // Sections
+                youtube_title: "🎥 PELÍCULAS K.R.O",
+                see_all: "Ver Todo →",
+                active_contracts: "Contratos Activos",
+                see_all_contracts: "Ver Todo →",
+                progress_report: "Informe de Progreso",
+                top_contracts: "⚡ Top 5 Contratos Más Altos",
+                top_staff: "🏆 Top 5 Personal",
+                today_highest: "Soporte Más Alto Hoy",
+                day: "Día",
+                month: "Mes",
+                year: "Año",
+                hour_min: "H:M",
+                
+                // Toast Messages
+                please_enter_email: "Por favor ingresa tu email",
+                free_pins_sent: "✅ ¡5 pines gratis enviados a tu email!",
+                pin_validated: "✅ ¡PIN validado exitosamente!",
+                invalid_pin: "PIN inválido",
+                contract_created: "¡Contrato creado exitosamente!",
+                
+                // Languages
+                language_english: "English",
+                language_spanish: "Español",
+                language_french: "Français",
+                language_german: "Deutsch",
+                language_portuguese: "Português",
+                language_chinese: "中文",
+                language_arabic: "العربية",
+                language_hindi: "हिन्दी",
+                language_japanese: "日本語",
+                language_russian: "Русский"
+            },
+            fr: {
+                // Header
+                home: "ACCUEIL",
+                progress: "PROGRÈS",
+                get_free_pins: "🎁 Obtenir des Pins Gratuits",
+                
+                // Hero
+                hero_get: "OBTENEZ K.R.O",
+                hero_contracts: "CONTRATS",
+                hero_description: "K.R.O Contracts rassemble des collègues pour s'entraider. Créez, suivez et résolvez des contrats de support dans un environnement sécurisé et transparent.",
+                
+                // Stats
+                active_users: "Utilisateurs Actifs",
+                completed_contracts: "Contrats Terminés",
+                total_support: "Support Total",
+                
+                // Buttons
+                create_contract: "CRÉER UN CONTRAT",
+                view_progress: "VOIR PROGRÈS",
+                filter: "FILTRER",
+                categories: "CATÉGORIES",
+                create: "+ CRÉER",
+                
+                // Filters
+                active_filters: "Filtres Actifs:",
+                clear_all: "Tout Effacer",
+                filter_by_status: "Filtrer par Statut",
+                all_contracts: "📋 Tous les Contrats",
+                in_progress: "⏳ En Cours",
+                completed: "✅ Terminés",
+                not_started: "⚠️ Non Démarrés",
+                done: "Terminé",
+                
+                // Category Modal
+                browse_by_location: "🌍 Parcourir par Lieu",
+                select_country: "Sélectionner un Pays",
+                all_countries: "Tous les Pays",
+                select_city_state: "Sélectionner une Ville/État",
+                all_cities: "Toutes les Villes/États",
+                city_note: "* Les villes seront mises à jour selon le pays sélectionné",
+                reset: "Réinitialiser",
+                apply_filters: "Appliquer les Filtres",
+                
+                // Contract Cards
+                at: "à",
+                posted: "Publié",
+                
+                // Form
+                title: "Titre",
+                company: "Entreprise",
+                country: "Pays",
+                city_state: "Ville/État",
+                description: "Description",
+                duration: "Durée",
+                worker_id: "ID du Travailleur",
+                amount: "Montant (₦)",
+                status: "Statut",
+                submission_date: "Date de Soumission",
+                submitted_by: "Soumis Par",
+                phone_number: "Numéro de Téléphone",
+                contract_image: "Image du Contrat",
+                click_or_drag: "Cliquez ou glissez une image",
+                image_hint: "Supporte: JPG, PNG, GIF (Max 5MB)",
+                cancel: "Annuler",
+                
+                // Modal Titles
+                create_new_contract: "Créer un Nouveau Contrat",
+                contact_information: "Informations de Contact",
+                purchase_pins: "💎 Acheter des Pins",
+                all_contracts_title: "📋 Tous les Contrats",
+                staff_profile: "Profil du Personnel",
+                
+                // PIN System
+                clients_name: "Nom du Client:",
+                view_contact: "👤 Voir Contact",
+                close_detail: "Fermer les Détails",
+                enter_pin: "Entrez votre email et PIN pour débloquer",
+                unlock: "Débloquer le Téléphone",
+                pins_remaining: "pins restants",
+                buy_more: "Acheter Plus de Pins",
+                
+                // Purchase
+                bonus_0: "+0 bonus",
+                bonus_5: "+5 bonus",
+                bonus_15: "+15 bonus",
+                email_address: "Adresse Email",
+                buy_now: "Acheter Maintenant",
+                or: "ou",
+                check_balance: "Voir Mon Solde",
+                
+                // Search
+                search_placeholder: "Rechercher des contrats...",
+                
+                // Sections
+                youtube_title: "🎥 FILMS K.R.O",
+                see_all: "Voir Tout →",
+                active_contracts: "Contrats Actifs",
+                see_all_contracts: "Voir Tout →",
+                progress_report: "Rapport de Progrès",
+                top_contracts: "⚡ Top 5 Plus Hauts Contrats",
+                top_staff: "🏆 Top 5 Personnel",
+                today_highest: "Support le Plus Élevé Aujourd'hui",
+                day: "Jour",
+                month: "Mois",
+                year: "Année",
+                hour_min: "H:M",
+                
+                // Toast Messages
+                please_enter_email: "Veuillez entrer votre email",
+                free_pins_sent: "✅ 5 pins gratuits envoyés à votre email!",
+                pin_validated: "✅ PIN validé avec succès!",
+                invalid_pin: "PIN invalide",
+                contract_created: "Contrat créé avec succès!",
+                
+                // Languages
+                language_english: "English",
+                language_spanish: "Español",
+                language_french: "Français",
+                language_german: "Deutsch",
+                language_portuguese: "Português",
+                language_chinese: "中文",
+                language_arabic: "العربية",
+                language_hindi: "हिन्दी",
+                language_japanese: "日本語",
+                language_russian: "Русский"
+            }
+            // Add more languages as needed (de, pt, zh, ar, hi, ja, ru)
+        };
+
+        // Initialize translations for other languages with English as fallback
+        const additionalLanguages = ['de', 'pt', 'zh', 'ar', 'hi', 'ja', 'ru'];
+        additionalLanguages.forEach(lang => {
+            if (!translations[lang]) {
+                translations[lang] = { ...translations.en };
+                // You can customize specific translations later
+            }
+        });
+
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('langDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('kro_language', lang);
+            
+            // Update active state in dropdown
+            document.querySelectorAll('.lang-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('onclick')?.includes(`'${lang}'`)) {
+                    opt.classList.add('active');
+                }
+            });
+            
+            // Update mobile active state
+            document.querySelectorAll('.mobile-lang-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('onclick')?.includes(`'${lang}'`)) {
+                    opt.classList.add('active');
+                }
+            });
+            
+            // Update displayed language
+            document.getElementById('selectedLang').textContent = translations[lang]?.language_english || 'English';
+            
+            // Close dropdown
+            document.getElementById('langDropdown').classList.remove('show');
+            
+            // Translate all elements with data-i18n attribute
+            translatePage();
+            
+            // Show toast
+            showToast(`Language changed to ${translations[lang]?.language_english || 'English'}`, 'success');
+        }
+
+        function translatePage() {
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translations[currentLanguage][key];
+                    } else {
+                        element.textContent = translations[currentLanguage][key];
+                    }
+                }
+            });
+            
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    element.placeholder = translations[currentLanguage][key];
+                }
+            });
+        }
+
+        // Close language dropdown when clicking outside
+        window.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('langDropdown');
+            const langBtn = document.querySelector('.lang-btn');
+            if (!langBtn?.contains(event.target) && !dropdown?.contains(event.target)) {
+                dropdown?.classList.remove('show');
+            }
+        });
+
+        // ==================== CATEGORY FILTER FUNCTIONS ====================
+        function openCategoryModal() {
+            document.getElementById('categoryModal').style.display = 'flex';
+            populateCityDropdown();
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('categoryModal').style.display = 'none';
+        }
+
+        function populateCityDropdown() {
+            const country = document.getElementById('countryFilter').value;
+            const citySelect = document.getElementById('cityFilter');
+            
+            // Clear existing options except "All Cities"
+            citySelect.innerHTML = '<option value="" data-i18n="all_cities">All Cities/States</option>';
+            
+            if (!country) {
+                return;
+            }
+            
+            // Get unique cities from contracts for the selected country
+            const cities = [...new Set(contracts
+                .filter(c => c.country === country && c.city)
+                .map(c => c.city)
+            )].sort();
+            
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                citySelect.appendChild(option);
+            });
+            
+            // Translate the "All Cities" option
+            if (translations[currentLanguage]) {
+                citySelect.options[0].textContent = translations[currentLanguage].all_cities;
+            }
+        }
+
+        // Update city dropdown when country changes
+        document.getElementById('countryFilter')?.addEventListener('change', populateCityDropdown);
+
+        function applyCategoryFilters() {
+            currentCountryFilter = document.getElementById('countryFilter').value;
+            currentCityFilter = document.getElementById('cityFilter').value;
+            
+            // Update active filters bar
+            updateActiveFiltersBar();
+            
+            // Apply filters and close modal
+            filterAndDisplayContracts();
+            closeCategoryModal();
+        }
+
+        function resetCategoryFilters() {
+            document.getElementById('countryFilter').value = '';
+            document.getElementById('cityFilter').innerHTML = '<option value="" data-i18n="all_cities">All Cities/States</option>';
+            if (translations[currentLanguage]) {
+                document.getElementById('cityFilter').options[0].textContent = translations[currentLanguage].all_cities;
+            }
+        }
+
+        function updateActiveFiltersBar() {
+            const bar = document.getElementById('activeFiltersBar');
+            const countryTag = document.getElementById('countryFilterTag');
+            const cityTag = document.getElementById('cityFilterTag');
+            const countryDisplay = document.getElementById('selectedCountryDisplay');
+            const cityDisplay = document.getElementById('selectedCityDisplay');
+            
+            let hasFilters = false;
+            
+            if (currentCountryFilter) {
+                countryDisplay.textContent = currentCountryFilter;
+                countryTag.style.display = 'inline-flex';
+                hasFilters = true;
+            } else {
+                countryTag.style.display = 'none';
+            }
+            
+            if (currentCityFilter) {
+                cityDisplay.textContent = currentCityFilter;
+                cityTag.style.display = 'inline-flex';
+                hasFilters = true;
+            } else {
+                cityTag.style.display = 'none';
+            }
+            
+            bar.style.display = hasFilters ? 'flex' : 'none';
+        }
+
+        function removeFilter(type) {
+            if (type === 'country') {
+                currentCountryFilter = '';
+                document.getElementById('countryFilter').value = '';
+                // Also clear city since it depends on country
+                currentCityFilter = '';
+                document.getElementById('cityFilter').innerHTML = '<option value="" data-i18n="all_cities">All Cities/States</option>';
+                if (translations[currentLanguage]) {
+                    document.getElementById('cityFilter').options[0].textContent = translations[currentLanguage].all_cities;
+                }
+            } else if (type === 'city') {
+                currentCityFilter = '';
+                document.getElementById('cityFilter').value = '';
+            }
+            
+            updateActiveFiltersBar();
+            filterAndDisplayContracts();
+        }
+
+        function clearAllFilters() {
+            currentCountryFilter = '';
+            currentCityFilter = '';
+            document.getElementById('countryFilter').value = '';
+            document.getElementById('cityFilter').innerHTML = '<option value="" data-i18n="all_cities">All Cities/States</option>';
+            if (translations[currentLanguage]) {
+                document.getElementById('cityFilter').options[0].textContent = translations[currentLanguage].all_cities;
+            }
+            updateActiveFiltersBar();
+            filterAndDisplayContracts();
+        }
+
+        function filterAndDisplayContracts() {
+            // This will be called from updateDisplay
+            displayContracts();
+            displayProgress();
+        }
+
+        // Override filterContracts function to include location filters
+        const originalFilterContracts = filterContracts;
+        filterContracts = function(contractsList) {
+            let filtered = originalFilterContracts(contractsList);
+            
+            // Apply country filter
+            if (currentCountryFilter) {
+                filtered = filtered.filter(c => c.country === currentCountryFilter);
+            }
+            
+            // Apply city filter
+            if (currentCityFilter) {
+                filtered = filtered.filter(c => c.city === currentCityFilter);
+            }
+            
+            return filtered;
+        };
 
         // ==================== TOAST NOTIFICATION SYSTEM ====================
         function showToast(message, type = 'info', duration = 3000) {
@@ -1971,7 +2941,7 @@
             }
             
             // Close any open modals first
-            const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal', 'allContractsModal', 'contactModal', 'buyPinsModal'];
+            const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal', 'allContractsModal', 'contactModal', 'buyPinsModal', 'categoryModal'];
             modals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal) modal.style.display = 'none';
@@ -1986,27 +2956,28 @@
             modal.innerHTML = `
                 <div class="modal-content" style="max-width: 450px;">
                     <div class="modal-header">
-                        <h2>🎁 Get 5 Free Pins</h2>
+                        <h2 data-i18n="get_free_pins">🎁 Get 5 Free Pins</h2>
                         <span class="close-btn" onclick="closeFreePinModal()">&times;</span>
                     </div>
                     <div style="text-align: center; margin: 20px 0;">
                         <div style="font-size: 4em; margin-bottom: 20px;">🔑</div>
-                        <p style="color: #a4ff7c; font-size: 1.2em; margin-bottom: 15px;">New users get 5 free pins!</p>
-                        <p style="color: #b0b0b0; margin-bottom: 25px;">Enter your email to receive 5 PINs instantly. Each PIN unlocks one phone number.</p>
+                        <p style="color: #a4ff7c; font-size: 1.2em; margin-bottom: 15px;" data-i18n="free_pins_message">New users get 5 free pins!</p>
+                        <p style="color: #b0b0b0; margin-bottom: 25px;" data-i18n="free_pins_description">Enter your email to receive 5 PINs instantly. Each PIN unlocks one phone number.</p>
                     </div>
                     <div class="email-section" style="background: rgba(164,255,124,0.05); border: 1px solid #a4ff7c;">
                         <div class="email-input-group">
                             <input type="email" id="freePinModalEmail" placeholder="your@email.com" class="pin-input" style="border-color: #a4ff7c;">
-                            <button class="pin-button" onclick="requestFreePinsFromModal()" style="background: linear-gradient(135deg, #a4ff7c, #4d9eff); color: #0a0a0f; font-weight: bold;">Get Free Pins</button>
+                            <button class="pin-button" onclick="requestFreePinsFromModal()" style="background: linear-gradient(135deg, #a4ff7c, #4d9eff); color: #0a0a0f; font-weight: bold;" data-i18n="get_free_pins">Get Free Pins</button>
                         </div>
                     </div>
                     <div style="text-align: center; margin-top: 20px;">
-                        <p style="color: #666; font-size: 0.9em;">Already have an account? <a href="#" onclick="switchToPinLogin()" style="color: #ff3b9c;">Use PIN</a></p>
+                        <p style="color: #666; font-size: 0.9em;" data-i18n="already_have_account">Already have an account? <a href="#" onclick="switchToPinLogin()" style="color: #ff3b9c;" data-i18n="use_pin">Use PIN</a></p>
                     </div>
                 </div>
             `;
             
             document.body.appendChild(modal);
+            translatePage(); // Translate the new modal
         }
 
         function closeFreePinModal() {
@@ -2022,7 +2993,7 @@
         async function requestFreePinsFromModal() {
             const email = document.getElementById('freePinModalEmail').value;
             if (!email) {
-                showToast('Please enter your email', 'error');
+                showToast(translations[currentLanguage]?.please_enter_email || 'Please enter your email', 'error');
                 return;
             }
             
@@ -2039,17 +3010,17 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    showToast('✅ 5 free pins sent to your email!', 'success');
+                    showToast(translations[currentLanguage]?.free_pins_sent || '✅ 5 free pins sent to your email!', 'success');
                     userEmail = email;
                     localStorage.setItem('kro_user_email', email);
                     await checkPinBalance(email);
                     closeFreePinModal();
                 } else {
-                    showToast(`❌ ${result.error || 'Failed to get free pins'}`, 'error');
+                    showToast(`❌ ${result.error || (translations[currentLanguage]?.failed_to_get_pins || 'Failed to get free pins')}`, 'error');
                 }
             } catch (error) {
                 console.error('Error getting free pins:', error);
-                showToast('Error requesting free pins. Please try again.', 'error');
+                showToast(translations[currentLanguage]?.error_requesting_pins || 'Error requesting free pins. Please try again.', 'error');
             } finally {
                 setButtonLoading(button, false);
             }
@@ -2087,7 +3058,7 @@
             const badge = document.getElementById('pinsRemainingBadge');
             if (badge) {
                 if (userPinsRemaining > 0) {
-                    badge.textContent = `${userPinsRemaining} pins left`;
+                    badge.textContent = `${userPinsRemaining} ${translations[currentLanguage]?.pins_remaining || 'pins left'}`;
                     badge.style.display = 'inline-block';
                 } else {
                     badge.style.display = 'none';
@@ -2097,7 +3068,7 @@
 
         async function getFreePins(email) {
             if (!email) {
-                showToast('Please enter your email', 'error');
+                showToast(translations[currentLanguage]?.please_enter_email || 'Please enter your email', 'error');
                 return;
             }
             
@@ -2114,17 +3085,17 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    showToast('✅ 5 free pins sent to your email!', 'success');
+                    showToast(translations[currentLanguage]?.free_pins_sent || '✅ 5 free pins sent to your email!', 'success');
                     userEmail = email;
                     localStorage.setItem('kro_user_email', email);
                     await checkPinBalance(email);
                     closeContactModal();
                 } else {
-                    showToast(`❌ ${result.error || 'Failed to get free pins'}`, 'error');
+                    showToast(`❌ ${result.error || (translations[currentLanguage]?.failed_to_get_pins || 'Failed to get free pins')}`, 'error');
                 }
             } catch (error) {
                 console.error('Error getting free pins:', error);
-                showToast('Error requesting free pins. Please try again.', 'error');
+                showToast(translations[currentLanguage]?.error_requesting_pins || 'Error requesting free pins. Please try again.', 'error');
             } finally {
                 setButtonLoading(button, false);
             }
@@ -2132,12 +3103,12 @@
 
         async function validatePin(email, pin) {
             if (!email) {
-                showToast('Please enter your email', 'error');
+                showToast(translations[currentLanguage]?.please_enter_email || 'Please enter your email', 'error');
                 return false;
             }
             
             if (!pin || pin.length !== 6) {
-                showToast('Please enter a valid 6-digit PIN', 'error');
+                showToast(translations[currentLanguage]?.enter_valid_pin || 'Please enter a valid 6-digit PIN', 'error');
                 return false;
             }
             
@@ -2158,15 +3129,15 @@
                     localStorage.setItem('kro_user_email', email);
                     userPinsRemaining = result.pinsRemaining || 0;
                     updatePinsBadge();
-                    showToast('✅ PIN validated successfully!', 'success');
+                    showToast(translations[currentLanguage]?.pin_validated || '✅ PIN validated successfully!', 'success');
                     return true;
                 } else {
-                    showToast(result.error || 'Invalid PIN', 'error');
+                    showToast(result.error || (translations[currentLanguage]?.invalid_pin || 'Invalid PIN'), 'error');
                     return false;
                 }
             } catch (error) {
                 console.error('Error validating pin:', error);
-                showToast('Error validating pin. Please try again.', 'error');
+                showToast(translations[currentLanguage]?.error_validating_pin || 'Error validating pin. Please try again.', 'error');
                 return false;
             } finally {
                 if (button) setButtonLoading(button, false);
@@ -2183,7 +3154,7 @@
         async function processPurchase() {
             const email = document.getElementById('purchaseEmail').value;
             if (!email) {
-                showToast('Please enter your email', 'error');
+                showToast(translations[currentLanguage]?.please_enter_email || 'Please enter your email', 'error');
                 return;
             }
             
@@ -2208,11 +3179,11 @@
                     showToast(`✅ ${result.message}`, 'success');
                     closeBuyPinsModal();
                 } else {
-                    showToast(`❌ ${result.error || 'Purchase failed'}`, 'error');
+                    showToast(`❌ ${result.error || (translations[currentLanguage]?.purchase_failed || 'Purchase failed')}`, 'error');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                showToast('Error submitting request. Please try again.', 'error');
+                showToast(translations[currentLanguage]?.error_submitting_request || 'Error submitting request. Please try again.', 'error');
             } finally {
                 setButtonLoading(button, false);
             }
@@ -2221,7 +3192,7 @@
         async function checkBalance() {
             const email = document.getElementById('purchaseEmail').value;
             if (!email) {
-                showToast('Please enter your email', 'error');
+                showToast(translations[currentLanguage]?.please_enter_email || 'Please enter your email', 'error');
                 return;
             }
             
@@ -2230,9 +3201,9 @@
             
             const result = await checkPinBalance(email);
             if (result) {
-                showToast(`📊 You have ${result.pinsRemaining} pins remaining`, 'info');
+                showToast(`📊 You have ${result.pinsRemaining} ${translations[currentLanguage]?.pins_remaining || 'pins remaining'}`, 'info');
             } else {
-                showToast('Email not found or error checking balance', 'error');
+                showToast(translations[currentLanguage]?.email_not_found || 'Email not found or error checking balance', 'error');
             }
             
             setButtonLoading(button, false);
@@ -2260,7 +3231,7 @@
                     <h3>${currentContactName}</h3>
                     <div style="margin: 20px 0;">
                         <div class="phone-locked">🔒 ${currentPhoneNumber.replace(/\d(?=\d{4})/g, '*')}</div>
-                        <p style="color: #b0b0b0; margin-top: 10px;">Enter your email and PIN to unlock phone number</p>
+                        <p style="color: #b0b0b0; margin-top: 10px;" data-i18n="enter_pin">Enter your email and PIN to unlock phone number</p>
                     </div>
                 </div>
             `;
@@ -2268,18 +3239,19 @@
             // Show email and PIN input
             pinSection.innerHTML = `
                 <div class="pin-input-group">
-                    <input type="email" id="contactEmail" class="pin-input" placeholder="Enter your email" value="${userEmail || ''}">
-                    <input type="text" class="pin-input" id="pinInput" placeholder="Enter 6-digit PIN" maxlength="6">
-                    <button class="pin-button" onclick="unlockPhoneNumber()">Unlock Phone Number</button>
+                    <input type="email" id="contactEmail" class="pin-input" placeholder="${translations[currentLanguage]?.email_address || 'Enter your email'}" value="${userEmail || ''}">
+                    <input type="text" class="pin-input" id="pinInput" placeholder="${translations[currentLanguage]?.enter_pin_placeholder || 'Enter 6-digit PIN'}" maxlength="6">
+                    <button class="pin-button" onclick="unlockPhoneNumber()" data-i18n="unlock">Unlock Phone Number</button>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                    <span class="pins-remaining">${userPinsRemaining} pins remaining</span>
-                    <button class="pin-button secondary" onclick="openBuyPinsModal()">Buy More Pins</button>
+                    <span class="pins-remaining">${userPinsRemaining} ${translations[currentLanguage]?.pins_remaining || 'pins remaining'}</span>
+                    <button class="pin-button secondary" onclick="openBuyPinsModal()" data-i18n="buy_more">Buy More Pins</button>
                 </div>
             `;
             emailSection.style.display = 'none';
             
             modal.style.display = 'flex';
+            translatePage(); // Translate the modal content
         }
 
         async function unlockPhoneNumber() {
@@ -2296,15 +3268,16 @@
                         <h3>${currentContactName}</h3>
                         <div style="margin: 20px 0;">
                             <div style="font-size: 1.5em; color: #a4ff7c;">📞 ${currentPhoneNumber}</div>
-                            <a href="tel:${currentPhoneNumber}" class="call-button">
+                            <a href="tel:${currentPhoneNumber}" class="call-button" data-i18n="call_now">
                                 📞 Call Now
                             </a>
                         </div>
-                        <p style="color: #b0b0b0; margin-top: 10px;">${userPinsRemaining} pins remaining</p>
+                        <p style="color: #b0b0b0; margin-top: 10px;">${userPinsRemaining} ${translations[currentLanguage]?.pins_remaining || 'pins remaining'}</p>
                     </div>
                 `;
                 document.getElementById('pinSection').innerHTML = '';
                 document.getElementById('emailSection').style.display = 'none';
+                translatePage(); // Translate the new content
             }
         }
 
@@ -2316,6 +3289,7 @@
             document.getElementById('buyPinsModal').style.display = 'flex';
             // Reset selection
             selectPinPackage(10);
+            translatePage(); // Translate the modal
         }
 
         function closeBuyPinsModal() {
@@ -2337,17 +3311,20 @@
                 
                 if (selectedImageFile) {
                     document.getElementById('formMessage').innerHTML = `
-                        <div class="success-message">📤 Uploading image...</div>
+                        <div class="success-message" data-i18n="uploading_image">📤 Uploading image...</div>
                     `;
+                    translatePage();
                     imageUrl = await uploadToImgbb(selectedImageFile);
                     if (!imageUrl) {
-                        showToast('Image upload failed, but contract will be saved without image', 'warning');
+                        showToast(translations[currentLanguage]?.image_upload_failed || 'Image upload failed, but contract will be saved without image', 'warning');
                     }
                 }
                 
                 const newContract = {
                     title: document.getElementById('title').value,
                     company: document.getElementById('company').value,
+                    country: document.getElementById('country').value,
+                    city: document.getElementById('city').value,
                     description: document.getElementById('description').value,
                     duration: document.getElementById('duration').value,
                     workerId: document.getElementById('workerId').value,
@@ -2361,8 +3338,9 @@
                 };
                 
                 document.getElementById('formMessage').innerHTML = `
-                    <div class="success-message">💾 Saving contract...</div>
+                    <div class="success-message" data-i18n="saving_contract">💾 Saving contract...</div>
                 `;
+                translatePage();
                 
                 // Using no-cors mode - we won't get a response but the data still sends
                 await fetch(GOOGLE_SHEETS_API_URL, {
@@ -2373,8 +3351,9 @@
                 });
                 
                 document.getElementById('formMessage').innerHTML = `
-                    <div class="success-message">✅ Contract created successfully! Refreshing data...</div>
+                    <div class="success-message" data-i18n="contract_created">✅ Contract created successfully! Refreshing data...</div>
                 `;
+                translatePage();
                 
                 document.getElementById('addContractForm').reset();
                 document.getElementById('imagePreview').style.display = 'none';
@@ -2383,7 +3362,7 @@
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('submissionDate').value = today;
                 
-                showToast('Contract created successfully!', 'success');
+                showToast(translations[currentLanguage]?.contract_created || 'Contract created successfully!', 'success');
                 
                 setTimeout(() => {
                     loadContracts();
@@ -2393,9 +3372,10 @@
             } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('formMessage').innerHTML = `
-                    <div class="error-message">❌ Error creating contract. Please try again.</div>
+                    <div class="error-message" data-i18n="error_creating_contract">❌ Error creating contract. Please try again.</div>
                 `;
-                showToast('Error creating contract', 'error');
+                translatePage();
+                showToast(translations[currentLanguage]?.error_creating_contract || 'Error creating contract', 'error');
             } finally {
                 setButtonLoading(submitBtn, false);
             }
@@ -2419,29 +3399,33 @@
                     <img src="${contract.image_url || 'https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title || 'Contract'}" onerror="this.src='https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=Image+Not+Found'">
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Description</div>
+                    <div class="detail-label" data-i18n="description">Description</div>
                     <div class="detail-value">${contract.description || 'No description'}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Duration</div>
+                    <div class="detail-label" data-i18n="location">Location</div>
+                    <div class="detail-value">${contract.country || ''} ${contract.city ? '• ' + contract.city : ''}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label" data-i18n="duration">Duration</div>
                     <div class="detail-value">${contract.duration || 'N/A'}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Worker ID</div>
+                    <div class="detail-label" data-i18n="worker_id">Worker ID</div>
                     <div class="detail-value">${contract.workerId || 'N/A'}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Status</div>
+                    <div class="detail-label" data-i18n="status">Status</div>
                     <div class="detail-value">
                         <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
                     </div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Amount</div>
+                    <div class="detail-label" data-i18n="amount">Amount</div>
                     <div class="detail-value">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Submission Date</div>
+                    <div class="detail-label" data-i18n="submission_date">Submission Date</div>
                     <div class="detail-value">${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'N/A'}</div>
                 </div>
             `;
@@ -2451,6 +3435,7 @@
             }
             
             document.getElementById('detailModal').style.display = 'flex';
+            translatePage(); // Translate the modal
         }
 
         // ==================== LOAD HERO IMAGE ====================
@@ -2503,7 +3488,8 @@
             if (!list) return;
             
             if (!topStaff || topStaff.length === 0) {
-                list.innerHTML = '<div class="bid-item">No staff found</div>';
+                list.innerHTML = '<div class="bid-item" data-i18n="no_staff_found">No staff found</div>';
+                translatePage();
                 return;
             }
             
@@ -2516,9 +3502,10 @@
                         <div class="bid-avatar">${staffEmojis[index] || '👤'}</div>
                         <div class="bid-name">${staff.name || 'Unknown'}</div>
                     </div>
-                    <button class="bid-button" onclick="viewStaffDetail(${index})">View</button>
+                    <button class="bid-button" onclick="viewStaffDetail(${index})" data-i18n="view">View</button>
                 </div>
             `).join('');
+            translatePage();
         }
 
         function viewStaffDetail(index) {
@@ -2539,53 +3526,54 @@
                     </div>
                     
                     <div class="staff-detail-row">
-                        <span class="staff-detail-label">Position</span>
+                        <span class="staff-detail-label" data-i18n="position">Position</span>
                         <span class="staff-detail-value">${staff.position || 'N/A'}</span>
                     </div>
                     
                     <div class="staff-detail-row">
-                        <span class="staff-detail-label">Joined</span>
+                        <span class="staff-detail-label" data-i18n="joined">Joined</span>
                         <span class="staff-detail-value">${staff.joined || 'N/A'}</span>
                     </div>
                     
                     <div class="category-section">
-                        <div class="category-title">🏆 Performance Categories</div>
+                        <div class="category-title" data-i18n="performance_categories">🏆 Performance Categories</div>
                         <div class="category-grid">
                             <div class="category-item">
-                                <div class="category-name">Company Meetings</div>
+                                <div class="category-name" data-i18n="company_meetings">Company Meetings</div>
                                 <div class="category-points">${staff.companyMeetings || 0} pts</div>
                             </div>
                             <div class="category-item">
-                                <div class="category-name">Well Behaved</div>
+                                <div class="category-name" data-i18n="well_behaved">Well Behaved</div>
                                 <div class="category-points">${staff.wellBehaved || 0} pts</div>
                             </div>
                             <div class="category-item">
-                                <div class="category-name">Consistent Marketing</div>
+                                <div class="category-name" data-i18n="consistent_marketing">Consistent Marketing</div>
                                 <div class="category-points">${staff.consistentMarketing || 0} pts</div>
                             </div>
                             <div class="category-item">
-                                <div class="category-name">Brought Client</div>
+                                <div class="category-name" data-i18n="brought_client">Brought Client</div>
                                 <div class="category-points">${staff.broughtClient || 0} pts</div>
                             </div>
                             <div class="category-item">
-                                <div class="category-name">Closed Deal</div>
+                                <div class="category-name" data-i18n="closed_deal">Closed Deal</div>
                                 <div class="category-points">${staff.closedDeal || 0} pts</div>
                             </div>
                             <div class="category-item">
-                                <div class="category-name">Multiple Deals</div>
+                                <div class="category-name" data-i18n="multiple_deals">Multiple Deals</div>
                                 <div class="category-points">${staff.multipleDeals || 0} pts</div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="total-points">
-                        <div class="total-points-label">Total Points</div>
+                        <div class="total-points-label" data-i18n="total_points">Total Points</div>
                         <div class="total-points-value">${(staff.totalPoints || 0).toLocaleString()}</div>
                     </div>
                 </div>
             `;
             
             document.getElementById('staffDetailModal').style.display = 'flex';
+            translatePage();
         }
 
         // ==================== LOAD YOUTUBE CREATORS ====================
@@ -2618,7 +3606,7 @@
                         <div class="youtube-banner" style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1400&auto=format')">
                             <div class="banner-content">
                                 <h3>K.R.O Media</h3>
-                                <p>Check back soon for featured creators</p>
+                                <p data-i18n="check_back">Check back soon for featured creators</p>
                             </div>
                             <div class="banner-avatar">
                                 <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=150&auto=format" alt="Avatar">
@@ -2626,6 +3614,7 @@
                         </div>
                     </div>
                 `;
+                translatePage();
                 return;
             }
             
@@ -2639,11 +3628,11 @@
                             <div class="banner-stats">
                                 <div class="stat">
                                     <div class="stat-number">${creator.subscribers}</div>
-                                    <div class="stat-label">Subscribers</div>
+                                    <div class="stat-label" data-i18n="subscribers">Subscribers</div>
                                 </div>
                             </div>
                             ` : ''}
-                            <button class="banner-button" onclick="event.stopPropagation(); window.open('${creator.link || '#'}', '_blank')">Watch Now →</button>
+                            <button class="banner-button" onclick="event.stopPropagation(); window.open('${creator.link || '#'}', '_blank')" data-i18n="watch_now">Watch Now →</button>
                         </div>
                         <div class="banner-avatar">
                             <img src="${creator.avatar_url || 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=150&auto=format'}" alt="${creator.name || 'Creator'}">
@@ -2659,6 +3648,7 @@
             currentBannerIndex = 0;
             updateBannerPosition();
             startBannerSlide();
+            translatePage();
         }
 
         function startBannerSlide() {
@@ -2698,7 +3688,7 @@
             const file = event.target.files[0];
             if (file) {
                 if (file.size > 5 * 1024 * 1024) {
-                    showToast('Image must be less than 5MB', 'error');
+                    showToast(translations[currentLanguage]?.image_too_large || 'Image must be less than 5MB', 'error');
                     return;
                 }
                 selectedImageFile = file;
@@ -2723,13 +3713,13 @@
             const file = event.dataTransfer.files[0];
             if (file && file.type.startsWith('image/')) {
                 if (file.size > 5 * 1024 * 1024) {
-                    showToast('Image must be less than 5MB', 'error');
+                    showToast(translations[currentLanguage]?.image_too_large || 'Image must be less than 5MB', 'error');
                     return;
                 }
                 selectedImageFile = file;
                 previewImage(file);
             } else {
-                showToast('Please drop an image file', 'error');
+                showToast(translations[currentLanguage]?.please_drop_image || 'Please drop an image file', 'error');
             }
         }
 
@@ -2805,7 +3795,8 @@
             if (!grid) return;
             
             if (filtered.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #666;">No contracts found</div>';
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #666;" data-i18n="no_contracts_found">No contracts found</div>';
+                translatePage();
                 return;
             }
             
@@ -2819,14 +3810,20 @@
                     <div class="contract-content">
                         <div class="contract-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
                         <div class="contract-title">${contract.title || 'Untitled'}</div>
-                        <div class="contract-company">at ${contract.company || 'Unknown'}</div>
+                        <div class="contract-company">${translations[currentLanguage]?.at || 'at'} ${contract.company || 'Unknown'}</div>
+                        ${contract.country ? `
+                        <div class="contract-location">
+                            <span>📍</span> ${contract.country} ${contract.city ? '• ' + contract.city : ''}
+                        </div>
+                        ` : ''}
                         <div class="contract-meta">
-                            <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
-                            <span class="contract-date">📅 ${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString() : 'No date'}</span>
+                            <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || translations[currentLanguage]?.not_started || 'Not Started'}</span>
+                            <span class="contract-date">📅 ${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString() : translations[currentLanguage]?.no_date || 'No date'}</span>
                         </div>
                     </div>
                 </div>
             `).join('');
+            translatePage();
         }
 
         function displayProgress() {
@@ -2836,7 +3833,8 @@
             if (!list) return;
             
             if (filtered.length === 0) {
-                list.innerHTML = '<div style="text-align: center; padding: 50px; color: #666;">No contracts found</div>';
+                list.innerHTML = '<div style="text-align: center; padding: 50px; color: #666;" data-i18n="no_contracts_found">No contracts found</div>';
+                translatePage();
                 return;
             }
             
@@ -2845,12 +3843,18 @@
                     <div class="progress-status ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}"></div>
                     <div class="progress-content">
                         <div class="progress-title">
-                            <span>${(contract.status || 'NOT STARTED').toUpperCase()}</span> — ${contract.title || 'Untitled'}
+                            <span>${(contract.status || translations[currentLanguage]?.not_started || 'NOT STARTED').toUpperCase()}</span> — ${contract.title || 'Untitled'}
                         </div>
-                        <div class="progress-date">Posted on ${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Unknown date'}</div>
+                        ${contract.country ? `
+                        <div class="progress-location">
+                            📍 ${contract.country} ${contract.city ? '• ' + contract.city : ''}
+                        </div>
+                        ` : ''}
+                        <div class="progress-date">${translations[currentLanguage]?.posted || 'Posted'} on ${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : translations[currentLanguage]?.unknown_date || 'Unknown date'}</div>
                     </div>
                 </div>
             `).join('');
+            translatePage();
         }
 
         function updateStats() {
@@ -2870,7 +3874,7 @@
                 const highest = [...contracts].sort((a, b) => parseFloat(b.amount || 0) - parseFloat(a.amount || 0))[0];
                 const todayHighestEl = document.getElementById('todayHighest');
                 if (todayHighestEl) {
-                    todayHighestEl.innerHTML = `₦${highest.amount ? parseFloat(highest.amount).toLocaleString() : '0'} by ${highest.company || 'Unknown'}`;
+                    todayHighestEl.innerHTML = `₦${highest.amount ? parseFloat(highest.amount).toLocaleString() : '0'} ${translations[currentLanguage]?.by || 'by'} ${highest.company || 'Unknown'}`;
                 }
             }
         }
@@ -2885,7 +3889,8 @@
             if (!container) return;
             
             if (topContracts.length === 0) {
-                container.innerHTML = '<div class="bid-item">No contracts found</div>';
+                container.innerHTML = '<div class="bid-item" data-i18n="no_contracts_found">No contracts found</div>';
+                translatePage();
                 return;
             }
             
@@ -2896,11 +3901,13 @@
                         <div>
                             <div class="bid-name">${contract.title || 'Untitled'}</div>
                             <div class="bid-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
+                            ${contract.country ? `<div style="font-size: 0.8em; color: #a4ff7c;">📍 ${contract.country}</div>` : ''}
                         </div>
                     </div>
-                    <button class="bid-button" onclick="viewContract(${contract.id})">View</button>
+                    <button class="bid-button" onclick="viewContract(${contract.id})" data-i18n="view">View</button>
                 </div>
             `).join('');
+            translatePage();
         }
 
         // ==================== LOCAL STORAGE ====================
@@ -2923,8 +3930,24 @@
 
         // ==================== FILTER FUNCTIONS ====================
         function filterContracts(contractsList) {
-            if (currentFilter === 'all') return contractsList;
-            return contractsList.filter(c => c.status === currentFilter);
+            let filtered = contractsList;
+            
+            // Apply status filter
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(c => c.status === currentFilter);
+            }
+            
+            // Apply country filter
+            if (currentCountryFilter) {
+                filtered = filtered.filter(c => c.country === currentCountryFilter);
+            }
+            
+            // Apply city filter
+            if (currentCityFilter) {
+                filtered = filtered.filter(c => c.city === currentCityFilter);
+            }
+            
+            return filtered;
         }
 
         function selectFilter(status) {
@@ -2962,7 +3985,9 @@
             const filtered = contracts.filter(c => 
                 (c.title || '').toLowerCase().includes(searchTerm) || 
                 (c.company || '').toLowerCase().includes(searchTerm) ||
-                (c.description || '').toLowerCase().includes(searchTerm)
+                (c.description || '').toLowerCase().includes(searchTerm) ||
+                (c.country || '').toLowerCase().includes(searchTerm) ||
+                (c.city || '').toLowerCase().includes(searchTerm)
             );
             
             if (currentPage === 'home') {
@@ -2970,7 +3995,8 @@
                 if (!grid) return;
                 
                 if (filtered.length === 0) {
-                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #666;">No contracts found</div>';
+                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #666;" data-i18n="no_contracts_found">No contracts found</div>';
+                    translatePage();
                 } else {
                     const displayContracts = filtered.slice(0, MAX_HOMEPAGE_CONTRACTS);
                     grid.innerHTML = displayContracts.map(contract => `
@@ -2981,14 +4007,20 @@
                             <div class="contract-content">
                                 <div class="contract-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
                                 <div class="contract-title">${contract.title || 'Untitled'}</div>
-                                <div class="contract-company">at ${contract.company || 'Unknown'}</div>
+                                <div class="contract-company">${translations[currentLanguage]?.at || 'at'} ${contract.company || 'Unknown'}</div>
+                                ${contract.country ? `
+                                <div class="contract-location">
+                                    <span>📍</span> ${contract.country} ${contract.city ? '• ' + contract.city : ''}
+                                </div>
+                                ` : ''}
                                 <div class="contract-meta">
-                                    <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
-                                    <span class="contract-date">📅 ${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString() : 'No date'}</span>
+                                    <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || translations[currentLanguage]?.not_started || 'Not Started'}</span>
+                                    <span class="contract-date">📅 ${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString() : translations[currentLanguage]?.no_date || 'No date'}</span>
                                 </div>
                             </div>
                         </div>
                     `).join('');
+                    translatePage();
                 }
             }
         }
@@ -2997,6 +4029,7 @@
         function openAllContractsModal() {
             displayAllContracts();
             document.getElementById('allContractsModal').style.display = 'flex';
+            translatePage();
         }
 
         function closeAllContractsModal() {
@@ -3009,7 +4042,8 @@
             if (!container) return;
             
             if (contracts.length === 0) {
-                container.innerHTML = '<div style="text-align: center; padding: 30px; color: #666;">No contracts found</div>';
+                container.innerHTML = '<div style="text-align: center; padding: 30px; color: #666;" data-i18n="no_contracts_found">No contracts found</div>';
+                translatePage();
                 return;
             }
             
@@ -3022,12 +4056,14 @@
                         <div class="list-item-title">${contract.title || 'Untitled'}</div>
                         <div class="list-item-details">
                             <span class="list-item-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</span>
-                            <span class="list-item-status ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
+                            <span class="list-item-status ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || translations[currentLanguage]?.not_started || 'Not Started'}</span>
                         </div>
+                        ${contract.country ? `<div style="font-size: 0.8em; color: #a4ff7c;">📍 ${contract.country} ${contract.city || ''}</div>` : ''}
                     </div>
-                    <button class="list-item-button" onclick="viewContractFromList(${contract.id})">View</button>
+                    <button class="list-item-button" onclick="viewContractFromList(${contract.id})" data-i18n="view">View</button>
                 </div>
             `).join('');
+            translatePage();
         }
 
         function viewContractFromList(id) {
@@ -3062,6 +4098,7 @@
         // ==================== MODAL FUNCTIONS ====================
         function openFilterModal() {
             document.getElementById('filterModal').style.display = 'flex';
+            translatePage();
         }
 
         function closeFilterModal() {
@@ -3072,6 +4109,7 @@
             document.getElementById('addModal').style.display = 'flex';
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('submissionDate').value = today;
+            translatePage();
         }
 
         function closeAddModal() {
@@ -3105,11 +4143,17 @@
             const today = new Date().toISOString().split('T')[0];
             const dateInput = document.getElementById('submissionDate');
             if (dateInput) dateInput.value = today;
+            
+            // Initialize language
+            changeLanguage(currentLanguage);
+            
+            // Initialize category filter listeners
+            document.getElementById('countryFilter')?.addEventListener('change', populateCityDropdown);
         };
 
         // Close modals when clicking outside
         window.onclick = function(event) {
-            const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal', 'allContractsModal', 'contactModal', 'buyPinsModal', 'freePinModal'];
+            const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal', 'allContractsModal', 'contactModal', 'buyPinsModal', 'freePinModal', 'categoryModal'];
             modals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (event.target === modal) {
