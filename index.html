@@ -1399,6 +1399,9 @@
             }
         }
     </style>
+
+    <!-- Load configuration first -->
+    <script src="config.js"></script>
 </head>
 <body>
     <!-- Toast Notifications Container -->
@@ -1863,14 +1866,20 @@
 
     <script>
         // ==================== CONFIGURATION ====================
-        // IMPORTANT: Replace these URLs with your actual deployed Google Apps Script URLs
-        const GOOGLE_SHEETS_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
-        const YOUTUBE_CREATORS_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
-        const TOP_STAFF_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
-        const HERO_IMAGE_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
-        const PIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
-        const ADMIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
-        const IMGBB_API_KEY = '***REMOVED***';
+        // URLs are now loaded from config.js
+        const GOOGLE_SHEETS_API_URL = window.KRO_CONFIG.GOOGLE_SHEETS_API_URL;
+        const YOUTUBE_CREATORS_API_URL = window.KRO_CONFIG.YOUTUBE_CREATORS_API_URL;
+        const TOP_STAFF_API_URL = window.KRO_CONFIG.TOP_STAFF_API_URL;
+        const HERO_IMAGE_API_URL = window.KRO_CONFIG.HERO_IMAGE_API_URL;
+        const PIN_API_URL = window.KRO_CONFIG.PIN_API_URL;
+        const ADMIN_API_URL = window.KRO_CONFIG.ADMIN_API_URL;
+        const IMGBB_API_KEY = window.KRO_CONFIG.IMGBB_API_KEY;
+
+        // Optional: Add a check to make sure config loaded
+        if (!window.KRO_CONFIG || !window.KRO_CONFIG.PIN_API_URL) {
+            console.error('❌ ERROR: Config file not loaded properly!');
+            alert('Configuration error. Please refresh the page.');
+        }
         
         // ==================== GLOBAL VARIABLES ====================
         let contracts = [];
