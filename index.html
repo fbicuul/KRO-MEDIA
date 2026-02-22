@@ -1040,13 +1040,65 @@
         .bid-button { padding: 8px 20px; border: 1px solid #4d9eff; border-radius: 25px; background: transparent; color: white; cursor: pointer; transition: all 0.3s; }
         .bid-button:hover { background: #4d9eff; box-shadow: 0 0 20px #4d9eff; }
         
-        .timer-section { background: linear-gradient(135deg, rgba(255, 59, 156, 0.1), rgba(157, 78, 221, 0.1)); border: 1px solid var(--glass-border); border-radius: 30px; padding: 40px; margin: 60px 0; display: flex; justify-content: space-between; align-items: center; }
-        .timer-info h3 { font-size: 2em; margin-bottom: 10px; }
-        .timer-info p { color: #b0b0b0; }
-        .timer { display: flex; gap: 30px; }
-        .timer-unit { text-align: center; }
-        .timer-value { font-size: 2.5em; font-weight: 700; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .timer-label { color: #666; font-size: 0.9em; }
+        /* Timer Section */
+        .timer-section { 
+            background: linear-gradient(135deg, rgba(255, 59, 156, 0.1), rgba(157, 78, 221, 0.1)); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 30px; 
+            padding: 40px; 
+            margin: 60px 0; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .timer-info { 
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .timer-info h3 { 
+            font-size: 2em; 
+            margin-bottom: 10px; 
+        }
+        
+        .timezone-info {
+            color: #a4ff7c;
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-family: monospace;
+            background: rgba(164, 255, 124, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .timer { 
+            display: flex; 
+            gap: 30px; 
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .timer-unit { 
+            text-align: center; 
+            min-width: 80px;
+        }
+        
+        .timer-value { 
+            font-size: 2.5em; 
+            font-weight: 700; 
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        .timer-label { 
+            color: #666; 
+            font-size: 0.9em; 
+        }
         
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; }
@@ -1731,11 +1783,24 @@
                 margin: 0;
             }
             
+            .timer-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .timer {
+                justify-content: center;
+            }
+            
+            .timezone-info {
+                font-size: 0.8em;
+                padding: 4px 10px;
+            }
+            
             .hero-title { font-size: 3em; }
             .hero-section { flex-direction: column; }
             .hero-image-container { display: none; }
             .featured-section { grid-template-columns: 1fr; }
-            .timer-section { flex-direction: column; gap: 30px; }
             .youtube-banner { flex-direction: column; text-align: center; padding: 30px; }
             .banner-content { max-width: 100%; }
             .banner-content h3 { font-size: 2.5em; }
@@ -2017,17 +2082,29 @@
             </div>
         </div>
 
-        <!-- Timer Section -->
+        <!-- Timer Section - Live Date & Time -->
         <div class="timer-section">
             <div class="timer-info">
-                <h3 class="glow-pink" data-i18n="today_highest">Today's Highest Support</h3>
-                <p id="todayHighest">₦20,000.00 by K.R.O Service Company</p>
+                <h3 class="glow-pink" data-i18n="current_date_time">Current Date & Time</h3>
+                <p id="timezoneDisplay" class="timezone-info"></p>
             </div>
-            <div class="timer">
-                <div class="timer-unit"><div class="timer-value">21</div><div class="timer-label" data-i18n="day">Day</div></div>
-                <div class="timer-unit"><div class="timer-value">02</div><div class="timer-label" data-i18n="month">Month</div></div>
-                <div class="timer-unit"><div class="timer-value">26</div><div class="timer-label" data-i18n="year">Year</div></div>
-                <div class="timer-unit"><div class="timer-value">0:0</div><div class="timer-label" data-i18n="hour_min">H:M</div></div>
+            <div class="timer" id="liveClock">
+                <div class="timer-unit">
+                    <div class="timer-value" id="currentDay">00</div>
+                    <div class="timer-label" data-i18n="day">Day</div>
+                </div>
+                <div class="timer-unit">
+                    <div class="timer-value" id="currentMonth">00</div>
+                    <div class="timer-label" data-i18n="month">Month</div>
+                </div>
+                <div class="timer-unit">
+                    <div class="timer-value" id="currentYear">0000</div>
+                    <div class="timer-label" data-i18n="year">Year</div>
+                </div>
+                <div class="timer-unit">
+                    <div class="timer-value" id="currentTime">00:00:00</div>
+                    <div class="timer-label" data-i18n="time">Time</div>
+                </div>
             </div>
         </div>
     </div>
@@ -2431,6 +2508,10 @@
                 // Mobile Actions
                 actions: "Actions",
                 
+                // Timer
+                current_date_time: "Current Date & Time",
+                time: "Time",
+                
                 // Filters
                 active_filters: "Active Filters:",
                 clear_all: "Clear All",
@@ -2559,6 +2640,10 @@
                 
                 // Mobile Actions
                 actions: "Acciones",
+                
+                // Timer
+                current_date_time: "Fecha y Hora Actual",
+                time: "Hora",
                 
                 // Filters
                 active_filters: "Filtros Activos:",
@@ -2689,6 +2774,10 @@
                 // Mobile Actions
                 actions: "Actions",
                 
+                // Timer
+                current_date_time: "Date et Heure Actuelles",
+                time: "Heure",
+                
                 // Filters
                 active_filters: "Filtres Actifs:",
                 clear_all: "Tout Effacer",
@@ -2804,6 +2893,58 @@
             }
         });
 
+        // ==================== LIVE CLOCK FUNCTION ====================
+        function updateLiveClock() {
+            const now = new Date();
+            
+            // Get date components
+            const day = now.getDate().toString().padStart(2, '0');
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const year = now.getFullYear();
+            
+            // Get time components
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            
+            // Update DOM elements
+            document.getElementById('currentDay').textContent = day;
+            document.getElementById('currentMonth').textContent = month;
+            document.getElementById('currentYear').textContent = year;
+            document.getElementById('currentTime').textContent = timeString;
+            
+            // Get and display timezone
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const timezoneOffset = -now.getTimezoneOffset();
+            const offsetHours = Math.floor(Math.abs(timezoneOffset) / 60);
+            const offsetMinutes = Math.abs(timezoneOffset) % 60;
+            const offsetSign = timezoneOffset >= 0 ? '+' : '-';
+            const offsetString = `UTC${offsetSign}${offsetHours.toString().padStart(2, '0')}:${offsetMinutes.toString().padStart(2, '0')}`;
+            
+            const timezoneDisplay = document.getElementById('timezoneDisplay');
+            if (timezoneDisplay) {
+                timezoneDisplay.innerHTML = `${timezone} (${offsetString})`;
+            }
+        }
+
+        // Start the clock immediately and update every second
+        let clockInterval;
+        
+        function startLiveClock() {
+            updateLiveClock(); // Update immediately
+            if (clockInterval) clearInterval(clockInterval);
+            clockInterval = setInterval(updateLiveClock, 1000); // Update every second
+        }
+
+        // Stop the clock when needed (optional)
+        function stopLiveClock() {
+            if (clockInterval) {
+                clearInterval(clockInterval);
+                clockInterval = null;
+            }
+        }
+
         // ==================== MOBILE ACTIONS TOGGLE ====================
         function toggleMobileActions() {
             const actionButtons = document.getElementById('mobileActionButtons');
@@ -2846,6 +2987,9 @@
             
             // Translate all elements with data-i18n attribute
             translatePage();
+            
+            // Update the clock (to refresh timezone display with new language)
+            updateLiveClock();
             
             // Show toast
             showToast(`Language changed to ${translations[lang]?.language_english || 'English'}`, 'success');
@@ -4305,6 +4449,9 @@
             
             // Initialize category filter listeners
             document.getElementById('countryFilter')?.addEventListener('change', populateCityDropdown);
+            
+            // Start the live clock
+            startLiveClock();
         };
 
         // Close modals when clicking outside
