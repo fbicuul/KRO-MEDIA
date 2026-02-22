@@ -763,17 +763,129 @@
         .stat-number { font-size: 2em; font-weight: 700; background: linear-gradient(135deg, #ff3b9c, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .stat-label { color: #b0b0b0; font-size: 0.9em; }
         
-        .action-bar { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; margin-bottom: 40px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-        .search-box { flex: 2; display: flex; align-items: center; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); border-radius: 15px; padding: 0 20px; min-width: 250px; }
-        .search-box input { flex: 1; padding: 15px 0; border: none; background: transparent; outline: none; color: white; font-size: 1em; }
-        .search-box input::placeholder { color: #666; }
-        .filter-btn, .category-btn, .add-btn { padding: 15px 30px; border: none; border-radius: 15px; cursor: pointer; font-weight: 600; font-size: 1em; transition: all 0.3s; white-space: nowrap; }
-        .filter-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); color: white; }
-        .filter-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: #ff3b9c; }
-        .category-btn { background: linear-gradient(135deg, #4d9eff, #0ef0f0); color: #0a0a0f; box-shadow: 0 0 20px rgba(77, 158, 255, 0.3); }
-        .category-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(77, 158, 255, 0.6); }
-        .add-btn { background: linear-gradient(135deg, #ff3b9c, #9d4edd); color: white; box-shadow: 0 0 20px rgba(255, 59, 156, 0.3); }
-        .add-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255, 59, 156, 0.6); }
+        /* Action Bar */
+        .action-bar { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 20px; 
+            padding: 20px; 
+            margin-bottom: 40px; 
+            display: flex; 
+            gap: 15px; 
+            align-items: center; 
+            flex-wrap: wrap; 
+        }
+        
+        .search-box { 
+            flex: 2; 
+            display: flex; 
+            align-items: center; 
+            background: rgba(0, 0, 0, 0.3); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 15px; 
+            padding: 0 20px; 
+            min-width: 250px; 
+        }
+        
+        .search-box input { 
+            flex: 1; 
+            padding: 15px 0; 
+            border: none; 
+            background: transparent; 
+            outline: none; 
+            color: white; 
+            font-size: 1em; 
+        }
+        
+        .search-box input::placeholder { 
+            color: #666; 
+        }
+        
+        /* Mobile Action Toggle */
+        .mobile-action-toggle {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(77, 158, 255, 0.1);
+            border: 1px solid #4d9eff;
+            border-radius: 15px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .mobile-action-toggle:hover {
+            background: rgba(77, 158, 255, 0.2);
+        }
+        
+        .toggle-text {
+            color: #4d9eff;
+            font-weight: 600;
+            font-size: 1em;
+        }
+        
+        .toggle-arrow {
+            color: #4d9eff;
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+        
+        .toggle-arrow.open {
+            transform: rotate(180deg);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn, .category-btn, .add-btn { 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 1em; 
+            transition: all 0.3s; 
+            white-space: nowrap; 
+        }
+        
+        .filter-btn { 
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid var(--glass-border); 
+            color: white; 
+        }
+        
+        .filter-btn:hover { 
+            background: rgba(255, 255, 255, 0.1); 
+            border-color: #ff3b9c; 
+        }
+        
+        .category-btn { 
+            background: linear-gradient(135deg, #4d9eff, #0ef0f0); 
+            color: #0a0a0f; 
+            box-shadow: 0 0 20px rgba(77, 158, 255, 0.3); 
+        }
+        
+        .category-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 0 30px rgba(77, 158, 255, 0.6); 
+        }
+        
+        .add-btn { 
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd); 
+            color: white; 
+            box-shadow: 0 0 20px rgba(255, 59, 156, 0.3); 
+        }
+        
+        .add-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 0 30px rgba(255, 59, 156, 0.6); 
+        }
         
         /* Active Filters Bar */
         .active-filters {
@@ -1591,14 +1703,32 @@
             .action-bar {
                 flex-direction: column;
                 align-items: stretch;
+                padding: 15px;
             }
             
             .search-box {
                 width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .mobile-action-toggle {
+                display: flex;
+            }
+            
+            .action-buttons {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            .action-buttons.show {
+                display: flex;
             }
             
             .filter-btn, .category-btn, .add-btn {
                 width: 100%;
+                margin: 0;
             }
             
             .hero-title { font-size: 3em; }
@@ -1781,7 +1911,15 @@
             <div class="search-box">
                 <input type="text" placeholder="Search contracts..." id="searchInput" onkeyup="searchContracts()" data-i18n-placeholder="search_placeholder">
             </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            
+            <!-- Mobile Action Toggle -->
+            <div class="mobile-action-toggle" onclick="toggleMobileActions()">
+                <span class="toggle-text" data-i18n="actions">Actions</span>
+                <span class="toggle-arrow" id="mobileActionArrow">▼</span>
+            </div>
+            
+            <!-- Action Buttons Container (hidden on mobile by default) -->
+            <div class="action-buttons" id="mobileActionButtons">
                 <button class="filter-btn" onclick="openFilterModal()" data-i18n="filter">FILTER</button>
                 <button class="category-btn" onclick="openCategoryModal()" data-i18n="categories">CATEGORIES</button>
                 <button class="add-btn" onclick="openAddModal()" data-i18n="create">+ CREATE</button>
@@ -2290,6 +2428,9 @@
                 categories: "CATEGORIES",
                 create: "+ CREATE",
                 
+                // Mobile Actions
+                actions: "Actions",
+                
                 // Filters
                 active_filters: "Active Filters:",
                 clear_all: "Clear All",
@@ -2415,6 +2556,9 @@
                 filter: "FILTRAR",
                 categories: "CATEGORÍAS",
                 create: "+ CREAR",
+                
+                // Mobile Actions
+                actions: "Acciones",
                 
                 // Filters
                 active_filters: "Filtros Activos:",
@@ -2542,6 +2686,9 @@
                 categories: "CATÉGORIES",
                 create: "+ CRÉER",
                 
+                // Mobile Actions
+                actions: "Actions",
+                
                 // Filters
                 active_filters: "Filtres Actifs:",
                 clear_all: "Tout Effacer",
@@ -2656,6 +2803,15 @@
                 // You can customize specific translations later
             }
         });
+
+        // ==================== MOBILE ACTIONS TOGGLE ====================
+        function toggleMobileActions() {
+            const actionButtons = document.getElementById('mobileActionButtons');
+            const arrow = document.getElementById('mobileActionArrow');
+            
+            actionButtons.classList.toggle('show');
+            arrow.classList.toggle('open');
+        }
 
         function toggleLanguageDropdown() {
             const dropdown = document.getElementById('langDropdown');
@@ -4164,6 +4320,15 @@
                     }
                 }
             });
+            
+            // Close mobile action dropdown if clicking outside
+            const actionButtons = document.getElementById('mobileActionButtons');
+            const actionToggle = document.querySelector('.mobile-action-toggle');
+            if (actionButtons && actionButtons.classList.contains('show') && 
+                !actionToggle?.contains(event.target) && !actionButtons.contains(event.target)) {
+                actionButtons.classList.remove('show');
+                document.getElementById('mobileActionArrow').classList.remove('open');
+            }
         };
     </script>
 </body>
