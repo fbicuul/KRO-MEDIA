@@ -933,6 +933,9 @@
             }
         }
     </style>
+
+    <!-- Load configuration first -->
+    <script src="config.js"></script>
 </head>
 <body>
     <!-- Toast Notifications Container -->
@@ -1253,10 +1256,16 @@
 
     <script>
         // ==================== CONFIG ====================
-        // IMPORTANT: Replace these with your actual deployed Google Apps Script URLs
-        const ADMIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
-        const PIN_API_URL = 'https://script.google.com/macros/s/***REMOVED***/exec';
+        // URL is now loaded from config.js
+        const ADMIN_API_URL = window.KRO_CONFIG.ADMIN_API_URL;
+        const PIN_API_URL = window.KRO_CONFIG.PIN_API_URL; // Add this if your admin uses PIN API
         let adminUser = localStorage.getItem('kro_admin_user') || '';
+
+        // Optional: Add a check to make sure config loaded
+        if (!window.KRO_CONFIG || !window.KRO_CONFIG.ADMIN_API_URL) {
+            console.error('❌ ERROR: Config file not loaded properly in admin!');
+            alert('Configuration error in admin dashboard. Please refresh the page.');
+        }
         
         // Chart instances
         let requestsLineChart, packagePieChart, revenueBarChart, statusDoughnutChart;
