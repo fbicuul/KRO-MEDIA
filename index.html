@@ -3713,44 +3713,54 @@
             }
         }
 
-                // ==================== TEMPORARY DEBUG FUNCTION ====================
-        function debugContracts() {
-            console.log('=== ALL CONTRACTS DATA ===');
-            contracts.forEach((contract, index) => {
-                console.log(`Contract ${index + 1}:`, {
-                    id: contract.id,
-                    title: contract.title,
-                    submittedBy: contract.submittedBy,
-                    submitted_by: contract.submitted_by,
-                    SubmittedBy: contract.SubmittedBy,
-                    clientName: contract.clientName,
-                    // Show all keys in the contract object
-                    allKeys: Object.keys(contract)
-                });
-            });
-            console.log('=== END CONTRACTS DATA ===');
-        }
-
-            // ==================== FIXED VIEW CONTRACT FUNCTION WITH DEBUG ====================
+            // ==================== ULTRA DEBUG VIEW CONTRACT ====================
         function viewContract(id) {
-            // Call debug function to see all contracts data
-            debugContracts();
+            console.log('========== VIEW CONTRACT CALLED ==========');
+            console.log('Looking for contract with ID:', id);
             
             selectedContractId = id;
             const contract = contracts.find(c => c.id == id);
             
             if (!contract) {
-                console.error('Contract not found:', id);
+                console.error('❌ Contract not found!');
                 return;
             }
             
-            console.log('=== CURRENT CONTRACT DATA ===');
-            console.log('Full contract object:', contract);
-            console.log('All keys in contract:', Object.keys(contract));
-            console.log('submittedBy value:', contract.submittedBy);
-            console.log('submitted_by value:', contract.submitted_by);
-            console.log('SubmittedBy value:', contract.SubmittedBy);
-            console.log('=== END CURRENT CONTRACT ===');
+            console.log('✅ Contract found:', contract);
+            console.log('📋 Contract keys:', Object.keys(contract));
+            
+            // Check specifically for submittedBy in all its forms
+            console.log('🔍 Checking for client name fields:');
+            console.log('  - contract.submittedBy:', contract.submittedBy);
+            console.log('  - contract.submitted_by:', contract.submitted_by);
+            console.log('  - contract.SubmittedBy:', contract.SubmittedBy);
+            console.log('  - contract.clientName:', contract.clientName);
+            console.log('  - contract.name:', contract.name);
+            console.log('  - contract.submitter:', contract.submitter);
+            
+            // Try ALL possible field names
+            const possibleFields = [
+                'submittedBy', 'submitted_by', 'SubmittedBy', 
+                'clientName', 'name', 'submitter', 'client', 
+                'Client', 'creator', 'author', 'user', 'owner'
+            ];
+            
+            let foundName = null;
+            for (let field of possibleFields) {
+                if (contract[field] && contract[field].toString().trim() !== '') {
+                    foundName = contract[field].toString().trim();
+                    console.log(`✅ Found name in field "${field}":`, foundName);
+                    break;
+                }
+            }
+            
+            if (!foundName) {
+                console.log('⚠️ No client name found in any field, using default');
+                foundName = 'Client';
+            }
+            
+            currentContactName = foundName;
+            console.log('📝 Final client name set to:', currentContactName);
             
             // Ensure phone number is a string
             currentPhoneNumber = contract.phoneNumber || contract.phone_number || contract.PhoneNumber || '';
@@ -3760,46 +3770,30 @@
                 currentPhoneNumber = '+234 123 456 7890';
             }
             
-            // Try ALL possible field names for submittedBy
-            currentContactName = contract.submittedBy || 
-                                 contract.submitted_by || 
-                                 contract.SubmittedBy || 
-                                 contract.clientName || 
-                                 contract.name || 
-                                 contract.submitter || 
-                                 contract.client || 
-                                 contract.Client ||
-                                 contract.creator ||
-                                 '';
-            
-            console.log('Final extracted client name:', currentContactName);
-            
-            // Convert to string and ensure it's not empty
-            if (currentContactName && typeof currentContactName !== 'string') {
-                currentContactName = String(currentContactName);
-            }
-            
-            // Default if still empty
-            if (!currentContactName || currentContactName.trim() === '') {
-                currentContactName = 'Client';
-                console.log('Using default name: Client');
-            }
-            
             currentContractId = id;
             
-            // Update title and name
+            // Update DOM elements
             const detailTitle = document.getElementById('detailTitle');
             const submittedByName = document.getElementById('submittedByName');
             
+            console.log('🔍 DOM Elements:');
+            console.log('  - detailTitle exists:', !!detailTitle);
+            console.log('  - submittedByName exists:', !!submittedByName);
+            
             if (detailTitle) {
-                detailTitle.textContent = contract.title || contract.Title || 'Contract Details';
+                const titleText = contract.title || contract.Title || 'Contract Details';
+                detailTitle.textContent = titleText;
+                console.log('  ✅ Title set to:', titleText);
             }
             
             if (submittedByName) {
                 submittedByName.textContent = currentContactName;
-                console.log('✅ Set submittedByName to:', currentContactName);
-            } else {
-                console.error('❌ submittedByName element not found!');
+                console.log('  ✅ Client name set to:', currentContactName);
+                
+                // Double-check it was set
+                setTimeout(() => {
+                    console.log('  🔍 Verification - submittedByName content after set:', submittedByName.textContent);
+                }, 100);
             }
             
             // Format amount
@@ -3847,7 +3841,7 @@
             
             const detailContent = document.getElementById('detailContent');
             if (!detailContent) {
-                console.error('detailContent element not found');
+                console.error('❌ detailContent element not found');
                 return;
             }
             
@@ -3889,6 +3883,8 @@
                 </div>
             `;
             
+            console.log('✅ detailContent updated');
+            
             if (typeof translatePage === 'function') {
                 translatePage();
             }
@@ -3900,7 +3896,10 @@
             const detailModal = document.getElementById('detailModal');
             if (detailModal) {
                 detailModal.style.display = 'flex';
+                console.log('✅ Modal displayed');
             }
+            
+            console.log('========== VIEW CONTRACT COMPLETE ==========');
         }
 
 
