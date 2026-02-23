@@ -935,117 +935,148 @@
             text-decoration: underline;
         }
         
-        /* Contract List Styles - NEW */
-        .contracts-list {
+        /* Contracts Grid - Card Layout (Restored) */
+        .contracts-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 25px; 
+            margin-bottom: 60px; 
+        }
+        
+        .contract-card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 25px;
-            overflow: hidden;
-            margin-bottom: 40px;
-        }
-
-        .contract-list-item {
+            padding: 0;
             cursor: pointer;
-            padding: 20px 25px;
-            border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            gap: 20px;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
-
-        .contract-list-item:hover {
-            background: rgba(255, 255, 255, 0.05);
+        
+        .contract-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 25px 25px 0 0;
+            border-bottom: 4px solid transparent;
+        }
+        
+        .contract-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .contract-card:hover .contract-image img {
+            transform: scale(1.05);
+        }
+        
+        .contract-card:hover {
+            transform: translateY(-5px);
             border-color: #ff3b9c;
+            box-shadow: 0 0 30px rgba(255, 59, 156, 0.2);
         }
-
-        .contract-list-item:last-child {
-            border-bottom: none;
+        
+        /* Status-colored borders */
+        .contract-card[data-status="In Progress"] .contract-image {
+            border-bottom: 4px solid #ff3b9c;
         }
-
-        .contract-list-amount {
-            font-size: 2em;
-            font-weight: 700;
-            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            min-width: 140px;
+        
+        .contract-card[data-status="Completed"] .contract-image {
+            border-bottom: 4px solid #a4ff7c;
         }
-
-        .contract-list-content {
-            flex: 1;
+        
+        .contract-card[data-status="Not Started"] .contract-image {
+            border-bottom: 4px solid #4d9eff;
         }
-
-        .contract-list-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 5px;
+        
+        .contract-content {
+            padding: 25px;
         }
-
-        .contract-list-company {
-            color: #b0b0b0;
-            font-size: 1em;
-            margin-bottom: 8px;
+        
+        .contract-amount { 
+            font-size: 2em; 
+            font-weight: 700; 
+            margin-bottom: 15px; 
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
         }
-
-        .contract-list-meta {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-top: 5px;
+        
+        .contract-title { 
+            font-size: 1.3em; 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+            color: white; 
         }
-
-        .contract-list-status {
-            display: inline-block;
-            padding: 6px 15px;
-            border-radius: 30px;
-            font-size: 0.9em;
-            font-weight: 500;
+        
+        .contract-company { 
+            color: #b0b0b0; 
+            font-size: 1em; 
+            margin-bottom: 5px; 
         }
-
-        .contract-list-status.in-progress {
-            background: rgba(255, 59, 156, 0.2);
-            color: #ff3b9c;
-            border: 1px solid #ff3b9c;
+        
+        .contract-location { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            color: #a4ff7c; 
+            font-size: 0.95em; 
+            margin-bottom: 5px; 
         }
-
-        .contract-list-status.completed {
-            background: rgba(164, 255, 124, 0.2);
-            color: #a4ff7c;
-            border: 1px solid #a4ff7c;
+        
+        .contract-country { 
+            background: rgba(255, 59, 156, 0.1); 
+            padding: 3px 10px; 
+            border-radius: 15px; 
+            display: inline-block; 
+            margin-bottom: 10px; 
         }
-
-        .contract-list-status.not-started {
-            background: rgba(77, 158, 255, 0.2);
-            color: #4d9eff;
-            border: 1px solid #4d9eff;
+        
+        .contract-meta { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: 20px; 
         }
-
-        .contract-list-date {
-            color: #666;
-            font-size: 0.95em;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        
+        .status-badge { 
+            display: inline-block; 
+            padding: 6px 15px; 
+            border-radius: 30px; 
+            font-size: 0.9em; 
+            font-weight: 500; 
         }
-
-        @media (max-width: 768px) {
-            .contract-list-item {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 15px 20px;
-            }
-            
-            .contract-list-amount {
-                min-width: auto;
-                font-size: 1.8em;
-            }
-            
-            .contract-list-meta {
-                flex-wrap: wrap;
-            }
+        
+        .status-badge.in-progress { 
+            background: rgba(255, 59, 156, 0.2); 
+            color: #ff3b9c; 
+            border: 1px solid #ff3b9c; 
+        }
+        
+        .status-badge.completed { 
+            background: rgba(164, 255, 124, 0.2); 
+            color: #a4ff7c; 
+            border: 1px solid #a4ff7c; 
+        }
+        
+        .status-badge.not-started { 
+            background: rgba(77, 158, 255, 0.2); 
+            color: #4d9eff; 
+            border: 1px solid #4d9eff; 
+        }
+        
+        .contract-date { 
+            color: #666; 
+            font-size: 0.9em; 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
         }
         
         .progress-list { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 25px; overflow: hidden; }
@@ -2048,7 +2079,7 @@
                 <h2 data-i18n="active_contracts">Active Contracts</h2>
                 <span class="see-all" onclick="openAllContractsModal()" data-i18n="see_all_contracts">See All →</span>
             </div>
-            <div class="contracts-list" id="contractsGrid">
+            <div class="contracts-grid" id="contractsGrid">
                 <div class="loading-container">
                     <div class="neon-loading">
                         <div class="neon-dot"></div>
@@ -2352,7 +2383,7 @@
             <!-- View Contact Button & PIN Section -->
             <div style="margin: 20px 0; display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <p data-i18n="clients_name">Client's Name: <span id="submittedByName" style="font-weight: 600;">Grace</span></p>
+                    <p data-i18n="clients_name">Your Pin: </p>
                     <span class="pin-badge" id="pinsRemainingBadge" style="display: none;"></span>
                 </div>
                 <button class="btn-primary" id="viewContactBtn" onclick="openContactModal()" style="width: auto; padding: 10px 25px;" data-i18n="view_contact">👤 View Contact</button>
@@ -4237,7 +4268,7 @@
             if (!grid) return;
             
             if (filtered.length === 0) {
-                grid.innerHTML = '<div style="text-align: center; padding: 50px; color: #666;" data-i18n="no_contracts_found">No contracts found</div>';
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #666;" data-i18n="no_contracts_found">No contracts found</div>';
                 translatePage();
                 return;
             }
@@ -4261,6 +4292,8 @@
                     } else {
                         amountDisplay = contract.amount;
                     }
+                } else {
+                    amountDisplay = 'N0';
                 }
                 
                 // Format date
@@ -4276,19 +4309,25 @@
                     dateDisplay = 'No date';
                 }
                 
-                // Determine status class
-                const statusClass = contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started';
-                const statusText = contract.status || 'Not Started';
+                // Get location text
+                const locationText = contract.country ? `${contract.country}${contract.city ? ' • ' + contract.city : ''}` : '';
                 
                 return `
-                    <div class="contract-list-item" onclick="viewContract(${contract.id})">
-                        <div class="contract-list-amount">${amountDisplay}</div>
-                        <div class="contract-list-content">
-                            <div class="contract-list-title">${contract.title || 'Untitled'}</div>
-                            <div class="contract-list-company">${translations[currentLanguage]?.at || 'at'} ${contract.company || 'Unknown'}</div>
-                            <div class="contract-list-meta">
-                                <span class="contract-list-status ${statusClass}">${statusText}</span>
-                                <span class="contract-list-date">📅 ${dateDisplay}</span>
+                    <div class="contract-card" data-status="${contract.status || 'Not Started'}" onclick="viewContract(${contract.id})">
+                        <div class="contract-image">
+                            <img src="${contract.image_url || 'https://picsum.photos/400/200?random=' + contract.id}" 
+                                 alt="${contract.title || 'Contract'}" 
+                                 loading="lazy" 
+                                 onerror="this.src='https://picsum.photos/400/200?random=1'">
+                        </div>
+                        <div class="contract-content">
+                            <div class="contract-amount">${amountDisplay}</div>
+                            <div class="contract-title">${contract.title || 'Untitled'}</div>
+                            <div class="contract-company">${translations[currentLanguage]?.at || 'at'} ${contract.company || 'Unknown'}</div>
+                            ${locationText ? `<div class="contract-location">📍 ${locationText}</div>` : ''}
+                            <div class="contract-meta">
+                                <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
+                                <span class="contract-date">📅 ${dateDisplay}</span>
                             </div>
                         </div>
                     </div>
@@ -4464,25 +4503,30 @@
                 if (!grid) return;
                 
                 if (filtered.length === 0) {
-                    grid.innerHTML = '<div style="text-align: center; padding: 50px; color: #666;" data-i18n="no_contracts_found">No contracts found</div>';
+                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #666;" data-i18n="no_contracts_found">No contracts found</div>';
                     translatePage();
                 } else {
                     const displayContracts = filtered.slice(0, MAX_HOMEPAGE_CONTRACTS);
                     grid.innerHTML = displayContracts.map(contract => {
                         const amountDisplay = `₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}`;
-                        const statusClass = contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started';
-                        const statusText = contract.status || 'Not Started';
-                        const dateDisplay = contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-GB').replace(/\//g, '/') : 'No date';
+                        const locationText = contract.country ? `${contract.country}${contract.city ? ' • ' + contract.city : ''}` : '';
                         
                         return `
-                            <div class="contract-list-item" onclick="viewContract(${contract.id})">
-                                <div class="contract-list-amount">${amountDisplay}</div>
-                                <div class="contract-list-content">
-                                    <div class="contract-list-title">${contract.title || 'Untitled'}</div>
-                                    <div class="contract-list-company">${translations[currentLanguage]?.at || 'at'} ${contract.company || 'Unknown'}</div>
-                                    <div class="contract-list-meta">
-                                        <span class="contract-list-status ${statusClass}">${statusText}</span>
-                                        <span class="contract-list-date">📅 ${dateDisplay}</span>
+                            <div class="contract-card" data-status="${contract.status || 'Not Started'}" onclick="viewContract(${contract.id})">
+                                <div class="contract-image">
+                                    <img src="${contract.image_url || 'https://picsum.photos/400/200?random=' + contract.id}" 
+                                         alt="${contract.title || 'Contract'}" 
+                                         loading="lazy" 
+                                         onerror="this.src='https://picsum.photos/400/200?random=1'">
+                                </div>
+                                <div class="contract-content">
+                                    <div class="contract-amount">${amountDisplay}</div>
+                                    <div class="contract-title">${contract.title || 'Untitled'}</div>
+                                    <div class="contract-company">${translations[currentLanguage]?.at || 'at'} ${contract.company || 'Unknown'}</div>
+                                    ${locationText ? `<div class="contract-location">📍 ${locationText}</div>` : ''}
+                                    <div class="contract-meta">
+                                        <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
+                                        <span class="contract-date">📅 ${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-GB').replace(/\//g, '/') : 'No date'}</span>
                                     </div>
                                 </div>
                             </div>
