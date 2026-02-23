@@ -3718,24 +3718,67 @@
                 setButtonLoading(submitBtn, false);
             }
         }
+        
 
         // ==================== FIXED VIEW CONTRACT FUNCTION ====================
         function viewContract(id) {
             selectedContractId = id;
             const contract = contracts.find(c => c.id == id);
             
-            if (!contract) return;
+            if (!contract) {
+                console.error('Contract not found:', id);
+                return;
+            }
+            
+            console.log('Viewing contract:', contract);
             
             currentPhoneNumber = contract.phoneNumber || '+234 123 456 7890';
             currentContactName = contract.submittedBy || 'Client';
             currentContractId = id;
             
-            document.getElementById('detailTitle').textContent = contract.title || 'Contract Details';
-            document.getElementById('submittedByName').textContent = contract.submittedBy || 'Client';
+            // Safely update elements - check if they exist first
+            const detailTitle = document.getElementById('detailTitle');
+            const submittedByName = document.getElementById('submittedByName');
+            const detailModal = document.getElementById('detailModal');
+            const detailContent = document.getElementById('detailContent');
             
-            document.getElementById('detailContent').innerHTML = `
+            if (detailTitle) {
+                detailTitle.textContent = contract.title || 'Contract Details';
+            } else {
+                console.error('detailTitle element not found');
+            }
+            
+            if (submittedByName) {
+                submittedByName.textContent = contract.submittedBy || 'Client';
+                console.log('Set client name to:', contract.submittedBy || 'Client');
+            } else {
+                console.error('submittedByName element not found');
+            }
+            
+            if (!detailContent) {
+                console.error('detailContent element not found');
+                return;
+            }
+            
+            // Format amount
+            let amountDisplay = '₦0';
+            if (contract.amount) {
+                const amountNum = parseFloat(contract.amount);
+                if (!isNaN(amountNum)) {
+                    amountDisplay = `₦${amountNum.toLocaleString()}`;
+                } else {
+                    amountDisplay = contract.amount;
+                }
+            }
+            
+            // Use a reliable fallback image (using picsum instead of placeholder.com)
+            const fallbackImage = 'https://picsum.photos/600/300?random=1';
+            const imageUrl = contract.image_url || contract.imageUrl || fallbackImage;
+            
+            detailContent.innerHTML = `
                 <div class="detail-image">
-                    <img src="${contract.image_url || 'https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title || 'Contract'}" onerror="this.src='https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=Image+Not+Found'">
+                    <img src="${imageUrl}" alt="${contract.title || 'Contract'}" 
+                         onerror="this.src='https://picsum.photos/600/300?random=1'">
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Description</div>
@@ -3761,7 +3804,7 @@
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Amount</div>
-                    <div class="detail-value">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
+                    <div class="detail-value">${amountDisplay}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Submission Date</div>
@@ -3773,7 +3816,13 @@
                 checkPinBalance(userEmail);
             }
             
-            document.getElementById('detailModal').style.display = 'flex';
+            if (detailModal) {
+                detailModal.style.display = 'flex';
+                console.log('Modal displayed');
+            } else {
+                console.error('detailModal element not found');
+            }
+            
             if (typeof translatePage === 'function') {
                 translatePage();
             }
