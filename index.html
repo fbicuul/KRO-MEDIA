@@ -3532,14 +3532,17 @@
             setButtonLoading(button, false);
         }
 
-        // ==================== CONTACT MODAL FUNCTIONS ====================
+
+                // ==================== FIXED CONTACT MODAL FUNCTIONS ====================
         function openContactModal() {
             const modal = document.getElementById('contactModal');
             const content = document.getElementById('contactContent');
             const pinSection = document.getElementById('pinSection');
             const emailSection = document.getElementById('emailSection');
             
-            if (!currentPhoneNumber) {
+            // Ensure currentPhoneNumber is a string
+            if (!currentPhoneNumber || typeof currentPhoneNumber !== 'string') {
+                console.warn('currentPhoneNumber was not a string, using default:', currentPhoneNumber);
                 currentPhoneNumber = '+234 123 456 7890';
             }
             
@@ -3547,17 +3550,28 @@
                 currentContactName = 'Client';
             }
             
+            // Make sure the phone number is a string before calling replace
+            let displayPhone = currentPhoneNumber;
+            if (typeof displayPhone === 'string') {
+                // Mask the phone number (show only last 4 digits)
+                displayPhone = displayPhone.replace(/.(?=.{4})/g, '*');
+            } else {
+                displayPhone = '🔒 [Phone number hidden]';
+            }
+            
+            // Show locked phone number
             content.innerHTML = `
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="font-size: 3em; margin-bottom: 10px;">👤</div>
                     <h3>${currentContactName}</h3>
                     <div style="margin: 20px 0;">
-                        <div class="phone-locked">🔒 ${currentPhoneNumber.replace(/\d(?=\d{4})/g, '*')}</div>
+                        <div class="phone-locked">🔒 ${displayPhone}</div>
                         <p style="color: #b0b0b0; margin-top: 10px;" data-i18n="enter_pin">Enter your email and PIN to unlock phone number</p>
                     </div>
                 </div>
             `;
             
+            // Show email and PIN input
             pinSection.innerHTML = `
                 <div class="pin-input-group">
                     <input type="email" id="contactEmail" class="pin-input" placeholder="${translations[currentLanguage]?.email_address || 'Enter your email'}" value="${userEmail || ''}">
@@ -3574,6 +3588,7 @@
             modal.style.display = 'flex';
             translatePage();
         }
+
 
         async function unlockPhoneNumber() {
             const email = document.getElementById('contactEmail').value;
@@ -3698,7 +3713,8 @@
             }
         }
 
-                // ==================== FIXED VIEW CONTRACT FUNCTION ====================
+        
+                // ==================== UPDATED VIEW CONTRACT FUNCTION ====================
         function viewContract(id) {
             selectedContractId = id;
             const contract = contracts.find(c => c.id == id);
@@ -3708,35 +3724,47 @@
                 return;
             }
             
-            console.log('Viewing contract:', contract); // Debug log
+            console.log('Viewing contract:', contract);
             
-            // Safely get values with fallbacks
-            currentPhoneNumber = contract.phoneNumber || contract.phone_number || '+234 123 456 7890';
+            // Ensure phone number is a string
+            currentPhoneNumber = contract.phoneNumber || contract.phone_number || contract.PhoneNumber || '';
+            if (typeof currentPhoneNumber !== 'string') {
+                currentPhoneNumber = String(currentPhoneNumber || '+234 123 456 7890');
+            } else if (!currentPhoneNumber) {
+                currentPhoneNumber = '+234 123 456 7890';
+            }
             
-            // Get submitted by - THIS WAS THE MAIN ISSUE
-            currentContactName = contract.submittedBy || contract.submitted_by || contract.SubmittedBy || 'Client';
+            // Get submitted by - ensure it's a string
+            currentContactName = contract.submittedBy || contract.submitted_by || contract.SubmittedBy || contract.clientName || contract.name;
+            if (!currentContactName || typeof currentContactName !== 'string') {
+                currentContactName = 'Client';
+            } else {
+                currentContactName = String(currentContactName);
+            }
+            
+            currentContractId = id;
             
             // Update title and name
             const detailTitle = document.getElementById('detailTitle');
             const submittedByName = document.getElementById('submittedByName');
             
             if (detailTitle) detailTitle.textContent = contract.title || contract.Title || 'Contract Details';
-            if (submittedByName) submittedByName.textContent = currentContactName;
+            if (submittedByName) {
+                submittedByName.textContent = currentContactName;
+                console.log('Set client name to:', currentContactName); // Debug log
+            }
             
-            // Format amount - handle "NO" or invalid values
+            // Format amount
             let amountDisplay = '₦0';
             const rawAmount = contract.amount || contract.Amount;
             
             if (rawAmount && rawAmount !== 'NO' && rawAmount !== 'No' && rawAmount !== 'no') {
-                // Try to parse as number, remove any non-numeric characters except decimal
                 const amountNum = parseFloat(rawAmount.toString().replace(/[^0-9.-]+/g, ''));
                 if (!isNaN(amountNum)) {
                     amountDisplay = `₦${amountNum.toLocaleString()}`;
                 } else {
-                    amountDisplay = rawAmount; // Show as-is if not a number but not "NO"
+                    amountDisplay = rawAmount;
                 }
-            } else if (rawAmount === 'NO' || rawAmount === 'No' || rawAmount === 'no') {
-                amountDisplay = '₦0'; // Show as zero instead of "NO"
             }
             
             // Get location
@@ -3744,7 +3772,7 @@
             const city = contract.city || contract.City || '';
             const locationDisplay = country + (city ? ' • ' + city : '');
             
-            // Get other fields with fallbacks
+            // Get other fields
             const description = contract.description || contract.Description || 'No description';
             const duration = contract.duration || contract.Duration || 'N/A';
             const workerId = contract.workerId || contract.worker_id || contract.WorkerId || 'N/A';
@@ -3770,10 +3798,7 @@
             const imageUrl = contract.image_url || contract.imageUrl || 'https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=No+Image';
             
             const detailContent = document.getElementById('detailContent');
-            if (!detailContent) {
-                console.error('detailContent element not found');
-                return;
-            }
+            if (!detailContent) return;
             
             detailContent.innerHTML = `
                 <div class="detail-image">
@@ -3813,22 +3838,20 @@
                 </div>
             `;
             
-            // Translate if needed
             if (typeof translatePage === 'function') {
                 translatePage();
             }
             
-            // Check PIN balance
             if (userEmail) {
                 checkPinBalance(userEmail);
             }
             
-            // Show modal
             const detailModal = document.getElementById('detailModal');
             if (detailModal) {
                 detailModal.style.display = 'flex';
             }
         }
+        
 
         // ==================== LOAD HERO IMAGE ====================
         async function loadHeroImage() {
