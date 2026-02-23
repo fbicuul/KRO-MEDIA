@@ -3756,14 +3756,22 @@
             
             currentContractId = id;
             
-            // Update title and name
+            // Update title and name - THESE ELEMENTS ARE OUTSIDE detailContent
             const detailTitle = document.getElementById('detailTitle');
             const submittedByName = document.getElementById('submittedByName');
             
-            if (detailTitle) detailTitle.textContent = contract.title || contract.Title || 'Contract Details';
+            if (detailTitle) {
+                detailTitle.textContent = contract.title || contract.Title || 'Contract Details';
+                console.log('Title updated');
+            } else {
+                console.error('detailTitle element not found');
+            }
+            
             if (submittedByName) {
                 submittedByName.textContent = currentContactName;
-                console.log('DOM updated with client name:', currentContactName);
+                console.log('✅ Client name updated in DOM to:', currentContactName);
+            } else {
+                console.error('❌ submittedByName element not found! Check if element exists with ID "submittedByName"');
             }
             
             // Format amount
@@ -3854,6 +3862,8 @@
                 </div>
             `;
             
+            console.log('detailContent updated');
+            
             // Translate the new content if translation function exists
             if (typeof translatePage === 'function') {
                 translatePage();
@@ -3868,6 +3878,7 @@
             const detailModal = document.getElementById('detailModal');
             if (detailModal) {
                 detailModal.style.display = 'flex';
+                console.log('Modal displayed');
             } else {
                 console.error('detailModal element not found');
             }
