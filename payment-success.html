@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - K.R.O Media</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: #0a0a0f;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .success-container {
+            max-width: 600px;
+            width: 90%;
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(164, 255, 124, 0.2);
+        }
+        
+        .success-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            color: #a4ff7c;
+            text-shadow: 0 0 30px #a4ff7c;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #a4ff7c, #4d9eff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        p {
+            color: #b0b0b0;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .pin-info {
+            background: rgba(164, 255, 124, 0.1);
+            border: 1px solid #a4ff7c;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .pin-info h3 {
+            color: #a4ff7c;
+            margin-bottom: 10px;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(255, 59, 156, 0.5);
+        }
+        
+        .loader {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            border-top-color: #a4ff7c;
+            animation: spin 1s ease-in-out infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container" id="successContainer">
+        <div class="success-icon">✅</div>
+        <h1>Payment Successful!</h1>
+        <p>Thank you for your purchase. Your transaction has been completed successfully.</p>
+        
+        <div id="loadingSection">
+            <div class="loader"></div>
+            <p>Verifying your payment and generating your PINs...</p>
+        </div>
+        
+        <div id="successSection" style="display: none;">
+            <div class="pin-info" id="pinInfo">
+                <h3>🔑 Your PINs are ready!</h3>
+                <p>Check your email for your PINs. They'll arrive within a few minutes.</p>
+            </div>
+            
+            <a href="/" class="button">Return to Homepage</a>
+        </div>
+        
+        <div id="errorSection" style="display: none;">
+            <div class="pin-info" style="border-color: #ff3b9c;">
+                <h3 style="color: #ff3b9c;">⚠️ Payment Verified, But...</h3>
+                <p>Your payment was successful, but we're having trouble generating your PINs. Our team has been notified and will email you shortly.</p>
+            </div>
+            
+            <a href="/" class="button">Return to Homepage</a>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        // Get transaction reference from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const transactionId = urlParams.get('transaction_id');
+        const status = urlParams.get('status');
+        
+        if (status === 'successful' && transactionId) {
+            // Verify payment with your backend
+            verifyPayment(transactionId);
+        } else {
+            document.getElementById('loadingSection').style.display = 'none';
+            document.getElementById('errorSection').style.display = 'block';
+        }
+        
+        async function verifyPayment(transactionId) {
+            try {
+                // Call your admin API to verify and generate PINs
+                const response = await fetch(`${window.KRO_CONFIG.ADMIN_API_URL}?action=verifyFlutterwavePayment&transactionId=${transactionId}`);
+                const result = await response.json();
+                
+                document.getElementById('loadingSection').style.display = 'none';
+                
+                if (result.success) {
+                    document.getElementById('successSection').style.display = 'block';
+                } else {
+                    document.getElementById('errorSection').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('errorSection').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
