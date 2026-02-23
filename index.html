@@ -3714,7 +3714,7 @@
         }
 
         
-                // ==================== UPDATED VIEW CONTRACT FUNCTION ====================
+            // ==================== FIXED VIEW CONTRACT FUNCTION ====================
         function viewContract(id) {
             selectedContractId = id;
             const contract = contracts.find(c => c.id == id);
@@ -3724,7 +3724,7 @@
                 return;
             }
             
-            console.log('Viewing contract:', contract);
+            console.log('Viewing contract:', contract); // Debug log to see the data structure
             
             // Ensure phone number is a string
             currentPhoneNumber = contract.phoneNumber || contract.phone_number || contract.PhoneNumber || '';
@@ -3734,13 +3734,25 @@
                 currentPhoneNumber = '+234 123 456 7890';
             }
             
-            // Get submitted by - ensure it's a string
-            currentContactName = contract.submittedBy || contract.submitted_by || contract.SubmittedBy || contract.clientName || contract.name;
-            if (!currentContactName || typeof currentContactName !== 'string') {
-                currentContactName = 'Client';
-            } else {
+            // FIXED: Get submittedBy - this is the correct field name from your API
+            currentContactName = contract.submittedBy || contract.submitted_by || contract.SubmittedBy;
+            
+            // If still not found, try to get from other possible fields
+            if (!currentContactName) {
+                currentContactName = contract.clientName || contract.name || contract.submitter || '';
+            }
+            
+            // Convert to string and ensure it's not empty
+            if (currentContactName && typeof currentContactName !== 'string') {
                 currentContactName = String(currentContactName);
             }
+            
+            // Default if still empty
+            if (!currentContactName) {
+                currentContactName = 'Client';
+            }
+            
+            console.log('Client name set to:', currentContactName); // Debug log
             
             currentContractId = id;
             
@@ -3751,7 +3763,7 @@
             if (detailTitle) detailTitle.textContent = contract.title || contract.Title || 'Contract Details';
             if (submittedByName) {
                 submittedByName.textContent = currentContactName;
-                console.log('Set client name to:', currentContactName); // Debug log
+                console.log('DOM updated with client name:', currentContactName);
             }
             
             // Format amount
@@ -3759,11 +3771,12 @@
             const rawAmount = contract.amount || contract.Amount;
             
             if (rawAmount && rawAmount !== 'NO' && rawAmount !== 'No' && rawAmount !== 'no') {
+                // Try to parse as number, remove any non-numeric characters except decimal
                 const amountNum = parseFloat(rawAmount.toString().replace(/[^0-9.-]+/g, ''));
-                if (!isNaN(amountNum)) {
+                if (!isNaN(amountNum) && amountNum > 0) {
                     amountDisplay = `₦${amountNum.toLocaleString()}`;
                 } else {
-                    amountDisplay = rawAmount;
+                    amountDisplay = rawAmount; // Show as-is if not a number but not "NO"
                 }
             }
             
@@ -3795,10 +3808,13 @@
             }
             
             // Get image URL
-            const imageUrl = contract.image_url || contract.imageUrl || 'https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=No+Image';
+            const imageUrl = contract.image_url || contract.imageUrl || contract.ImageURL || contract.image || 'https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=No+Image';
             
             const detailContent = document.getElementById('detailContent');
-            if (!detailContent) return;
+            if (!detailContent) {
+                console.error('detailContent element not found');
+                return;
+            }
             
             detailContent.innerHTML = `
                 <div class="detail-image">
@@ -3838,20 +3854,25 @@
                 </div>
             `;
             
+            // Translate the new content if translation function exists
             if (typeof translatePage === 'function') {
                 translatePage();
             }
             
+            // Check PIN balance if user is logged in
             if (userEmail) {
                 checkPinBalance(userEmail);
             }
             
+            // Show the modal
             const detailModal = document.getElementById('detailModal');
             if (detailModal) {
                 detailModal.style.display = 'flex';
+            } else {
+                console.error('detailModal element not found');
             }
         }
-        
+
 
         // ==================== LOAD HERO IMAGE ====================
         async function loadHeroImage() {
