@@ -2315,7 +2315,7 @@
             <!-- View Contact Button & PIN Section -->
             <div style="margin: 20px 0; display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <p data-i18n="clients_name">Client's Name: <span id="submittedByName" style="font-weight: 600;"></span></p>
+                    <p data-i18n="clients_name">Client's Name: <span id="submittedByName" style="font-weight: 600;">Grace</span></p>
                     <span class="pin-badge" id="pinsRemainingBadge" style="display: none;"></span>
                 </div>
                 <button class="btn-primary" id="viewContactBtn" onclick="openContactModal()" style="width: auto; padding: 10px 25px;" data-i18n="view_contact">👤 View Contact</button>
@@ -2326,6 +2326,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Contact Modal with PIN System -->
     <div class="modal" id="contactModal">
@@ -3713,193 +3714,64 @@
             }
         }
 
-            // ==================== ULTRA DEBUG VIEW CONTRACT ====================
+        // ==================== RESTORED VIEW CONTRACT FUNCTION ====================
         function viewContract(id) {
-            console.log('========== VIEW CONTRACT CALLED ==========');
-            console.log('Looking for contract with ID:', id);
-            
             selectedContractId = id;
             const contract = contracts.find(c => c.id == id);
             
-            if (!contract) {
-                console.error('❌ Contract not found!');
-                return;
-            }
+            if (!contract) return;
             
-            console.log('✅ Contract found:', contract);
-            console.log('📋 Contract keys:', Object.keys(contract));
-            
-            // Check specifically for submittedBy in all its forms
-            console.log('🔍 Checking for client name fields:');
-            console.log('  - contract.submittedBy:', contract.submittedBy);
-            console.log('  - contract.submitted_by:', contract.submitted_by);
-            console.log('  - contract.SubmittedBy:', contract.SubmittedBy);
-            console.log('  - contract.clientName:', contract.clientName);
-            console.log('  - contract.name:', contract.name);
-            console.log('  - contract.submitter:', contract.submitter);
-            
-            // Try ALL possible field names
-            const possibleFields = [
-                'submittedBy', 'submitted_by', 'SubmittedBy', 
-                'clientName', 'name', 'submitter', 'client', 
-                'Client', 'creator', 'author', 'user', 'owner'
-            ];
-            
-            let foundName = null;
-            for (let field of possibleFields) {
-                if (contract[field] && contract[field].toString().trim() !== '') {
-                    foundName = contract[field].toString().trim();
-                    console.log(`✅ Found name in field "${field}":`, foundName);
-                    break;
-                }
-            }
-            
-            if (!foundName) {
-                console.log('⚠️ No client name found in any field, using default');
-                foundName = 'Client';
-            }
-            
-            currentContactName = foundName;
-            console.log('📝 Final client name set to:', currentContactName);
-            
-            // Ensure phone number is a string
-            currentPhoneNumber = contract.phoneNumber || contract.phone_number || contract.PhoneNumber || '';
-            if (typeof currentPhoneNumber !== 'string') {
-                currentPhoneNumber = String(currentPhoneNumber || '+234 123 456 7890');
-            } else if (!currentPhoneNumber) {
-                currentPhoneNumber = '+234 123 456 7890';
-            }
-            
+            currentPhoneNumber = contract.phoneNumber || '+234 123 456 7890';
+            currentContactName = contract.submittedBy || 'Client';
             currentContractId = id;
             
-            // Update DOM elements
-            const detailTitle = document.getElementById('detailTitle');
-            const submittedByName = document.getElementById('submittedByName');
+            document.getElementById('detailTitle').textContent = contract.title || 'Contract Details';
+            document.getElementById('submittedByName').textContent = contract.submittedBy || 'Client';
             
-            console.log('🔍 DOM Elements:');
-            console.log('  - detailTitle exists:', !!detailTitle);
-            console.log('  - submittedByName exists:', !!submittedByName);
-            
-            if (detailTitle) {
-                const titleText = contract.title || contract.Title || 'Contract Details';
-                detailTitle.textContent = titleText;
-                console.log('  ✅ Title set to:', titleText);
-            }
-            
-            if (submittedByName) {
-                submittedByName.textContent = currentContactName;
-                console.log('  ✅ Client name set to:', currentContactName);
-                
-                // Double-check it was set
-                setTimeout(() => {
-                    console.log('  🔍 Verification - submittedByName content after set:', submittedByName.textContent);
-                }, 100);
-            }
-            
-            // Format amount
-            let amountDisplay = '₦0';
-            const rawAmount = contract.amount || contract.Amount;
-            
-            if (rawAmount && rawAmount !== 'NO' && rawAmount !== 'No' && rawAmount !== 'no') {
-                const amountNum = parseFloat(rawAmount.toString().replace(/[^0-9.-]+/g, ''));
-                if (!isNaN(amountNum) && amountNum > 0) {
-                    amountDisplay = `₦${amountNum.toLocaleString()}`;
-                } else {
-                    amountDisplay = rawAmount;
-                }
-            }
-            
-            // Get location
-            const country = contract.country || contract.Country || '';
-            const city = contract.city || contract.City || '';
-            const locationDisplay = country + (city ? ' • ' + city : '');
-            
-            // Get other fields
-            const description = contract.description || contract.Description || 'No description';
-            const duration = contract.duration || contract.Duration || 'N/A';
-            const workerId = contract.workerId || contract.worker_id || contract.WorkerId || 'N/A';
-            const status = contract.status || contract.Status || 'Not Started';
-            const statusClass = status.toLowerCase().replace(' ', '-');
-            
-            // Format submission date
-            let submissionDate = 'N/A';
-            if (contract.submissionDate || contract.submission_date || contract.SubmissionDate) {
-                const dateStr = contract.submissionDate || contract.submission_date || contract.SubmissionDate;
-                try {
-                    submissionDate = new Date(dateStr).toLocaleDateString('en-US', { 
-                        month: 'long', 
-                        day: 'numeric', 
-                        year: 'numeric' 
-                    });
-                } catch (e) {
-                    submissionDate = dateStr;
-                }
-            }
-            
-            // Get image URL
-            const imageUrl = contract.image_url || contract.imageUrl || contract.ImageURL || contract.image || 'https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=No+Image';
-            
-            const detailContent = document.getElementById('detailContent');
-            if (!detailContent) {
-                console.error('❌ detailContent element not found');
-                return;
-            }
-            
-            detailContent.innerHTML = `
+            document.getElementById('detailContent').innerHTML = `
                 <div class="detail-image">
-                    <img src="${imageUrl}" alt="${contract.title || 'Contract'}" onerror="this.src='https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=Image+Not+Found'">
+                    <img src="${contract.image_url || 'https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title || 'Contract'}" onerror="this.src='https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=Image+Not+Found'">
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Description</div>
-                    <div class="detail-value">${description}</div>
+                    <div class="detail-value">${contract.description || 'No description'}</div>
                 </div>
-                ${locationDisplay ? `
                 <div class="detail-row">
                     <div class="detail-label">Location</div>
-                    <div class="detail-value">${locationDisplay}</div>
+                    <div class="detail-value">${contract.country || ''} ${contract.city ? '• ' + contract.city : ''}</div>
                 </div>
-                ` : ''}
                 <div class="detail-row">
                     <div class="detail-label">Duration</div>
-                    <div class="detail-value">${duration}</div>
+                    <div class="detail-value">${contract.duration || 'N/A'}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Worker ID</div>
-                    <div class="detail-value">${workerId}</div>
+                    <div class="detail-value">${contract.workerId || 'N/A'}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Status</div>
                     <div class="detail-value">
-                        <span class="status-badge ${statusClass}">${status}</span>
+                        <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
                     </div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Amount</div>
-                    <div class="detail-value">${amountDisplay}</div>
+                    <div class="detail-value">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Submission Date</div>
-                    <div class="detail-value">${submissionDate}</div>
+                    <div class="detail-value">${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'N/A'}</div>
                 </div>
             `;
-            
-            console.log('✅ detailContent updated');
-            
-            if (typeof translatePage === 'function') {
-                translatePage();
-            }
             
             if (userEmail) {
                 checkPinBalance(userEmail);
             }
             
-            const detailModal = document.getElementById('detailModal');
-            if (detailModal) {
-                detailModal.style.display = 'flex';
-                console.log('✅ Modal displayed');
+            document.getElementById('detailModal').style.display = 'flex';
+            if (typeof translatePage === 'function') {
+                translatePage();
             }
-            
-            console.log('========== VIEW CONTRACT COMPLETE ==========');
         }
 
 
