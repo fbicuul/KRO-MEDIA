@@ -481,6 +481,7 @@
             margin: 20px 0 30px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 15px;
+            flex-wrap: wrap;
         }
         
         .tab-btn {
@@ -602,6 +603,12 @@
             background: rgba(255,59,156,0.2);
             color: #ff3b9c;
             border: 1px solid #ff3b9c;
+        }
+        
+        .status-flutterwave {
+            background: rgba(14,240,240,0.2);
+            color: #0ef0f0;
+            border: 1px solid #0ef0f0;
         }
         
         .action-btn {
@@ -1092,6 +1099,7 @@
         <!-- Tab Navigation -->
         <div class="tab-container">
             <button class="tab-btn active" onclick="switchTab('requests')">📋 Payment Requests</button>
+            <button class="tab-btn" onclick="switchTab('flutterwave')">⚡ Flutterwave Pending</button>
             <button class="tab-btn" onclick="switchTab('users')">👥 User Management</button>
         </div>
 
@@ -1156,6 +1164,46 @@
                         <tbody id="paidBody">
                             <tr>
                                 <td colspan="7" style="text-align: center; padding: 30px;">
+                                    <div class="neon-loading">
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                        <div class="neon-dot"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flutterwave Pending Tab -->
+        <div id="flutterwaveTab" class="tab-content">
+            <div class="section-header">
+                <h2>⚡ Flutterwave Pending Transactions</h2>
+                <button class="refresh-btn" onclick="loadFlutterwaveData()" id="refreshFlutterwaveBtn">↻ Refresh</button>
+            </div>
+
+            <div class="table-container">
+                <div class="requests-table">
+                    <table id="flutterwaveTable">
+                        <thead>
+                            <tr>
+                                <th>Tx Ref</th>
+                                <th>Email</th>
+                                <th>Package</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th>Flutterwave ID</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="flutterwaveBody">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 30px;">
                                     <div class="neon-loading">
                                         <div class="neon-dot"></div>
                                         <div class="neon-dot"></div>
@@ -1320,8 +1368,12 @@
             if (tab === 'requests') {
                 document.querySelectorAll('.tab-btn')[0].classList.add('active');
                 document.getElementById('requestsTab').classList.add('active');
-            } else {
+            } else if (tab === 'flutterwave') {
                 document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('flutterwaveTab').classList.add('active');
+                loadFlutterwaveData();
+            } else {
+                document.querySelectorAll('.tab-btn')[2].classList.add('active');
                 document.getElementById('usersTab').classList.add('active');
                 loadAllUsers();
             }
@@ -1334,6 +1386,7 @@
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 loadAllData();
+                loadFlutterwaveData();
                 loadAllUsers();
             }
         };
@@ -1400,6 +1453,113 @@
             // Hide loading on refresh buttons
             if (refreshChartsBtn) setButtonLoading(refreshChartsBtn, false);
             if (refreshPendingBtn) setButtonLoading(refreshPendingBtn, false);
+        }
+
+        // ==================== LOAD FLUTTERWAVE DATA ====================
+        async function loadFlutterwaveData() {
+            const flutterwaveBody = document.getElementById('flutterwaveBody');
+            const refreshFlutterwaveBtn = document.getElementById('refreshFlutterwaveBtn');
+            
+            if (refreshFlutterwaveBtn) setButtonLoading(refreshFlutterwaveBtn, true);
+            
+            if (flutterwaveBody) {
+                flutterwaveBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 30px;">
+                            <div class="neon-loading">
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            try {
+                const response = await fetch(`${ADMIN_API_URL}?action=getFlutterwaveTransactions`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success && result.transactions) {
+                    displayFlutterwaveTransactions(result.transactions);
+                } else {
+                    if (flutterwaveBody) {
+                        flutterwaveBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 30px;">No Flutterwave transactions found</td></tr>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading Flutterwave data:', error);
+                showToast('Error loading Flutterwave transactions', 'error');
+                if (flutterwaveBody) {
+                    flutterwaveBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 30px;">Error loading transactions</td></tr>';
+                }
+            } finally {
+                if (refreshFlutterwaveBtn) setButtonLoading(refreshFlutterwaveBtn, false);
+            }
+        }
+
+        function displayFlutterwaveTransactions(transactions) {
+            const flutterwaveBody = document.getElementById('flutterwaveBody');
+            if (!flutterwaveBody) return;
+            
+            if (!transactions || transactions.length === 0) {
+                flutterwaveBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 30px;">No Flutterwave transactions found</td></tr>';
+                return;
+            }
+            
+            flutterwaveBody.innerHTML = transactions.map(tx => {
+                const createdDate = tx.createdAt ? new Date(tx.createdAt).toLocaleString() : 'Unknown';
+                const status = tx.status === 'pending' ? 
+                    '<span class="status-badge status-flutterwave">Pending</span>' : 
+                    '<span class="status-badge status-paid">Completed</span>';
+                
+                return `
+                    <tr>
+                        <td><strong style="color: #0ef0f0;">${tx.txRef || 'N/A'}</strong></td>
+                        <td>${tx.email || 'N/A'}</td>
+                        <td>${tx.package || 'N/A'} pins</td>
+                        <td style="color: #a4ff7c;">$${tx.amount || '0'}</td>
+                        <td>${status}</td>
+                        <td>${createdDate}</td>
+                        <td>${tx.flutterwaveId || '—'}</td>
+                        <td>
+                            ${tx.status === 'pending' ? 
+                                `<button class="action-btn btn-verify" onclick="checkFlutterwaveStatus('${tx.txRef}')">↻ Check Status</button>` : 
+                                '<span style="color: #666;">—</span>'
+                            }
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function checkFlutterwaveStatus(txRef) {
+            try {
+                const response = await fetch(`${ADMIN_API_URL}?action=checkFlutterwaveStatus&txRef=${encodeURIComponent(txRef)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast(`Transaction status: ${result.status}`, 'info');
+                    loadFlutterwaveData(); // Refresh the list
+                } else {
+                    showToast('Error checking transaction status', 'error');
+                }
+            } catch (error) {
+                console.error('Error checking Flutterwave status:', error);
+                showToast('Error checking transaction status', 'error');
+            }
         }
 
         // ==================== LOAD ALL USERS ====================
@@ -1516,6 +1676,7 @@
                     document.getElementById('dashboard').style.display = 'block';
                     showToast('Login successful!', 'success');
                     loadAllData();
+                    loadFlutterwaveData();
                     loadAllUsers();
                 } else {
                     showToast('❌ Invalid credentials', 'error');
