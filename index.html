@@ -2309,15 +2309,7 @@
             </div>
             
             <div class="detail-grid" id="detailContent">
-                <div class="loading-container">
-                    <div class="neon-loading">
-                        <div class="neon-dot"></div>
-                        <div class="neon-dot"></div>
-                        <div class="neon-dot"></div>
-                        <div class="neon-dot"></div>
-                        <div class="neon-dot"></div>
-                    </div>
-                </div>
+                <!-- Content will be filled by JavaScript -->
             </div>
 
             <!-- View Contact Button & PIN Section -->
@@ -2881,7 +2873,6 @@
                 language_japanese: "日本語",
                 language_russian: "Русский"
             }
-            // Add more languages as needed (de, pt, zh, ar, hi, ja, ru)
         };
 
         // Initialize translations for other languages with English as fallback
@@ -2889,7 +2880,6 @@
         additionalLanguages.forEach(lang => {
             if (!translations[lang]) {
                 translations[lang] = { ...translations.en };
-                // You can customize specific translations later
             }
         });
 
@@ -2897,24 +2887,20 @@
         function updateLiveClock() {
             const now = new Date();
             
-            // Get date components
             const day = now.getDate().toString().padStart(2, '0');
             const month = (now.getMonth() + 1).toString().padStart(2, '0');
             const year = now.getFullYear();
             
-            // Get time components
             const hours = now.getHours().toString().padStart(2, '0');
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const seconds = now.getSeconds().toString().padStart(2, '0');
             const timeString = `${hours}:${minutes}:${seconds}`;
             
-            // Update DOM elements
             document.getElementById('currentDay').textContent = day;
             document.getElementById('currentMonth').textContent = month;
             document.getElementById('currentYear').textContent = year;
             document.getElementById('currentTime').textContent = timeString;
             
-            // Get and display timezone
             const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             const timezoneOffset = -now.getTimezoneOffset();
             const offsetHours = Math.floor(Math.abs(timezoneOffset) / 60);
@@ -2928,16 +2914,14 @@
             }
         }
 
-        // Start the clock immediately and update every second
         let clockInterval;
         
         function startLiveClock() {
-            updateLiveClock(); // Update immediately
+            updateLiveClock();
             if (clockInterval) clearInterval(clockInterval);
-            clockInterval = setInterval(updateLiveClock, 1000); // Update every second
+            clockInterval = setInterval(updateLiveClock, 1000);
         }
 
-        // Stop the clock when needed (optional)
         function stopLiveClock() {
             if (clockInterval) {
                 clearInterval(clockInterval);
@@ -2963,7 +2947,6 @@
             currentLanguage = lang;
             localStorage.setItem('kro_language', lang);
             
-            // Update active state in dropdown
             document.querySelectorAll('.lang-option').forEach(opt => {
                 opt.classList.remove('active');
                 if (opt.getAttribute('onclick')?.includes(`'${lang}'`)) {
@@ -2971,7 +2954,6 @@
                 }
             });
             
-            // Update mobile active state
             document.querySelectorAll('.mobile-lang-option').forEach(opt => {
                 opt.classList.remove('active');
                 if (opt.getAttribute('onclick')?.includes(`'${lang}'`)) {
@@ -2979,19 +2961,11 @@
                 }
             });
             
-            // Update displayed language
             document.getElementById('selectedLang').textContent = translations[lang]?.language_english || 'English';
-            
-            // Close dropdown
             document.getElementById('langDropdown').classList.remove('show');
             
-            // Translate all elements with data-i18n attribute
             translatePage();
-            
-            // Update the clock (to refresh timezone display with new language)
             updateLiveClock();
-            
-            // Show toast
             showToast(`Language changed to ${translations[lang]?.language_english || 'English'}`, 'success');
         }
 
@@ -3007,7 +2981,6 @@
                 }
             });
             
-            // Update placeholders
             document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
                 const key = element.getAttribute('data-i18n-placeholder');
                 if (translations[currentLanguage] && translations[currentLanguage][key]) {
@@ -3016,7 +2989,6 @@
             });
         }
 
-        // Close language dropdown when clicking outside
         window.addEventListener('click', function(event) {
             const dropdown = document.getElementById('langDropdown');
             const langBtn = document.querySelector('.lang-btn');
@@ -3039,14 +3011,12 @@
             const country = document.getElementById('countryFilter').value;
             const citySelect = document.getElementById('cityFilter');
             
-            // Clear existing options except "All Cities"
             citySelect.innerHTML = '<option value="" data-i18n="all_cities">All Cities/States</option>';
             
             if (!country) {
                 return;
             }
             
-            // Get unique cities from contracts for the selected country
             const cities = [...new Set(contracts
                 .filter(c => c.country === country && c.city)
                 .map(c => c.city)
@@ -3059,23 +3029,18 @@
                 citySelect.appendChild(option);
             });
             
-            // Translate the "All Cities" option
             if (translations[currentLanguage]) {
                 citySelect.options[0].textContent = translations[currentLanguage].all_cities;
             }
         }
 
-        // Update city dropdown when country changes
         document.getElementById('countryFilter')?.addEventListener('change', populateCityDropdown);
 
         function applyCategoryFilters() {
             currentCountryFilter = document.getElementById('countryFilter').value;
             currentCityFilter = document.getElementById('cityFilter').value;
             
-            // Update active filters bar
             updateActiveFiltersBar();
-            
-            // Apply filters and close modal
             filterAndDisplayContracts();
             closeCategoryModal();
         }
@@ -3120,7 +3085,6 @@
             if (type === 'country') {
                 currentCountryFilter = '';
                 document.getElementById('countryFilter').value = '';
-                // Also clear city since it depends on country
                 currentCityFilter = '';
                 document.getElementById('cityFilter').innerHTML = '<option value="" data-i18n="all_cities">All Cities/States</option>';
                 if (translations[currentLanguage]) {
@@ -3148,22 +3112,18 @@
         }
 
         function filterAndDisplayContracts() {
-            // This will be called from updateDisplay
             displayContracts();
             displayProgress();
         }
 
-        // Override filterContracts function to include location filters
         const originalFilterContracts = filterContracts;
         filterContracts = function(contractsList) {
             let filtered = originalFilterContracts(contractsList);
             
-            // Apply country filter
             if (currentCountryFilter) {
                 filtered = filtered.filter(c => c.country === currentCountryFilter);
             }
             
-            // Apply city filter
             if (currentCityFilter) {
                 filtered = filtered.filter(c => c.city === currentCityFilter);
             }
@@ -3179,10 +3139,7 @@
             toast.textContent = message;
             container.appendChild(toast);
             
-            // Trigger animation
             setTimeout(() => toast.classList.add('show'), 10);
-            
-            // Remove after duration
             setTimeout(() => {
                 toast.classList.remove('show');
                 setTimeout(() => toast.remove(), 300);
@@ -3197,7 +3154,6 @@
             menuToggle.classList.toggle('active');
             mobileMenu.classList.toggle('active');
             
-            // Prevent scrolling when menu is open
             if (mobileMenu.classList.contains('active')) {
                 document.body.style.overflow = 'hidden';
             } else {
@@ -3206,13 +3162,9 @@
         }
 
         function showMobilePage(page) {
-            // Close mobile menu
             toggleMobileMenu();
-            
-            // Call the original showPage function
             showPage(page);
             
-            // Update active states for mobile buttons
             document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.classList.remove('active'));
             if (page === 'home') {
                 document.querySelector('.mobile-nav-btn').classList.add('active');
@@ -3234,20 +3186,17 @@
 
         // ==================== FREE PIN MODAL FUNCTIONS ====================
         function openFreePinModal() {
-            // Close mobile menu if open
             const mobileMenu = document.getElementById('mobileMenu');
             if (mobileMenu.classList.contains('active')) {
                 toggleMobileMenu();
             }
             
-            // Close any open modals first
             const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal', 'allContractsModal', 'contactModal', 'buyPinsModal', 'categoryModal'];
             modals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal) modal.style.display = 'none';
             });
             
-            // Create and show free pin modal
             const modal = document.createElement('div');
             modal.className = 'modal';
             modal.id = 'freePinModal';
@@ -3277,7 +3226,7 @@
             `;
             
             document.body.appendChild(modal);
-            translatePage(); // Translate the new modal
+            translatePage();
         }
 
         function closeFreePinModal() {
@@ -3451,6 +3400,7 @@
             if (packageElement) packageElement.classList.add('selected');
         }
 
+        // ==================== UPDATED FLUTTERWAVE PAYMENT FUNCTIONS ====================
         async function processPurchase() {
             const email = document.getElementById('purchaseEmail').value;
             if (!email) {
@@ -3459,34 +3409,107 @@
             }
             
             const button = event.target;
+            const originalText = button.textContent;
             setButtonLoading(button, true);
             
             // Get amount based on selected package
             let amount = '$10';
-            if (selectedPinPackage === 25) amount = '$20';
-            if (selectedPinPackage === 50) amount = '$35';
+            let numericAmount = 10;
+            if (selectedPinPackage === 25) {
+                amount = '$20';
+                numericAmount = 20;
+            }
+            if (selectedPinPackage === 50) {
+                amount = '$35';
+                numericAmount = 35;
+            }
             
             try {
-                const response = await fetch(`${ADMIN_API_URL}?action=createPinRequest&email=${encodeURIComponent(email)}&package=${selectedPinPackage}&amount=${encodeURIComponent(amount)}`);
+                // First, create the manual payment request (sends email with bank details)
+                console.log('Creating manual payment request...');
+                const manualResponse = await fetch(`${ADMIN_API_URL}?action=createPinRequest&email=${encodeURIComponent(email)}&package=${selectedPinPackage}&amount=${encodeURIComponent(amount)}`);
                 
-                if (!response.ok) {
+                if (!manualResponse.ok) {
+                    console.warn('Manual payment request warning, but continuing with Flutterwave');
+                } else {
+                    console.log('Manual payment request created successfully');
+                }
+                
+                // Then, create Flutterwave payment (automatic option)
+                console.log('Creating Flutterwave payment...');
+                const flutterwaveResponse = await fetch(`${ADMIN_API_URL}?action=createFlutterwavePayment&email=${encodeURIComponent(email)}&package=${selectedPinPackage}&amount=${encodeURIComponent(amount)}`);
+                
+                if (!flutterwaveResponse.ok) {
                     throw new Error('Network response was not ok');
                 }
                 
-                const result = await response.json();
+                const result = await flutterwaveResponse.json();
+                console.log('Flutterwave response:', result);
                 
                 if (result.success) {
-                    showToast(`✅ ${result.message}`, 'success');
-                    closeBuyPinsModal();
+                    showToast('✅ Redirecting to payment page...', 'success');
+                    
+                    if (!window.FlutterwaveCheckout) {
+                        const script = document.createElement('script');
+                        script.src = 'https://checkout.flutterwave.com/v3.js';
+                        script.onload = function() {
+                            initializeFlutterwavePayment(result, email);
+                        };
+                        document.body.appendChild(script);
+                    } else {
+                        initializeFlutterwavePayment(result, email);
+                    }
+                    
+                    setTimeout(() => {
+                        setButtonLoading(button, false);
+                    }, 2000);
+                    
                 } else {
-                    showToast(`❌ ${result.error || (translations[currentLanguage]?.purchase_failed || 'Purchase failed')}`, 'error');
+                    showToast(`❌ ${result.error || 'Payment initiation failed'}`, 'error');
+                    setButtonLoading(button, false);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                showToast(translations[currentLanguage]?.error_submitting_request || 'Error submitting request. Please try again.', 'error');
-            } finally {
+                showToast('Error initiating payment. Please try again.', 'error');
                 setButtonLoading(button, false);
             }
+        }
+
+        function initializeFlutterwavePayment(result, email) {
+            const flutterwaveConfig = {
+                public_key: result.publicKey,
+                tx_ref: result.txRef,
+                amount: result.amount,
+                currency: result.currency || 'USD',
+                payment_options: 'card, banktransfer, ussd, qr, mpesa, mobilemoneyrwanda, mobilemoneyzambia, mobilemoneyuganda',
+                redirect_url: result.redirectUrl || window.location.origin + '/payment-success.html',
+                customer: {
+                    email: email,
+                    name: email.split('@')[0],
+                },
+                customizations: {
+                    title: 'K.R.O Media',
+                    description: `${selectedPinPackage} PINs Package`,
+                    logo: 'https://kromedia.com/logo.png',
+                },
+                meta: {
+                    package: selectedPinPackage.toString(),
+                    email: email
+                },
+                callback: function(response) {
+                    console.log('Payment callback:', response);
+                    if (response.status === 'successful') {
+                        showToast('✅ Payment successful! Check your email for PINs.', 'success');
+                        closeBuyPinsModal();
+                    }
+                },
+                onclose: function() {
+                    console.log('Payment closed');
+                    showToast('Payment window closed. You can still use the manual payment options sent to your email.', 'info');
+                }
+            };
+            
+            window.FlutterwaveCheckout(flutterwaveConfig);
         }
 
         async function checkBalance() {
@@ -3524,7 +3547,6 @@
                 currentContactName = 'Client';
             }
             
-            // Show locked phone number
             content.innerHTML = `
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="font-size: 3em; margin-bottom: 10px;">👤</div>
@@ -3536,7 +3558,6 @@
                 </div>
             `;
             
-            // Show email and PIN input
             pinSection.innerHTML = `
                 <div class="pin-input-group">
                     <input type="email" id="contactEmail" class="pin-input" placeholder="${translations[currentLanguage]?.email_address || 'Enter your email'}" value="${userEmail || ''}">
@@ -3551,7 +3572,7 @@
             emailSection.style.display = 'none';
             
             modal.style.display = 'flex';
-            translatePage(); // Translate the modal content
+            translatePage();
         }
 
         async function unlockPhoneNumber() {
@@ -3561,7 +3582,6 @@
             const isValid = await validatePin(email, pin);
             
             if (isValid) {
-                // Show unlocked phone number with call button
                 document.getElementById('contactContent').innerHTML = `
                     <div style="text-align: center; margin-bottom: 20px;">
                         <div style="font-size: 3em; margin-bottom: 10px;">👤</div>
@@ -3577,7 +3597,7 @@
                 `;
                 document.getElementById('pinSection').innerHTML = '';
                 document.getElementById('emailSection').style.display = 'none';
-                translatePage(); // Translate the new content
+                translatePage();
             }
         }
 
@@ -3587,9 +3607,8 @@
 
         function openBuyPinsModal() {
             document.getElementById('buyPinsModal').style.display = 'flex';
-            // Reset selection
             selectPinPackage(10);
-            translatePage(); // Translate the modal
+            translatePage();
         }
 
         function closeBuyPinsModal() {
@@ -3601,7 +3620,6 @@
             event.preventDefault();
             
             const submitBtn = document.getElementById('submitBtn');
-            const originalText = submitBtn.textContent;
             setButtonLoading(submitBtn, true);
             
             document.getElementById('formMessage').innerHTML = '';
@@ -3642,7 +3660,6 @@
                 `;
                 translatePage();
                 
-                // Using no-cors mode - we won't get a response but the data still sends
                 await fetch(GOOGLE_SHEETS_API_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -3681,6 +3698,7 @@
             }
         }
 
+        // ==================== FIXED VIEW CONTRACT FUNCTION ====================
         function viewContract(id) {
             selectedContractId = id;
             const contract = contracts.find(c => c.id == id);
@@ -3691,51 +3709,63 @@
             currentContactName = contract.submittedBy || 'Client';
             currentContractId = id;
             
-            document.getElementById('detailTitle').textContent = contract.title || 'Contract Details';
-            document.getElementById('submittedByName').textContent = contract.submittedBy || 'Unknown';
+            const detailTitle = document.getElementById('detailTitle');
+            const submittedByName = document.getElementById('submittedByName');
             
-            document.getElementById('detailContent').innerHTML = `
+            if (detailTitle) detailTitle.textContent = contract.title || 'Contract Details';
+            if (submittedByName) submittedByName.textContent = contract.submittedBy || 'Unknown';
+            
+            const detailContent = document.getElementById('detailContent');
+            if (!detailContent) return;
+            
+            detailContent.innerHTML = `
                 <div class="detail-image">
                     <img src="${contract.image_url || 'https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title || 'Contract'}" onerror="this.src='https://via.placeholder.com/600x300/1a1a1a/ff3b9c?text=Image+Not+Found'">
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="description">Description</div>
+                    <div class="detail-label">Description</div>
                     <div class="detail-value">${contract.description || 'No description'}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="location">Location</div>
+                    <div class="detail-label">Location</div>
                     <div class="detail-value">${contract.country || ''} ${contract.city ? '• ' + contract.city : ''}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="duration">Duration</div>
+                    <div class="detail-label">Duration</div>
                     <div class="detail-value">${contract.duration || 'N/A'}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="worker_id">Worker ID</div>
+                    <div class="detail-label">Worker ID</div>
                     <div class="detail-value">${contract.workerId || 'N/A'}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="status">Status</div>
+                    <div class="detail-label">Status</div>
                     <div class="detail-value">
                         <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
                     </div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="amount">Amount</div>
+                    <div class="detail-label">Amount</div>
                     <div class="detail-value">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="submission_date">Submission Date</div>
+                    <div class="detail-label">Submission Date</div>
                     <div class="detail-value">${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'N/A'}</div>
                 </div>
             `;
+            
+            if (typeof translatePage === 'function') {
+                translatePage();
+            }
             
             if (userEmail) {
                 checkPinBalance(userEmail);
             }
             
-            document.getElementById('detailModal').style.display = 'flex';
-            translatePage(); // Translate the modal
+            const detailModal = document.getElementById('detailModal');
+            if (detailModal) {
+                detailModal.style.display = 'flex';
+            }
         }
 
         // ==================== LOAD HERO IMAGE ====================
@@ -4232,17 +4262,14 @@
         function filterContracts(contractsList) {
             let filtered = contractsList;
             
-            // Apply status filter
             if (currentFilter !== 'all') {
                 filtered = filtered.filter(c => c.status === currentFilter);
             }
             
-            // Apply country filter
             if (currentCountryFilter) {
                 filtered = filtered.filter(c => c.country === currentCountryFilter);
             }
             
-            // Apply city filter
             if (currentCityFilter) {
                 filtered = filtered.filter(c => c.city === currentCityFilter);
             }
@@ -4375,7 +4402,6 @@
         function showPage(page) {
             currentPage = page;
             
-            // Update desktop nav buttons
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             if (page === 'home') {
                 document.querySelectorAll('.nav-btn')[0].classList.add('active');
@@ -4439,22 +4465,17 @@
                 checkPinBalance(userEmail);
             }
             
-            // Set default date in add modal if open
             const today = new Date().toISOString().split('T')[0];
             const dateInput = document.getElementById('submissionDate');
             if (dateInput) dateInput.value = today;
             
-            // Initialize language
             changeLanguage(currentLanguage);
             
-            // Initialize category filter listeners
             document.getElementById('countryFilter')?.addEventListener('change', populateCityDropdown);
             
-            // Start the live clock
             startLiveClock();
         };
 
-        // Close modals when clicking outside
         window.onclick = function(event) {
             const modals = ['filterModal', 'addModal', 'detailModal', 'staffDetailModal', 'allContractsModal', 'contactModal', 'buyPinsModal', 'freePinModal', 'categoryModal'];
             modals.forEach(modalId => {
@@ -4468,7 +4489,6 @@
                 }
             });
             
-            // Close mobile action dropdown if clicking outside
             const actionButtons = document.getElementById('mobileActionButtons');
             const actionToggle = document.querySelector('.mobile-action-toggle');
             if (actionButtons && actionButtons.classList.contains('show') && 
