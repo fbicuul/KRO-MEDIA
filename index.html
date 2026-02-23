@@ -4327,7 +4327,7 @@
                             ${locationText ? `<div class="contract-location">📍 ${locationText}</div>` : ''}
                             <div class="contract-meta">
                                 <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
-                                <span class="contract-date">📅 ${dateDisplay}</span>
+                                <span class="contract-date">${dateDisplay}</span>
                             </div>
                         </div>
                     </div>
@@ -4526,7 +4526,7 @@
                                     ${locationText ? `<div class="contract-location">📍 ${locationText}</div>` : ''}
                                     <div class="contract-meta">
                                         <span class="status-badge ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || 'Not Started'}</span>
-                                        <span class="contract-date">📅 ${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-GB').replace(/\//g, '/') : 'No date'}</span>
+                                        <span class="contract-date">${contract.submissionDate ? new Date(contract.submissionDate).toLocaleDateString('en-GB').replace(/\//g, '/') : 'No date'}</span>
                                     </div>
                                 </div>
                             </div>
