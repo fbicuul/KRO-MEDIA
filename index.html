@@ -2327,7 +2327,6 @@
         </div>
     </div>
 
-
     <!-- Contact Modal with PIN System -->
     <div class="modal" id="contactModal">
         <div class="modal-content" style="max-width: 500px;">
@@ -3117,7 +3116,15 @@
             displayProgress();
         }
 
-        const originalFilterContracts = filterContracts;
+        // Override filterContracts function
+        const originalFilterContracts = function(contractsList) {
+            let filtered = contractsList;
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(c => c.status === currentFilter);
+            }
+            return filtered;
+        };
+
         filterContracts = function(contractsList) {
             let filtered = originalFilterContracts(contractsList);
             
@@ -3401,7 +3408,7 @@
             if (packageElement) packageElement.classList.add('selected');
         }
 
-        // ==================== UPDATED FLUTTERWAVE PAYMENT FUNCTIONS ====================
+        // ==================== FLUTTERWAVE PAYMENT FUNCTIONS ====================
         async function processPurchase() {
             const email = document.getElementById('purchaseEmail').value;
             if (!email) {
@@ -3533,8 +3540,7 @@
             setButtonLoading(button, false);
         }
 
-
-                // ==================== FIXED CONTACT MODAL FUNCTIONS ====================
+        // ==================== FIXED CONTACT MODAL FUNCTIONS ====================
         function openContactModal() {
             const modal = document.getElementById('contactModal');
             const content = document.getElementById('contactContent');
@@ -3589,7 +3595,6 @@
             modal.style.display = 'flex';
             translatePage();
         }
-
 
         async function unlockPhoneNumber() {
             const email = document.getElementById('contactEmail').value;
@@ -3714,7 +3719,7 @@
             }
         }
 
-        // ==================== RESTORED VIEW CONTRACT FUNCTION ====================
+        // ==================== FIXED VIEW CONTRACT FUNCTION ====================
         function viewContract(id) {
             selectedContractId = id;
             const contract = contracts.find(c => c.id == id);
@@ -3773,7 +3778,6 @@
                 translatePage();
             }
         }
-
 
         // ==================== LOAD HERO IMAGE ====================
         async function loadHeroImage() {
