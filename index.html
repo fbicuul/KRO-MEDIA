@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%23ff3b9c'>📋</text></svg>">
     <title>K.R.O Media - Contract Management</title>
     <style>
         /* ==================== COMPLETE NEON MORPHIC CSS ==================== */
@@ -3718,9 +3719,8 @@
                 setButtonLoading(submitBtn, false);
             }
         }
-        
 
-        // ==================== FIXED VIEW CONTRACT FUNCTION ====================
+
         function viewContract(id) {
             selectedContractId = id;
             const contract = contracts.find(c => c.id == id);
@@ -3748,11 +3748,35 @@
                 console.error('detailTitle element not found');
             }
             
+            // CRITICAL FIX: Ensure the element exists and set the text
             if (submittedByName) {
+                // Clear any existing content first
+                submittedByName.innerHTML = '';
+                // Set the text content
                 submittedByName.textContent = contract.submittedBy || 'Client';
                 console.log('Set client name to:', contract.submittedBy || 'Client');
+                
+                // Double-check it was set
+                console.log('Element text content after setting:', submittedByName.textContent);
             } else {
                 console.error('submittedByName element not found');
+                // Create the element if it doesn't exist
+                setTimeout(() => {
+                    const checkElement = document.getElementById('submittedByName');
+                    if (!checkElement) {
+                        console.log('Attempting to recreate missing element');
+                        const detailGrid = document.getElementById('detailContent');
+                        if (detailGrid) {
+                            const clientNameDiv = document.createElement('div');
+                            clientNameDiv.className = 'detail-row';
+                            clientNameDiv.innerHTML = `
+                                <div class="detail-label">Submitted By</div>
+                                <div class="detail-value" id="submittedByName">${contract.submittedBy || 'Client'}</div>
+                            `;
+                            detailGrid.appendChild(clientNameDiv);
+                        }
+                    }
+                }, 100);
             }
             
             if (!detailContent) {
@@ -3778,7 +3802,11 @@
             detailContent.innerHTML = `
                 <div class="detail-image">
                     <img src="${imageUrl}" alt="${contract.title || 'Contract'}" 
-                         onerror="this.src='https://picsum.photos/600/300?random=1'">
+                        onerror="this.src='https://picsum.photos/600/300?random=1'">
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Submitted By</div>
+                    <div class="detail-value" id="submittedByName">${contract.submittedBy || 'Client'}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Description</div>
@@ -3819,6 +3847,16 @@
             if (detailModal) {
                 detailModal.style.display = 'flex';
                 console.log('Modal displayed');
+                
+                // Verify the client name is visible after modal opens
+                setTimeout(() => {
+                    const nameElement = document.getElementById('submittedByName');
+                    if (nameElement) {
+                        console.log('Client name in modal after open:', nameElement.textContent);
+                    } else {
+                        console.error('Client name element still missing after modal open');
+                    }
+                }, 100);
             } else {
                 console.error('detailModal element not found');
             }
@@ -3827,6 +3865,7 @@
                 translatePage();
             }
         }
+
 
         // ==================== LOAD HERO IMAGE ====================
         async function loadHeroImage() {
@@ -4195,7 +4234,7 @@
             grid.innerHTML = displayContracts.map(contract => `
                 <div class="contract-card" data-status="${contract.status || 'Not Started'}" onclick="viewContract(${contract.id})">
                     <div class="contract-image">
-                        <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title || 'Contract'}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'">
+                        <img src="${contract.image_url || 'https://picsum.photos/400/200?random=' + contract.id}" 
                     </div>
                     <div class="contract-content">
                         <div class="contract-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
@@ -4389,7 +4428,7 @@
                     grid.innerHTML = displayContracts.map(contract => `
                         <div class="contract-card" data-status="${contract.status || 'Not Started'}" onclick="viewContract(${contract.id})">
                             <div class="contract-image">
-                                <img src="${contract.image_url || 'https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title || 'Contract'}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x200/1a1a1a/ff3b9c?text=No+Image'">
+                                <img src="${contract.image_url || 'https://picsum.photos/400/200?random=' + contract.id}"
                             </div>
                             <div class="contract-content">
                                 <div class="contract-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
@@ -4437,7 +4476,10 @@
             container.innerHTML = contracts.map(contract => `
                 <div class="contract-list-item">
                     <div class="list-item-image">
-                        <img src="${contract.image_url || 'https://via.placeholder.com/60x60/1a1a1a/ff3b9c?text=No+Image'}" alt="${contract.title || 'Contract'}" loading="lazy" onerror="this.src='https://via.placeholder.com/60x60/1a1a1a/ff3b9c?text=No+Image'">
+                        <img src="${contract.image_url || 'https://picsum.photos/400/200?random=' + contract.id}" 
+                        alt="${contract.title || 'Contract'}" 
+                        loading="lazy" 
+                        onerror="this.src='https://picsum.photos/400/200?random=1'">
                     </div>
                     <div class="list-item-content">
                         <div class="list-item-title">${contract.title || 'Untitled'}</div>
