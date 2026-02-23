@@ -3713,9 +3713,29 @@
             }
         }
 
-        
-            // ==================== FIXED VIEW CONTRACT FUNCTION ====================
+                // ==================== TEMPORARY DEBUG FUNCTION ====================
+        function debugContracts() {
+            console.log('=== ALL CONTRACTS DATA ===');
+            contracts.forEach((contract, index) => {
+                console.log(`Contract ${index + 1}:`, {
+                    id: contract.id,
+                    title: contract.title,
+                    submittedBy: contract.submittedBy,
+                    submitted_by: contract.submitted_by,
+                    SubmittedBy: contract.SubmittedBy,
+                    clientName: contract.clientName,
+                    // Show all keys in the contract object
+                    allKeys: Object.keys(contract)
+                });
+            });
+            console.log('=== END CONTRACTS DATA ===');
+        }
+
+            // ==================== FIXED VIEW CONTRACT FUNCTION WITH DEBUG ====================
         function viewContract(id) {
+            // Call debug function to see all contracts data
+            debugContracts();
+            
             selectedContractId = id;
             const contract = contracts.find(c => c.id == id);
             
@@ -3724,7 +3744,13 @@
                 return;
             }
             
-            console.log('Viewing contract:', contract); // Debug log to see the data structure
+            console.log('=== CURRENT CONTRACT DATA ===');
+            console.log('Full contract object:', contract);
+            console.log('All keys in contract:', Object.keys(contract));
+            console.log('submittedBy value:', contract.submittedBy);
+            console.log('submitted_by value:', contract.submitted_by);
+            console.log('SubmittedBy value:', contract.SubmittedBy);
+            console.log('=== END CURRENT CONTRACT ===');
             
             // Ensure phone number is a string
             currentPhoneNumber = contract.phoneNumber || contract.phone_number || contract.PhoneNumber || '';
@@ -3734,13 +3760,19 @@
                 currentPhoneNumber = '+234 123 456 7890';
             }
             
-            // FIXED: Get submittedBy - this is the correct field name from your API
-            currentContactName = contract.submittedBy || contract.submitted_by || contract.SubmittedBy;
+            // Try ALL possible field names for submittedBy
+            currentContactName = contract.submittedBy || 
+                                 contract.submitted_by || 
+                                 contract.SubmittedBy || 
+                                 contract.clientName || 
+                                 contract.name || 
+                                 contract.submitter || 
+                                 contract.client || 
+                                 contract.Client ||
+                                 contract.creator ||
+                                 '';
             
-            // If still not found, try to get from other possible fields
-            if (!currentContactName) {
-                currentContactName = contract.clientName || contract.name || contract.submitter || '';
-            }
+            console.log('Final extracted client name:', currentContactName);
             
             // Convert to string and ensure it's not empty
             if (currentContactName && typeof currentContactName !== 'string') {
@@ -3748,30 +3780,26 @@
             }
             
             // Default if still empty
-            if (!currentContactName) {
+            if (!currentContactName || currentContactName.trim() === '') {
                 currentContactName = 'Client';
+                console.log('Using default name: Client');
             }
-            
-            console.log('Client name set to:', currentContactName); // Debug log
             
             currentContractId = id;
             
-            // Update title and name - THESE ELEMENTS ARE OUTSIDE detailContent
+            // Update title and name
             const detailTitle = document.getElementById('detailTitle');
             const submittedByName = document.getElementById('submittedByName');
             
             if (detailTitle) {
                 detailTitle.textContent = contract.title || contract.Title || 'Contract Details';
-                console.log('Title updated');
-            } else {
-                console.error('detailTitle element not found');
             }
             
             if (submittedByName) {
                 submittedByName.textContent = currentContactName;
-                console.log('✅ Client name updated in DOM to:', currentContactName);
+                console.log('✅ Set submittedByName to:', currentContactName);
             } else {
-                console.error('❌ submittedByName element not found! Check if element exists with ID "submittedByName"');
+                console.error('❌ submittedByName element not found!');
             }
             
             // Format amount
@@ -3779,12 +3807,11 @@
             const rawAmount = contract.amount || contract.Amount;
             
             if (rawAmount && rawAmount !== 'NO' && rawAmount !== 'No' && rawAmount !== 'no') {
-                // Try to parse as number, remove any non-numeric characters except decimal
                 const amountNum = parseFloat(rawAmount.toString().replace(/[^0-9.-]+/g, ''));
                 if (!isNaN(amountNum) && amountNum > 0) {
                     amountDisplay = `₦${amountNum.toLocaleString()}`;
                 } else {
-                    amountDisplay = rawAmount; // Show as-is if not a number but not "NO"
+                    amountDisplay = rawAmount;
                 }
             }
             
@@ -3862,25 +3889,17 @@
                 </div>
             `;
             
-            console.log('detailContent updated');
-            
-            // Translate the new content if translation function exists
             if (typeof translatePage === 'function') {
                 translatePage();
             }
             
-            // Check PIN balance if user is logged in
             if (userEmail) {
                 checkPinBalance(userEmail);
             }
             
-            // Show the modal
             const detailModal = document.getElementById('detailModal');
             if (detailModal) {
                 detailModal.style.display = 'flex';
-                console.log('Modal displayed');
-            } else {
-                console.error('detailModal element not found');
             }
         }
 
