@@ -800,7 +800,7 @@
         
         .hero-description {
             font-size: 1.2em;
-            color: #b0b0b0;
+            color: #888888;
             max-width: 600px;
             margin-bottom: 30px;
             line-height: 1.6;
@@ -1881,6 +1881,15 @@
             border: 1px solid rgba(0, 0, 0, 0.1);
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
         }
+
+        body.light-mode .logo {
+            -webkit-text-fill-color: #3c3c3c;
+        }
+
+        body.light-mode .btn-primary,
+        body.light-mode .btn-secondary { background: linear-gradient(135deg, #cac9c9, #ffffff); color: #1d6620; }
+        body.light-mode .btn-primary:hover,
+        body.light-mode .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255, 255, 255, 0.8); }
         
         body.light-mode .contract-title,
         body.light-mode .featured-header h3,
@@ -1890,6 +1899,20 @@
         body.light-mode .list-item-title,
         body.light-mode .detail-value {
             color: #1a1a2a;
+        }
+
+        body.light-mode .hero-title .neon {
+            background: linear-gradient(135deg, #fb2e93, #2f0055);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+        
+        body.light-mode .hero-title .creators {
+            background: linear-gradient(135deg, #002551, #0ef0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
         }
         
         body.light-mode .contract-company,
@@ -2023,7 +2046,7 @@
             color: #2e7d32;
         }
 
-        body.light-mode .stat-number { background: linear-gradient(135deg, #0025ab, #00de9d); }
+        body.light-mode .stat-number { -webkit-text-fill-color: #004999; }
         
         body.light-mode .status-badge.not-started {
             background: rgba(77, 158, 255, 0.1);
@@ -2124,14 +2147,15 @@
             }
             
             .hero-title { font-size: 3em; }
-            .hero-section { flex-direction: column; }
+            .hero-section { flex-direction: column; margin-bottom: 25px; }
             .hero-image-container { display: none; }
+            .hero-description { font-size: 1em; margin-bottom: 15px; line-height: 1.2; }
             .featured-section { grid-template-columns: 1fr; }
             .youtube-banner { flex-direction: column; text-align: center; padding: 30px; }
             .banner-content { max-width: 100%; }
             .banner-content h3 { font-size: 2.5em; }
             .banner-avatar { margin-left: 0; margin-top: 30px; }
-            .stats-row { gap: 25px; }
+            .stats-row { gap: 25px; margin-bottom: 1px; }
             .hero-buttons { display: none; }
             .form-row { grid-template-columns: 1fr; }
             .section-header h2 { font-size: 1.5em; }
