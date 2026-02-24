@@ -1924,7 +1924,9 @@
         }
         
         body.light-mode .nav-btn.active {
-            color: white;
+            background: linear-gradient(135deg, #dddada, #ffffff);
+            color: rgb(33, 33, 33);
+            box-shadow: 0 0 20px #ffffff;
         }
 
         body.light-mode .mobile-nav-btn {
@@ -1933,6 +1935,7 @@
         
         body.light-mode .mobile-nav-btn.active {
             background: linear-gradient(135deg, #dddada, #ffffff);
+            box-shadow: 0 0 20px #ffffff;
         }
         
         body.light-mode .progress-item:hover,
@@ -2019,6 +2022,8 @@
             background: rgba(164, 255, 124, 0.1);
             color: #2e7d32;
         }
+
+        body.light-mode .stat-number { background: linear-gradient(135deg, #0025ab, #00de9d); }
         
         body.light-mode .status-badge.not-started {
             background: rgba(77, 158, 255, 0.1);
@@ -2236,34 +2241,6 @@
 
     <!-- Main Container -->
     <div class="container">
-        <!-- YouTube Banners Section -->
-        <div class="youtube-section">
-            <div class="section-header">
-                <h2 data-i18n="youtube_title">🎥 K.R.O MOVIES</h2>
-                <a href="https://youtube.com/@kromedia_ng?si=oxZZO61Ro0ezW9qN" target="_blank" rel="noopener noreferrer" style="text-decoration: none;"><span class="see-all" data-i18n="see_all">See All →</span></a>
-            </div>
-            
-            <div class="banners-container">
-                <div class="banners-slider" id="bannersSlider">
-                    <!-- Banners will be loaded dynamically -->
-                    <div class="banner-slide">
-                        <div class="image-loading" style="height: 400px;">
-                            <div class="neon-loading">
-                                <div class="neon-dot"></div>
-                                <div class="neon-dot"></div>
-                                <div class="neon-dot"></div>
-                                <div class="neon-dot"></div>
-                                <div class="neon-dot"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="slider-controls" id="sliderControls">
-                <div class="slider-dot active"></div>
-            </div>
-        </div>
 
         <!-- Hero Section -->
         <div class="hero-section">
@@ -2441,6 +2418,35 @@
                     <div class="timer-value" id="currentTime">00:00:00</div>
                     <div class="timer-label" data-i18n="time">Time</div>
                 </div>
+            </div>
+        </div>
+
+        <!-- YouTube Banners Section -->
+        <div class="youtube-section">
+            <div class="section-header">
+                <h2 data-i18n="youtube_title">🎥 K.R.O MOVIES</h2>
+                <a href="https://youtube.com/@kromedia_ng?si=oxZZO61Ro0ezW9qN" target="_blank" rel="noopener noreferrer" style="text-decoration: none;"><span class="see-all" data-i18n="see_all">See All →</span></a>
+            </div>
+            
+            <div class="banners-container">
+                <div class="banners-slider" id="bannersSlider">
+                    <!-- Banners will be loaded dynamically -->
+                    <div class="banner-slide">
+                        <div class="image-loading" style="height: 400px;">
+                            <div class="neon-loading">
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                                <div class="neon-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slider-controls" id="sliderControls">
+                <div class="slider-dot active"></div>
             </div>
         </div>
     </div>
