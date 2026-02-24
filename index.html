@@ -1888,6 +1888,8 @@
 
         body.light-mode .progress-location { color: #a6a6a6; }
         body.light-mode .bid-button { color: #4d9eff; }
+        body.light-mode .bid-button:hover { color: #ffffff; background: #4d9eff; box-shadow: 0 0 20px #ffffff; }
+        body.light-mode .glow-pink { text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff; }
 
         body.light-mode .btn-primary,
         body.light-mode .btn-secondary { background: linear-gradient(135deg, #cac9c9, #ffffff); color: #1d6620; box-shadow: 0 0 30px rgb(255 255 255); }
@@ -4760,7 +4762,7 @@
                         <div>
                             <div class="bid-name">${contract.title || 'Untitled'}</div>
                             <div class="bid-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
-                            ${contract.country ? `<div style="font-size: 0.8em; color: #a4ff7c;">📍 ${contract.country}</div>` : ''}
+                            ${contract.country ? `<div style="font-size: 0.8em; color: #a6a6a6;">📍 ${contract.country}</div>` : ''}
                         </div>
                     </div>
                     <button class="bid-button" onclick="viewContract(${contract.id})" data-i18n="view">View</button>
