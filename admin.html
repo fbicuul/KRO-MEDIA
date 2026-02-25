@@ -18,6 +18,7 @@
             background: #0a0a0f;
             color: white;
             min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         /* ==================== TOAST NOTIFICATIONS ==================== */
@@ -269,6 +270,7 @@
             align-items: center;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 30px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         
         .header-left {
@@ -283,6 +285,100 @@
             background: linear-gradient(135deg, #a4ff7c, #4d9eff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        
+        .theme-toggle:hover {
+            border-color: #ff3b9c;
+            background: rgba(255, 59, 156, 0.1);
+        }
+        
+        .theme-icon {
+            font-size: 1.1em;
+        }
+        
+        /* Currency Selector */
+        .currency-selector {
+            position: relative;
+            margin-left: 15px;
+        }
+        
+        .currency-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        
+        .currency-btn:hover {
+            border-color: #ff3b9c;
+            background: rgba(255, 59, 156, 0.1);
+        }
+        
+        .currency-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 10px;
+            min-width: 220px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .currency-dropdown.show {
+            display: block;
+        }
+        
+        .currency-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .currency-option:hover {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+        }
+        
+        .currency-option.active {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+        }
+        
+        .currency-symbol {
+            font-weight: 600;
+            color: #a4ff7c;
         }
         
         .phone-btn {
@@ -339,6 +435,7 @@
             box-shadow: 0 0 30px rgba(255,59,156,0.1);
             position: relative;
             min-height: 350px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         
         .chart-card h3 {
@@ -378,6 +475,7 @@
             border-radius: 15px;
             padding: 15px;
             text-align: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         
         .stat-mini-value {
@@ -407,6 +505,7 @@
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 20px;
             padding: 25px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         
         .stat-card h3 {
@@ -524,6 +623,7 @@
             border-radius: 20px;
             -webkit-overflow-scrolling: touch;
             margin-bottom: 30px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         
         /* Custom Scrollbar */
@@ -768,6 +868,7 @@
             padding: 40px;
             max-width: 500px;
             width: 90%;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         
         .modal-content h2 {
@@ -816,7 +917,81 @@
             animation: spin 0.8s linear infinite;
         }
         
-        /* Mobile Responsive */
+        /* ==================== LIGHT MODE STYLES ==================== */
+        body.light-mode {
+            background: #f0f2f5;
+            color: #1a1a2a;
+        }
+        
+        body.light-mode .header,
+        body.light-mode .login-container,
+        body.light-mode .stat-card,
+        body.light-mode .chart-card,
+        body.light-mode .stat-mini-card,
+        body.light-mode .table-container,
+        body.light-mode .modal-content,
+        body.light-mode .softphone-content,
+        body.light-mode .currency-dropdown {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        }
+
+        body.light-mode .logo {
+            -webkit-text-fill-color: #3c3c3c;
+        }
+
+        body.light-mode .stat-card h3,
+        body.light-mode .stat-mini-label {
+            color: #666;
+        }
+
+        body.light-mode th {
+            background: rgba(255, 59, 156, 0.1);
+            color: #ff3b9c;
+        }
+        
+        body.light-mode td {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            color: #1a1a2a;
+        }
+
+        body.light-mode .theme-toggle,
+        body.light-mode .currency-btn,
+        body.light-mode .phone-btn,
+        body.light-mode .refresh-btn,
+        body.light-mode .logout-btn {
+            color: #1a1a2a;
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        body.light-mode .theme-toggle:hover,
+        body.light-mode .currency-btn:hover,
+        body.light-mode .phone-btn:hover,
+        body.light-mode .refresh-btn:hover,
+        body.light-mode .logout-btn:hover {
+            border-color: #ff3b9c;
+            color: #ff3b9c;
+        }
+
+        body.light-mode .currency-option {
+            color: #1a1a2a;
+        }
+
+        body.light-mode .currency-option:hover {
+            color: white;
+        }
+
+        body.light-mode .chart-card h3 {
+            color: #ff3b9c;
+        }
+        
+        body.light-mode .chart-card h3 span {
+            background: #ff3b9c;
+            color: white;
+        }
+        
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -827,6 +1002,7 @@
             .header-left {
                 width: 100%;
                 justify-content: space-between;
+                flex-wrap: wrap;
             }
             
             .logout-btn {
@@ -868,13 +1044,11 @@
                 padding: 10px;
             }
             
-            /* Table containers become scrollable */
             .table-container {
                 border-radius: 15px;
                 margin: 10px 0;
             }
             
-            /* Add a subtle hint that table is scrollable */
             .table-container::after {
                 content: '← Scroll →';
                 display: block;
@@ -887,17 +1061,14 @@
                 border-top: 1px solid rgba(255,255,255,0.05);
             }
             
-            /* Hide scroll hint on hover */
             .table-container:hover::after {
                 opacity: 0.3;
             }
             
-            /* Adjust table min-width for better mobile scrolling */
             .requests-table {
                 min-width: 700px;
             }
             
-            /* Make status badges more compact on mobile */
             .status-badge {
                 padding: 4px 10px;
                 font-size: 0.8em;
@@ -908,7 +1079,6 @@
                 font-size: 0.85em;
             }
             
-            /* Adjust modal for mobile */
             .modal-content,
             .softphone-content {
                 padding: 25px;
@@ -920,7 +1090,6 @@
             }
         }
 
-        /* Extra small devices */
         @media (max-width: 480px) {
             .requests-table {
                 min-width: 650px;
@@ -967,6 +1136,74 @@
         <div class="header">
             <div class="header-left">
                 <div class="logo">K.R.O ADMIN</div>
+                
+                <!-- THEME TOGGLE BUTTON -->
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeToggleBtn">
+                    <span class="theme-icon" id="themeIcon">☀️</span>
+                    <span class="theme-text" id="themeText">Light</span>
+                </button>
+                
+                <!-- CURRENCY SELECTOR -->
+                <div class="currency-selector">
+                    <button class="currency-btn" onclick="toggleCurrencyDropdown()">
+                        💰 <span id="selectedCurrency">USD</span> <span class="currency-symbol" id="selectedCurrencySymbol">$</span> ▼
+                    </button>
+                    <div class="currency-dropdown" id="currencyDropdown">
+                        <div class="currency-option active" onclick="changeCurrency('USD')">
+                            <span>🇺🇸 USD - US Dollar</span>
+                            <span class="currency-symbol">$</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('NGN')">
+                            <span>🇳🇬 NGN - Nigerian Naira</span>
+                            <span class="currency-symbol">₦</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('GBP')">
+                            <span>🇬🇧 GBP - British Pound</span>
+                            <span class="currency-symbol">£</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('EUR')">
+                            <span>🇪🇺 EUR - Euro</span>
+                            <span class="currency-symbol">€</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('CAD')">
+                            <span>🇨🇦 CAD - Canadian Dollar</span>
+                            <span class="currency-symbol">C$</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('AUD')">
+                            <span>🇦🇺 AUD - Australian Dollar</span>
+                            <span class="currency-symbol">A$</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('JPY')">
+                            <span>🇯🇵 JPY - Japanese Yen</span>
+                            <span class="currency-symbol">¥</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('CNY')">
+                            <span>🇨🇳 CNY - Chinese Yuan</span>
+                            <span class="currency-symbol">¥</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('INR')">
+                            <span>🇮🇳 INR - Indian Rupee</span>
+                            <span class="currency-symbol">₹</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('AED')">
+                            <span>🇦🇪 AED - UAE Dirham</span>
+                            <span class="currency-symbol">د.إ</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('ZAR')">
+                            <span>🇿🇦 ZAR - South African Rand</span>
+                            <span class="currency-symbol">R</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('KES')">
+                            <span>🇰🇪 KES - Kenyan Shilling</span>
+                            <span class="currency-symbol">KSh</span>
+                        </div>
+                        <div class="currency-option" onclick="changeCurrency('GHS')">
+                            <span>🇬🇭 GHS - Ghanaian Cedi</span>
+                            <span class="currency-symbol">₵</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <button class="phone-btn" onclick="openSoftphone()">
                     📞 Phone
                 </button>
@@ -1306,7 +1543,7 @@
         // ==================== CONFIG ====================
         // URL is now loaded from config.js
         const ADMIN_API_URL = window.KRO_CONFIG.ADMIN_API_URL;
-        const PIN_API_URL = window.KRO_CONFIG.PIN_API_URL; // Add this if your admin uses PIN API
+        const PIN_API_URL = window.KRO_CONFIG.PIN_API_URL;
         let adminUser = localStorage.getItem('kro_admin_user') || '';
 
         // Optional: Add a check to make sure config loaded
@@ -1317,6 +1554,106 @@
         
         // Chart instances
         let requestsLineChart, packagePieChart, revenueBarChart, statusDoughnutChart;
+        
+        // ==================== CURRENCY CONFIGURATION ====================
+        const currencies = {
+            USD: { symbol: '$', name: 'US Dollar', rate: 1, flag: '🇺🇸' },
+            NGN: { symbol: '₦', name: 'Nigerian Naira', rate: 1550, flag: '🇳🇬' },
+            GBP: { symbol: '£', name: 'British Pound', rate: 0.79, flag: '🇬🇧' },
+            EUR: { symbol: '€', name: 'Euro', rate: 0.92, flag: '🇪🇺' },
+            CAD: { symbol: 'C$', name: 'Canadian Dollar', rate: 1.35, flag: '🇨🇦' },
+            AUD: { symbol: 'A$', name: 'Australian Dollar', rate: 1.52, flag: '🇦🇺' },
+            JPY: { symbol: '¥', name: 'Japanese Yen', rate: 150, flag: '🇯🇵' },
+            CNY: { symbol: '¥', name: 'Chinese Yuan', rate: 7.19, flag: '🇨🇳' },
+            INR: { symbol: '₹', name: 'Indian Rupee', rate: 83.5, flag: '🇮🇳' },
+            AED: { symbol: 'د.إ', name: 'UAE Dirham', rate: 3.67, flag: '🇦🇪' },
+            ZAR: { symbol: 'R', name: 'South African Rand', rate: 18.75, flag: '🇿🇦' },
+            KES: { symbol: 'KSh', name: 'Kenyan Shilling', rate: 145, flag: '🇰🇪' },
+            GHS: { symbol: '₵', name: 'Ghanaian Cedi', rate: 12.5, flag: '🇬🇭' }
+        };
+        
+        let currentCurrency = localStorage.getItem('kro_currency') || 'USD';
+        
+        // ==================== THEME TOGGLE ====================
+        let currentTheme = localStorage.getItem('kro_theme') || 'light';
+
+        function initTheme() {
+            if (currentTheme === 'light') {
+                document.body.classList.add('light-mode');
+                updateThemeIcons('light');
+            } else {
+                document.body.classList.remove('light-mode');
+                updateThemeIcons('dark');
+            }
+        }
+
+        function toggleTheme() {
+            if (currentTheme === 'dark') {
+                currentTheme = 'light';
+                document.body.classList.add('light-mode');
+                updateThemeIcons('light');
+            } else {
+                currentTheme = 'dark';
+                document.body.classList.remove('light-mode');
+                updateThemeIcons('dark');
+            }
+            
+            localStorage.setItem('kro_theme', currentTheme);
+            showToast(`Switched to ${currentTheme} mode`, 'info');
+        }
+
+        function updateThemeIcons(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            
+            if (theme === 'light') {
+                if (themeIcon) themeIcon.textContent = '☀️';
+                if (themeText) themeText.textContent = 'Light';
+            } else {
+                if (themeIcon) themeIcon.textContent = '🌙';
+                if (themeText) themeText.textContent = 'Dark';
+            }
+        }
+        
+        // ==================== CURRENCY FUNCTIONS ====================
+        function toggleCurrencyDropdown() {
+            const dropdown = document.getElementById('currencyDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function changeCurrency(currencyCode) {
+            currentCurrency = currencyCode;
+            localStorage.setItem('kro_currency', currencyCode);
+            
+            // Update UI
+            document.getElementById('selectedCurrency').textContent = currencyCode;
+            document.getElementById('selectedCurrencySymbol').textContent = currencies[currencyCode].symbol;
+            
+            // Update active states in dropdown
+            document.querySelectorAll('.currency-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('onclick')?.includes(currencyCode)) {
+                    opt.classList.add('active');
+                }
+            });
+            
+            // Close dropdown
+            document.getElementById('currencyDropdown').classList.remove('show');
+            
+            // Refresh displays with new currency
+            loadAllData();
+            showToast(`Currency changed to ${currencies[currencyCode].name} (${currencies[currencyCode].symbol})`, 'success');
+        }
+
+        function formatAmount(amountInUSD) {
+            const num = parseFloat(amountInUSD.toString().replace('$', '')) || 0;
+            const converted = num * currencies[currentCurrency].rate;
+            
+            if (currentCurrency === 'JPY' || currentCurrency === 'KRW') {
+                return currencies[currentCurrency].symbol + Math.round(converted).toLocaleString();
+            }
+            return currencies[currentCurrency].symbol + converted.toFixed(2);
+        }
 
         // ==================== TOAST NOTIFICATION SYSTEM ====================
         function showToast(message, type = 'info', duration = 3000) {
@@ -1381,6 +1718,9 @@
 
         // ==================== CHECK SESSION ON LOAD ====================
         window.onload = function() {
+            initTheme();
+            changeCurrency(currentCurrency);
+            
             if (adminUser) {
                 // Auto-login if session exists
                 document.getElementById('loginPage').style.display = 'none';
@@ -1519,13 +1859,14 @@
                 const status = tx.status === 'pending' ? 
                     '<span class="status-badge status-flutterwave">Pending</span>' : 
                     '<span class="status-badge status-paid">Completed</span>';
+                const amountDisplay = formatAmount('$' + (tx.amount || '0'));
                 
                 return `
                     <tr>
                         <td><strong style="color: #0ef0f0;">${tx.txRef || 'N/A'}</strong></td>
                         <td>${tx.email || 'N/A'}</td>
                         <td>${tx.package || 'N/A'} pins</td>
-                        <td style="color: #a4ff7c;">$${tx.amount || '0'}</td>
+                        <td style="color: #a4ff7c;">${amountDisplay}</td>
                         <td>${status}</td>
                         <td>${createdDate}</td>
                         <td>${tx.flutterwaveId || '—'}</td>
@@ -1709,7 +2050,7 @@
                     if (totalRequests) totalRequests.textContent = result.stats.totalRequests || 0;
                     if (pendingCount) pendingCount.textContent = result.stats.pending || 0;
                     if (paidCount) paidCount.textContent = result.stats.paid || 0;
-                    if (totalRevenue) totalRevenue.textContent = '$' + (result.stats.totalRevenue || 0);
+                    if (totalRevenue) totalRevenue.textContent = formatAmount('$' + (result.stats.totalRevenue || 0));
                     
                     // Update mini stats
                     updateMiniStats(result.stats);
@@ -1839,7 +2180,7 @@
             
             if (avgDailyEl) avgDailyEl.textContent = avgDaily;
             if (conversionRateEl) conversionRateEl.textContent = conversionRate + '%';
-            if (avgRevenueEl) avgRevenueEl.textContent = '$' + avgRev;
+            if (avgRevenueEl) avgRevenueEl.textContent = formatAmount('$' + avgRev);
         }
 
         // ==================== CHART CREATION FUNCTIONS ====================
@@ -1933,7 +2274,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Revenue ($)',
+                        label: 'Revenue',
                         data: data,
                         backgroundColor: 'rgba(77, 158, 255, 0.8)',
                         borderColor: '#4d9eff',
@@ -1954,7 +2295,9 @@
                             grid: { color: 'rgba(255,255,255,0.1)' },
                             ticks: { 
                                 color: '#b0b0b0',
-                                callback: function(value) { return '$' + value; }
+                                callback: function(value) { 
+                                    return currencies[currentCurrency].symbol + value; 
+                                }
                             }
                         },
                         x: {
@@ -2025,12 +2368,14 @@
                         console.error('Date parsing error:', e);
                     }
                     
+                    const amountDisplay = formatAmount(req.amount || '$0');
+                    
                     return `
                     <tr>
                         <td><strong>${req.requestId || 'N/A'}</strong></td>
                         <td>${req.email || 'N/A'}</td>
                         <td>${req.package || 'N/A'} pins</td>
-                        <td>${req.amount || 'N/A'}</td>
+                        <td>${amountDisplay}</td>
                         <td>${formattedDate}</td>
                         <td><span class="status-badge status-pending">Pending</span></td>
                         <td>
@@ -2046,19 +2391,22 @@
             if (paidRows.length === 0) {
                 paidBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 30px;">No verified payments</td></tr>';
             } else {
-                paidBody.innerHTML = paidRows.map(req => `
+                paidBody.innerHTML = paidRows.map(req => {
+                    const amountDisplay = formatAmount(req.amount || '$0');
+                    
+                    return `
                     <tr>
                         <td><strong>${req.requestId || 'N/A'}</strong></td>
                         <td>${req.email || 'N/A'}</td>
                         <td>${req.package || 'N/A'} pins</td>
-                        <td>${req.amount || 'N/A'}</td>
+                        <td>${amountDisplay}</td>
                         <td style="color: #a4ff7c;">${req.paymentNote || '—'}</td>
                         <td><span class="status-badge status-paid">Paid</span></td>
                         <td>
                             <button class="action-btn btn-generate" onclick="openGenerateModal('${req.email}', '${req.package}')">⚡ Generate</button>
                         </td>
                     </tr>
-                `).join('');
+                `}).join('');
             }
         }
 
@@ -2239,6 +2587,8 @@
             const verifyModal = document.getElementById('verifyModal');
             const generateModal = document.getElementById('generateModal');
             const softphoneModal = document.getElementById('softphoneModal');
+            const currencyDropdown = document.getElementById('currencyDropdown');
+            const currencyBtn = document.querySelector('.currency-btn');
             
             if (event.target === verifyModal) {
                 verifyModal.style.display = 'none';
@@ -2248,6 +2598,9 @@
             }
             if (event.target === softphoneModal) {
                 softphoneModal.style.display = 'none';
+            }
+            if (!currencyBtn?.contains(event.target) && !currencyDropdown?.contains(event.target)) {
+                currencyDropdown?.classList.remove('show');
             }
         };
     </script>

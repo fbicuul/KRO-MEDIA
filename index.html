@@ -244,6 +244,81 @@
             font-size: 1.1em;
         }
         
+        /* Currency Selector */
+        .currency-selector {
+            position: relative;
+            margin-left: 15px;
+        }
+        
+        .currency-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        
+        .currency-btn:hover {
+            border-color: #ff3b9c;
+            background: rgba(255, 59, 156, 0.1);
+        }
+        
+        .currency-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 10px;
+            min-width: 220px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .currency-dropdown.show {
+            display: block;
+        }
+        
+        .currency-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .currency-option:hover {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+        }
+        
+        .currency-option.active {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
+        }
+        
+        .currency-symbol {
+            font-weight: 600;
+            color: #a4ff7c;
+        }
+        
+        .currency-name {
+            font-size: 0.85em;
+            color: #b0b0b0;
+        }
+        
         /* Mobile Theme Toggle */
         .mobile-theme-toggle {
             margin-top: 10px;
@@ -268,6 +343,58 @@
         .mobile-theme-btn:hover {
             background: rgba(255, 59, 156, 0.1);
             border-color: #ff3b9c;
+        }
+        
+        /* Mobile Currency Selector */
+        .mobile-currency-selector {
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .mobile-currency-btn {
+            width: 100%;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .mobile-currency-btn:hover {
+            background: rgba(255, 59, 156, 0.1);
+            border-color: #ff3b9c;
+        }
+        
+        .mobile-currency-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .mobile-currency-option {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .mobile-currency-option:hover {
+            background: rgba(255, 59, 156, 0.1);
+            border-color: #ff3b9c;
+        }
+        
+        .mobile-currency-option.active {
+            background: linear-gradient(135deg, #ff3b9c, #9d4edd);
         }
         
         /* Language Selector */
@@ -1875,7 +2002,9 @@
         body.light-mode .table-container,
         body.light-mode .login-container,
         body.light-mode .timer-section,
-        body.light-mode .active-filters {
+        body.light-mode .active-filters,
+        body.light-mode .currency-dropdown,
+        body.light-mode .lang-dropdown {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(0, 0, 0, 0.1);
@@ -1939,7 +2068,8 @@
         body.light-mode .contract-date,
         body.light-mode .progress-date,
         body.light-mode .filter-group h3,
-        body.light-mode .category-name {
+        body.light-mode .category-name,
+        body.light-mode .currency-name {
             color: #666;
         }
         
@@ -1958,7 +2088,8 @@
         body.light-mode .nav-btn,
         body.light-mode .lang-btn,
         body.light-mode .filter-btn,
-        body.light-mode .theme-toggle {
+        body.light-mode .theme-toggle,
+        body.light-mode .currency-btn {
             color: #1a1a2a;
             border-color: rgba(0, 0, 0, 0.2);
         }
@@ -1992,19 +2123,34 @@
             border: 1px solid rgba(0, 0, 0, 0.1);
         }
         
-        body.light-mode .theme-toggle {
+        body.light-mode .theme-toggle,
+        body.light-mode .currency-btn {
             background: rgba(255, 59, 156, 0.1);
             border-color: #ff3b9c;
         }
         
-        body.light-mode .theme-toggle .theme-icon {
+        body.light-mode .theme-toggle .theme-icon,
+        body.light-mode .currency-symbol {
             color: #ff3b9c;
         }
         
-        body.light-mode .mobile-theme-btn {
+        body.light-mode .mobile-theme-btn,
+        body.light-mode .mobile-currency-btn {
             background: rgba(255, 255, 255, 0.9);
             color: #1a1a2a;
             border-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        body.light-mode .currency-option,
+        body.light-mode .lang-option,
+        body.light-mode .mobile-currency-option {
+            color: #1a1a2a;
+        }
+        
+        body.light-mode .currency-option:hover,
+        body.light-mode .lang-option:hover,
+        body.light-mode .mobile-currency-option:hover {
+            color: white;
         }
         
         body.light-mode .chart-card h3 {
@@ -2098,7 +2244,7 @@
                 padding: 15px 20px;
             }
             
-            .nav-buttons, .language-selector {
+            .nav-buttons, .language-selector, .currency-selector {
                 display: none;
             }
             
@@ -2192,6 +2338,10 @@
             .email-input-group {
                 flex-direction: column;
             }
+            
+            .mobile-currency-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 
@@ -2213,9 +2363,70 @@
             
             <!-- THEME TOGGLE BUTTON -->
             <button class="theme-toggle" onclick="toggleTheme()" id="themeToggleBtn">
-                <span class="theme-icon" id="themeIcon">🌙</span>
-                <span class="theme-text" id="themeText">Dark</span>
+                <span class="theme-icon" id="themeIcon">☀️</span>
+                <span class="theme-text" id="themeText">Light</span>
             </button>
+            
+            <!-- CURRENCY SELECTOR -->
+            <div class="currency-selector">
+                <button class="currency-btn" onclick="toggleCurrencyDropdown()">
+                    💰 <span id="selectedCurrency">USD</span> <span class="currency-symbol" id="selectedCurrencySymbol">$</span> ▼
+                </button>
+                <div class="currency-dropdown" id="currencyDropdown">
+                    <div class="currency-option active" onclick="changeCurrency('USD')">
+                        <span>🇺🇸 USD - US Dollar</span>
+                        <span class="currency-symbol">$</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('NGN')">
+                        <span>🇳🇬 NGN - Nigerian Naira</span>
+                        <span class="currency-symbol">₦</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('GBP')">
+                        <span>🇬🇧 GBP - British Pound</span>
+                        <span class="currency-symbol">£</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('EUR')">
+                        <span>🇪🇺 EUR - Euro</span>
+                        <span class="currency-symbol">€</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('CAD')">
+                        <span>🇨🇦 CAD - Canadian Dollar</span>
+                        <span class="currency-symbol">C$</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('AUD')">
+                        <span>🇦🇺 AUD - Australian Dollar</span>
+                        <span class="currency-symbol">A$</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('JPY')">
+                        <span>🇯🇵 JPY - Japanese Yen</span>
+                        <span class="currency-symbol">¥</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('CNY')">
+                        <span>🇨🇳 CNY - Chinese Yuan</span>
+                        <span class="currency-symbol">¥</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('INR')">
+                        <span>🇮🇳 INR - Indian Rupee</span>
+                        <span class="currency-symbol">₹</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('AED')">
+                        <span>🇦🇪 AED - UAE Dirham</span>
+                        <span class="currency-symbol">د.إ</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('ZAR')">
+                        <span>🇿🇦 ZAR - South African Rand</span>
+                        <span class="currency-symbol">R</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('KES')">
+                        <span>🇰🇪 KES - Kenyan Shilling</span>
+                        <span class="currency-symbol">KSh</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('GHS')">
+                        <span>🇬🇭 GHS - Ghanaian Cedi</span>
+                        <span class="currency-symbol">₵</span>
+                    </div>
+                </div>
+            </div>
             
             <button class="free-pin-btn" onclick="openFreePinModal()">🎁 Get Free Pins</button>
             
@@ -2257,9 +2468,31 @@
             <!-- MOBILE THEME TOGGLE -->
             <div class="mobile-theme-toggle">
                 <button class="mobile-theme-btn" onclick="toggleTheme(); toggleMobileMenu();">
-                    <span class="theme-icon" id="mobileThemeIcon">🌙</span>
-                    <span id="mobileThemeText">Dark Mode</span>
+                    <span class="theme-icon" id="mobileThemeIcon">☀️</span>
+                    <span id="mobileThemeText">Light Mode</span>
                 </button>
+            </div>
+            
+            <!-- MOBILE CURRENCY SELECTOR -->
+            <div class="mobile-currency-selector">
+                <div class="mobile-currency-btn" onclick="toggleMobileCurrencyOptions()">
+                    💰 <span id="mobileSelectedCurrency">USD</span> <span id="mobileSelectedCurrencySymbol">$</span>
+                </div>
+                <div class="mobile-currency-options" id="mobileCurrencyOptions" style="display: none;">
+                    <div class="mobile-currency-option active" onclick="changeCurrency('USD'); toggleMobileMenu();">🇺🇸 USD $</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('NGN'); toggleMobileMenu();">🇳🇬 NGN ₦</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('GBP'); toggleMobileMenu();">🇬🇧 GBP £</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('EUR'); toggleMobileMenu();">🇪🇺 EUR €</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('CAD'); toggleMobileMenu();">🇨🇦 CAD C$</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('AUD'); toggleMobileMenu();">🇦🇺 AUD A$</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('JPY'); toggleMobileMenu();">🇯🇵 JPY ¥</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('CNY'); toggleMobileMenu();">🇨🇳 CNY ¥</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('INR'); toggleMobileMenu();">🇮🇳 INR ₹</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('AED'); toggleMobileMenu();">🇦🇪 AED د.إ</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('ZAR'); toggleMobileMenu();">🇿🇦 ZAR R</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('KES'); toggleMobileMenu();">🇰🇪 KES KSh</div>
+                    <div class="mobile-currency-option" onclick="changeCurrency('GHS'); toggleMobileMenu();">🇬🇭 GHS ₵</div>
+                </div>
             </div>
             
             <!-- Mobile Language Selector -->
@@ -2853,6 +3086,25 @@
         let selectedPinPackage = 10;
         const MAX_HOMEPAGE_CONTRACTS = 12;
         
+        // ==================== CURRENCY CONFIGURATION ====================
+        const currencies = {
+            USD: { symbol: '$', name: 'US Dollar', rate: 1, flag: '🇺🇸' },
+            NGN: { symbol: '₦', name: 'Nigerian Naira', rate: 1550, flag: '🇳🇬' },
+            GBP: { symbol: '£', name: 'British Pound', rate: 0.79, flag: '🇬🇧' },
+            EUR: { symbol: '€', name: 'Euro', rate: 0.92, flag: '🇪🇺' },
+            CAD: { symbol: 'C$', name: 'Canadian Dollar', rate: 1.35, flag: '🇨🇦' },
+            AUD: { symbol: 'A$', name: 'Australian Dollar', rate: 1.52, flag: '🇦🇺' },
+            JPY: { symbol: '¥', name: 'Japanese Yen', rate: 150, flag: '🇯🇵' },
+            CNY: { symbol: '¥', name: 'Chinese Yuan', rate: 7.19, flag: '🇨🇳' },
+            INR: { symbol: '₹', name: 'Indian Rupee', rate: 83.5, flag: '🇮🇳' },
+            AED: { symbol: 'د.إ', name: 'UAE Dirham', rate: 3.67, flag: '🇦🇪' },
+            ZAR: { symbol: 'R', name: 'South African Rand', rate: 18.75, flag: '🇿🇦' },
+            KES: { symbol: 'KSh', name: 'Kenyan Shilling', rate: 145, flag: '🇰🇪' },
+            GHS: { symbol: '₵', name: 'Ghanaian Cedi', rate: 12.5, flag: '🇬🇭' }
+        };
+        
+        let currentCurrency = localStorage.getItem('kro_currency') || 'USD';
+        
         // ==================== THEME TOGGLE ====================
         // Light mode is now the default
         let currentTheme = localStorage.getItem('kro_theme') || 'light';
@@ -2899,6 +3151,61 @@
                 if (mobileIcon) mobileIcon.textContent = '🌙';
                 if (mobileText) mobileText.textContent = 'Dark Mode';
             }
+        }
+        
+        // ==================== CURRENCY FUNCTIONS ====================
+        function toggleCurrencyDropdown() {
+            const dropdown = document.getElementById('currencyDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function toggleMobileCurrencyOptions() {
+            const options = document.getElementById('mobileCurrencyOptions');
+            if (options.style.display === 'none') {
+                options.style.display = 'grid';
+            } else {
+                options.style.display = 'none';
+            }
+        }
+
+        function changeCurrency(currencyCode) {
+            currentCurrency = currencyCode;
+            localStorage.setItem('kro_currency', currencyCode);
+            
+            // Update UI
+            document.getElementById('selectedCurrency').textContent = currencyCode;
+            document.getElementById('selectedCurrencySymbol').textContent = currencies[currencyCode].symbol;
+            document.getElementById('mobileSelectedCurrency').textContent = currencyCode;
+            document.getElementById('mobileSelectedCurrencySymbol').textContent = currencies[currencyCode].symbol;
+            
+            // Update active states in dropdowns
+            document.querySelectorAll('.currency-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('onclick')?.includes(currencyCode)) {
+                    opt.classList.add('active');
+                }
+            });
+            
+            document.querySelectorAll('.mobile-currency-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('onclick')?.includes(currencyCode)) {
+                    opt.classList.add('active');
+                }
+            });
+            
+            // Close dropdowns
+            document.getElementById('currencyDropdown').classList.remove('show');
+            document.getElementById('mobileCurrencyOptions').style.display = 'none';
+            
+            // Refresh displays with new currency
+            updateDisplay();
+            showToast(`Currency changed to ${currencies[currencyCode].name} (${currencies[currencyCode].symbol})`, 'success');
+        }
+
+        function formatAmount(amountInNGN) {
+            const num = parseFloat(amountInNGN) || 0;
+            const converted = num / currencies.NGN.rate * currencies[currentCurrency].rate;
+            return currencies[currentCurrency].symbol + converted.toFixed(2);
         }
         
         // ==================== LANGUAGE SUPPORT ====================
@@ -2967,7 +3274,7 @@
                 description: "Description",
                 duration: "Duration",
                 worker_id: "Worker ID",
-                amount: "Amount (₦)",
+                amount: "Amount",
                 status: "Status",
                 submission_date: "Submission Date",
                 submitted_by: "Submitted By",
@@ -3100,7 +3407,7 @@
                 description: "Descripción",
                 duration: "Duración",
                 worker_id: "ID del Trabajador",
-                amount: "Monto (₦)",
+                amount: "Monto",
                 status: "Estado",
                 submission_date: "Fecha de Envío",
                 submitted_by: "Enviado Por",
@@ -3233,7 +3540,7 @@
                 description: "Description",
                 duration: "Durée",
                 worker_id: "ID du Travailleur",
-                amount: "Montant (₦)",
+                amount: "Montant",
                 status: "Statut",
                 submission_date: "Date de Soumission",
                 submitted_by: "Soumis Par",
@@ -3425,6 +3732,12 @@
             const langBtn = document.querySelector('.lang-btn');
             if (!langBtn?.contains(event.target) && !dropdown?.contains(event.target)) {
                 dropdown?.classList.remove('show');
+            }
+            
+            const currencyDropdown = document.getElementById('currencyDropdown');
+            const currencyBtn = document.querySelector('.currency-btn');
+            if (!currencyBtn?.contains(event.target) && !currencyDropdown?.contains(event.target)) {
+                currencyDropdown?.classList.remove('show');
             }
         });
 
@@ -4191,16 +4504,8 @@
                 return;
             }
             
-            // Format amount
-            let amountDisplay = '₦0';
-            if (contract.amount) {
-                const amountNum = parseFloat(contract.amount);
-                if (!isNaN(amountNum)) {
-                    amountDisplay = `₦${amountNum.toLocaleString()}`;
-                } else {
-                    amountDisplay = contract.amount;
-                }
-            }
+            // Format amount with currency
+            let amountDisplay = formatAmount(contract.amount || 0);
             
             // Use a reliable fallback image (using picsum instead of placeholder.com)
             const fallbackImage = 'https://picsum.photos/600/300?random=1';
@@ -4646,18 +4951,8 @@
             const displayContracts = sortedContracts.slice(0, MAX_HOMEPAGE_CONTRACTS);
             
             grid.innerHTML = displayContracts.map(contract => {
-                // Format amount
-                let amountDisplay = '₦0';
-                if (contract.amount) {
-                    const amountNum = parseFloat(contract.amount);
-                    if (!isNaN(amountNum)) {
-                        amountDisplay = `₦${amountNum.toLocaleString()}`;
-                    } else {
-                        amountDisplay = contract.amount;
-                    }
-                } else {
-                    amountDisplay = 'N0';
-                }
+                // Format amount with currency
+                let amountDisplay = formatAmount(contract.amount || 0);
                 
                 // Format date
                 let dateDisplay = '';
@@ -4742,13 +5037,13 @@
             
             if (activeUsersEl) activeUsersEl.textContent = activeUsers || '1,609';
             if (completedContractsEl) completedContractsEl.textContent = completed || '247';
-            if (totalSupportEl) totalSupportEl.textContent = `₦${(total / 1000).toFixed(1)}K`;
+            if (totalSupportEl) totalSupportEl.textContent = formatAmount(total);
             
             if (contracts.length > 0) {
                 const highest = [...contracts].sort((a, b) => parseFloat(b.amount || 0) - parseFloat(a.amount || 0))[0];
                 const todayHighestEl = document.getElementById('todayHighest');
                 if (todayHighestEl) {
-                    todayHighestEl.innerHTML = `₦${highest.amount ? parseFloat(highest.amount).toLocaleString() : '0'} ${translations[currentLanguage]?.by || 'by'} ${highest.company || 'Unknown'}`;
+                    todayHighestEl.innerHTML = `${formatAmount(highest.amount || 0)} ${translations[currentLanguage]?.by || 'by'} ${highest.company || 'Unknown'}`;
                 }
             }
         }
@@ -4774,7 +5069,7 @@
                         <div class="bid-avatar">${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '💰'}</div>
                         <div>
                             <div class="bid-name">${contract.title || 'Untitled'}</div>
-                            <div class="bid-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</div>
+                            <div class="bid-amount">${formatAmount(contract.amount || 0)}</div>
                             ${contract.country ? `<div style="font-size: 0.8em; color: #a6a6a6;">📍 ${contract.country}</div>` : ''}
                         </div>
                     </div>
@@ -4871,7 +5166,7 @@
                 } else {
                     const displayContracts = filtered.slice(0, MAX_HOMEPAGE_CONTRACTS);
                     grid.innerHTML = displayContracts.map(contract => {
-                        const amountDisplay = `₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}`;
+                        const amountDisplay = formatAmount(contract.amount || 0);
                         const locationText = contract.country ? `${contract.country}${contract.city ? ' • ' + contract.city : ''}` : '';
                         
                         return `
@@ -4933,7 +5228,7 @@
                     <div class="list-item-content">
                         <div class="list-item-title">${contract.title || 'Untitled'}</div>
                         <div class="list-item-details">
-                            <span class="list-item-amount">₦${contract.amount ? parseFloat(contract.amount).toLocaleString() : '0'}</span>
+                            <span class="list-item-amount">${formatAmount(contract.amount || 0)}</span>
                             <span class="list-item-status ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || translations[currentLanguage]?.not_started || 'Not Started'}</span>
                         </div>
                         ${contract.country ? `<div style="font-size: 0.8em; color: #a4ff7c;">📍 ${contract.country} ${contract.city || ''}</div>` : ''}
@@ -5012,6 +5307,7 @@
             loadContracts();
             loadHeroImage();
             initTheme(); // Initialize theme
+            changeCurrency(currentCurrency); // Initialize currency
             
             if (userEmail) {
                 checkPinBalance(userEmail);
