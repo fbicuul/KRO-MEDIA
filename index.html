@@ -2854,7 +2854,8 @@
         const MAX_HOMEPAGE_CONTRACTS = 12;
         
         // ==================== THEME TOGGLE ====================
-        let currentTheme = localStorage.getItem('kro_theme') || 'dark';
+        // Light mode is now the default
+        let currentTheme = localStorage.getItem('kro_theme') || 'light';
 
         function initTheme() {
             if (currentTheme === 'light') {
