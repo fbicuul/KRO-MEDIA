@@ -3943,10 +3943,10 @@
                     </div>
                     <div style="text-align: center; margin: 20px 0;">
                         <div style="font-size: 4em; margin-bottom: 20px;">🔑</div>
-                        <p style="color: #a4ff7c; font-size: 1.2em; margin-bottom: 15px;" data-i18n="free_pins_message">New users get 5 free pins!</p>
+                        <p style="color: #5f5f5f; font-size: 1.2em; margin-bottom: 15px;" data-i18n="free_pins_message">New users get 5 free pins!</p>
                         <p style="color: #b0b0b0; margin-bottom: 25px;" data-i18n="free_pins_description">Enter your email to receive 5 PINs instantly. Each PIN unlocks one phone number.</p>
                     </div>
-                    <div class="email-section" style="background: rgba(164,255,124,0.05); border: 1px solid #a4ff7c;">
+                    <div class="email-section" style="background: rgba(164,255,124,0.05); border: 1px solid #5f5f5f;">
                         <div class="email-input-group">
                             <input type="email" id="freePinModalEmail" placeholder="your@email.com" class="pin-input" style="border-color: #a4ff7c;">
                             <button class="pin-button" onclick="requestFreePinsFromModal()" style="background: linear-gradient(135deg, #a4ff7c, #4d9eff); color: #0a0a0f; font-weight: bold;" data-i18n="get_free_pins">Get Free Pins</button>
@@ -5235,7 +5235,7 @@
                             <span class="list-item-amount">${formatAmount(contract.amount || 0)}</span>
                             <span class="list-item-status ${contract.status ? contract.status.toLowerCase().replace(' ', '-') : 'not-started'}">${contract.status || translations[currentLanguage]?.not_started || 'Not Started'}</span>
                         </div>
-                        ${contract.country ? `<div style="font-size: 0.8em; color: #a4ff7c;">📍 ${contract.country} ${contract.city || ''}</div>` : ''}
+                        ${contract.country ? `<div style="font-size: 0.8em; color: #5f5f5f;">📍 ${contract.country} ${contract.city || ''}</div>` : ''}
                     </div>
                     <button class="list-item-button" onclick="viewContractFromList(${contract.id})" data-i18n="view">View</button>
                 </div>
